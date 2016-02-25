@@ -24,6 +24,10 @@
     
     [self startGettingUserLocation];
     
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTap:)];
+    
+    [self.mapView addGestureRecognizer:tap];
+    
 }
 
 - (void)viewDidLoad {
@@ -36,6 +40,16 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) didTap:(UITapGestureRecognizer *) tap{
+    
+    if(tap.state == UIGestureRecognizerStateRecognized){
+        
+        NSLog(@"Hola");
+        
+    }
+    
 }
 
 #pragma mark - Map procedures
@@ -112,6 +126,7 @@
 }
 
 #pragma mark - MapView Delegate
+
 
 
 -(void) mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
