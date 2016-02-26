@@ -45,18 +45,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-    // Temporal procedure
--(void) reset:(id) sender{
-
-    NSString *domainName = [[NSBundle mainBundle] bundleIdentifier];
-    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:domainName];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-}
-
 -(void) activateNavBarAndToolBar{
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reset:)];
     
     [self.navigationController setToolbarHidden:NO];
     
