@@ -12,9 +12,30 @@
 
 @implementation AppDelegate
 
+-(void) makeAppStyle{
+   
+    UIColor *orangeCTPath = [UIColor colorWithRed:228.0f/255.0f green:82.0f/255.0f blue:35.0f/255.0f alpha:1.0f];
+    [[UINavigationBar appearance] setBarTintColor:orangeCTPath];
+    
+    [[UINavigationBar appearance] setTintColor:orangeCTPath];
+    
+    [[UINavigationBar appearance] setTranslucent:NO];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"optima" size:23.0]}
+     ];
+    
+    [[UIToolbar appearance] setBarTintColor:orangeCTPath];
+    
+    [[UIToolbar appearance] setTintColor:orangeCTPath];
+    
+    [[UIToolbar appearance] setTranslucent:NO];
+    
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    [self makeAppStyle];
     
     // Create root controller
     FNAMapViewController * rootMapVC = [[FNAMapViewController alloc] init];

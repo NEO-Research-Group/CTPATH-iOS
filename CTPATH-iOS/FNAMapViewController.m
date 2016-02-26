@@ -47,9 +47,13 @@
 
 -(void) activateNavBarAndToolBar{
     
+    self.title = @"CTPath";
+    
     [self.navigationController setToolbarHidden:NO];
     
     UIBarButtonItem *userLocationButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtUserLocation)];
+    
+    [userLocationButton setTintColor:[UIColor blackColor]];
     
     self.toolbarItems = [NSArray arrayWithObjects: userLocationButton, nil];
     
