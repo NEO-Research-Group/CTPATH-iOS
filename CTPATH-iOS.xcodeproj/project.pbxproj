@@ -15,6 +15,7 @@
 		A1B515AD1C7F925E005EC90D /* FNAMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1B515AB1C7F925E005EC90D /* FNAMapViewController.xib */; };
 		A1B515AF1C7F9284005EC90D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B515AE1C7F9284005EC90D /* MapKit.framework */; };
 		A1B515B11C7FA2F8005EC90D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B515B01C7FA2F8005EC90D /* CoreLocation.framework */; };
+		A1B515B51C8074B2005EC90D /* localization.png in Resources */ = {isa = PBXBuildFile; fileRef = A1B515B41C8074B2005EC90D /* localization.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		A1B515AB1C7F925E005EC90D /* FNAMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAMapViewController.xib; sourceTree = "<group>"; };
 		A1B515AE1C7F9284005EC90D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A1B515B01C7FA2F8005EC90D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A1B515B41C8074B2005EC90D /* localization.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = localization.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +50,7 @@
 		A1B5158B1C7F91C6005EC90D = {
 			isa = PBXGroup;
 			children = (
+				A1B515B41C8074B2005EC90D /* localization.png */,
 				A1B515B01C7FA2F8005EC90D /* CoreLocation.framework */,
 				A1B515AE1C7F9284005EC90D /* MapKit.framework */,
 				A1B515961C7F91C6005EC90D /* CTPATH-iOS */,
@@ -153,6 +156,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B515B51C8074B2005EC90D /* localization.png in Resources */,
 				A1B515AD1C7F925E005EC90D /* FNAMapViewController.xib in Resources */,
 				A1B5159E1C7F91C6005EC90D /* Assets.xcassets in Resources */,
 				A1B515A11C7F91C6005EC90D /* LaunchScreen.storyboard in Resources */,

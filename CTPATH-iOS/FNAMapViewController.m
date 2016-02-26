@@ -32,7 +32,7 @@
     
     [self declareGestureRecognizers];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reset:)];
+    [self activateNavBarAndToolBar];
 }
 
 - (void)viewDidLoad {
@@ -52,6 +52,23 @@
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:domainName];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+}
+
+-(void) activateNavBarAndToolBar{
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reset:)];
+    
+    [self.navigationController setToolbarHidden:NO];
+    
+    UIBarButtonItem *userLocationButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtUserLocation)];
+    
+    self.toolbarItems = [NSArray arrayWithObjects: userLocationButton, nil];
+    
+}
+
+-(void) centerMapAtUserLocation{
+    
+    [self.mapView setCenterCoordinate:self.locationManager.location.coordinate animated:YES];
 }
 
 #pragma mark - UIGestureRecognizer
