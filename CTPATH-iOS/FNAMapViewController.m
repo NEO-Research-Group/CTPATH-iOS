@@ -51,11 +51,24 @@
     
     [self.navigationController setToolbarHidden:NO];
     
-    UIBarButtonItem *userLocationButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtUserLocation)];
+    UIBarButtonItem *userLocationButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtUserLocation)];
     
-    [userLocationButton setTintColor:[UIColor blackColor]];
+    UIButton * infoAppButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
     
-    self.toolbarItems = [NSArray arrayWithObjects: userLocationButton, nil];
+    [infoAppButton addTarget:self action:@selector(moveToInfoViewController:) forControlEvents:UIControlEventTouchUpInside];
+    [infoAppButton setTintColor:[UIColor blackColor]];
+    
+    UIBarButtonItem * infoAppButtonItem = [[UIBarButtonItem alloc] initWithCustomView: infoAppButton];
+
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+
+    [userLocationButtonItem setTintColor:[UIColor blackColor]];
+    
+    [infoAppButton setTintColor:[UIColor blackColor]];
+
+    [infoAppButtonItem setTintColor:[UIColor blackColor]];
+    
+    self.toolbarItems = [NSArray arrayWithObjects: userLocationButtonItem,flex,infoAppButtonItem, nil];
     
 }
 
@@ -64,6 +77,11 @@
     [self.mapView setCenterCoordinate:self.locationManager.location.coordinate animated:YES];
 }
 
+-(void) moveToInfoViewController:(UIBarButtonItem*) sender{
+#warning Incomplete method implementation.
+
+    
+}
 #pragma mark - UIGestureRecognizer
 
 /*! This method instantiate needed user's gestures recognizer */
