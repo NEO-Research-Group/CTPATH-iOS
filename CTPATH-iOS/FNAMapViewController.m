@@ -32,39 +32,48 @@
     
     [self declareGestureRecognizers];
     
-    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reset:)];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+    // Temporal procedure
+-(void) reset:(id) sender{
+
+    NSString *domainName = [[NSBundle mainBundle] bundleIdentifier];
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:domainName];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+}
+
 #pragma mark - UIGestureRecognizer
+
 /*! This method instantiate needed user's gestures recognizer */
 -(void) declareGestureRecognizers{
     
-    UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
+    UILongPressGestureRecognizer * longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPress:)];
     
-    [self.mapView addGestureRecognizer:tapRecognizer];
+    [self.mapView addGestureRecognizer:longPressRecognizer];
     
 }
-/*! This method tells us when the user tapped the view */
--(void) didTap:(UITapGestureRecognizer *) tap{
+/*! This method tells us when the user longPressed the view */
+-(void) didLongPress:(UILongPressGestureRecognizer *) longPress{
     
-    if(tap.state == UIGestureRecognizerStateRecognized){ // We consider only the aproppiate state of tapping
+    if(longPress.state == UIGestureRecognizerStateBegan){ // We consider only the aproppiate state
         
-        // Take point where user tapped and convert it to coordinates at mapView
+        // Take point where user longPressed and convert it to coordinates at mapView
         
-        CGPoint tapPoint = [tap locationInView:self.mapView];
+        CGPoint longPressPoint = [longPress locationInView:self.mapView];
         
-        CLLocationCoordinate2D coordinates = [self.mapView convertPoint:tapPoint toCoordinateFromView:self.mapView];
+        CLLocationCoordinate2D coordinates = [self.mapView convertPoint:longPressPoint toCoordinateFromView:self.mapView];
         
        if(self.startPointAnnotation){
            
@@ -85,7 +94,7 @@
             
         }else{
             
-            // We did not put any annotation, so we will put the star annotation
+            // We did not put any annotation, so we will put the start annotation
             
             self.startPointAnnotation = [[MKPointAnnotation alloc] init];
             
@@ -95,7 +104,6 @@
             
         }
     }
-    
 }
 
 #pragma mark - Map procedures
@@ -226,8 +234,6 @@
 
     // Cuando se actualice la anotación, solicitar nuevas rutas
     if(newState == MKAnnotationViewDragStateEnding){
-        
-        
         
     }
     
