@@ -12,6 +12,12 @@
 
 @property (strong,nonatomic) CLLocationManager  * locationManager;
 
+/*! @brief Start point of the route */
+@property (strong,nonatomic) MKPointAnnotation * startPointAnnotation;
+
+/*! @brief End point of the route  */
+@property (strong,nonatomic) MKPointAnnotation * endPointAnnotation;
+
 @end
 
 @implementation FNAMapViewController
@@ -24,9 +30,7 @@
     
     [self startGettingUserLocation];
     
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTap:)];
-    
-    [self.mapView addGestureRecognizer:tap];
+    [self declareGestureRecognizers];
     
 }
 
@@ -41,13 +45,54 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+#pragma mark - UIGestureRecognizer
+/*! This method instantiate needed user's gestures recognizer */
+-(void) declareGestureRecognizers{
+    
+    UITapGestureRecognizer * tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
+    
+    [self.mapView addGestureRecognizer:tapRecognizer];
+    
+}
+/*! This method tells us when the user tapped the view */
 -(void) didTap:(UITapGestureRecognizer *) tap{
     
-    if(tap.state == UIGestureRecognizerStateRecognized){
+    if(tap.state == UIGestureRecognizerStateRecognized){ // We consider only the aproppiate state of tapping
         
-        NSLog(@"Hola");
+        // Take point where user tapped and convert it to coordinates at mapView
         
+        CGPoint tapPoint = [tap locationInView:self.mapView];
+        
+        CLLocationCoordinate2D coordinates = [self.mapView convertPoint:tapPoint toCoordinateFromView:self.mapView];
+        
+       if(self.startPointAnnotation){
+           
+           // We have already put the start annotation, so we will put the goal annotation
+           
+           if(self.endPointAnnotation) {
+               
+               //Remove it if already exists
+               
+               [self.mapView removeAnnotation:self.endPointAnnotation];
+               
+           }
+           self.endPointAnnotation = [[MKPointAnnotation alloc] init];
+            
+           [self.endPointAnnotation setCoordinate:coordinates];
+            
+           [self.mapView addAnnotation:self.endPointAnnotation];
+            
+        }else{
+            
+            // We did not put any annotation, so we will put the star annotation
+            
+            self.startPointAnnotation = [[MKPointAnnotation alloc] init];
+            
+            [self.startPointAnnotation setCoordinate:coordinates];
+            
+            [self.mapView addAnnotation:self.startPointAnnotation];
+            
+        }
     }
     
 }
@@ -60,7 +105,7 @@
     
     NSDictionary * regionDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"region"];
     
-    //Compute region
+    //Compute region to show at mapView
     
     CLLocationDegrees longitude,latitude,longitudeDelta,latitudeDelta;
     
@@ -110,7 +155,7 @@
     
     //Declare and initialize CLLocationManager
     
-    self.locationManager = [[CLLocationManager alloc]init];
+    self.locationManager = [[CLLocationManager alloc] init];
     
     //Request user to get its current location
     
@@ -127,7 +172,64 @@
 
 #pragma mark - MapView Delegate
 
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
+    
+    // We dont change user's location annotation
+    
+    if ([annotation isKindOfClass:[MKUserLocation class]]){
+        
+        return nil;
+        
+    }else{
+        
+        // Find annotation to reuse it
+        
+        MKPinAnnotationView *pinView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"endAnnotationView"];
+        
+        if(pinView){
+            
+            // If we find a reusable annotation
+            
+            pinView.annotation = annotation;
+            
+        }else{
+            
+            // If not we will create one
+            
+            pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"endAnnotationView"];
 
+            [pinView setAnimatesDrop:YES];
+            
+            [pinView setDraggable:YES];
+            
+            if(self.endPointAnnotation){
+                
+                pinView.pinTintColor = [MKPinAnnotationView greenPinColor];
+                
+            }else{
+                
+                pinView.pinTintColor = [MKPinAnnotationView redPinColor];
+                
+            }
+
+        }
+        return pinView;
+    }
+    return nil;
+}
+
+-(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState{
+    
+#warning Incomplete method implementation.
+
+    // Cuando se actualice la anotación, solicitar nuevas rutas
+    if(newState == MKAnnotationViewDragStateEnding){
+        
+        
+        
+    }
+    
+}
 
 -(void) mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     
@@ -163,8 +265,22 @@
 
 -(void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
     
-    NSLog(@"%@",[locations objectAtIndex:0]);
+    #warning Incomplete method implementation.
     
+    //Hacer algo cuando la posición del usuario cambie
+
+}
+
+#pragma mark - UIGestureRecognizer Delegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
+    
+    if ([touch.view isKindOfClass:[MKPinAnnotationView class]]){
+        
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end
