@@ -32,13 +32,14 @@
     
     [self declareGestureRecognizers];
     
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.mapView setDelegate:self];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -148,6 +149,7 @@
     
     [self.mapView setShowsUserLocation:YES];
     
+    [self.mapView setDelegate:self];
     
 }
 
