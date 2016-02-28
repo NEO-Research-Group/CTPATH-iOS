@@ -115,9 +115,17 @@
     }
 }
 
--(void) centerMapAtUserLocation{
+-(void) centerMapAtCoordinates:(id) sender{
     
-    [self.mapView setCenterCoordinate:self.locationManager.location.coordinate animated:YES];
+    if([sender isKindOfClass:[UIBarButtonItem class]]){
+        
+        [self.mapView setCenterCoordinate:self.locationManager.location.coordinate animated:YES];
+        
+    }else if([sender isKindOfClass:[MKPointAnnotation class]]){
+        [self.mapView setCenterCoordinate:((MKPointAnnotation*)sender).coordinate animated:YES];
+    }
+    
+    
 }
 
 -(void) loadDefaultRegionForMapView{
@@ -342,7 +350,7 @@
     
     //Create buttons for toolbar
     
-    UIBarButtonItem *userLocationButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtUserLocation)];
+    UIBarButtonItem *userLocationButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtCoordinates:)];
     
     UIBarButtonItem *flexButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     
@@ -471,6 +479,9 @@
                                  [self.mapView addAnnotation:self.startPointAnnotation];
                                  
                              }
+                             
+                            [self centerMapAtCoordinates:self.startPointAnnotation];
+                             
                          }else{
                              
                              // Goal
@@ -493,8 +504,10 @@
                                  
                              }
                              
+                             [self centerMapAtCoordinates:self.endPointAnnotation];
                              
                          }
+                         
                          
                      }
                  }
