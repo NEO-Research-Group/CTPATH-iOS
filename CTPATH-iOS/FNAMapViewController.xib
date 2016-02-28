@@ -7,7 +7,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FNAMapViewController">
             <connections>
+                <outlet property="goalSearchBar" destination="vYd-Wr-nbL" id="tqP-yj-uRy"/>
                 <outlet property="mapView" destination="4Oe-55-78U" id="grC-VF-ot0"/>
+                <outlet property="startSearchBar" destination="J8X-U5-CEd" id="32B-yp-Xcp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,20 +21,35 @@
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="4Oe-55-78U">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                 </mapView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9TM-Ot-Ai5">
-                    <rect key="frame" x="399" y="16" width="102" height="21"/>
-                    <fontDescription key="fontDescription" name="Optima-Regular" family="Optima" pointSize="23"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <searchBar tag="1" contentMode="redraw" placeholder="Start point" translatesAutoresizingMaskIntoConstraints="NO" id="J8X-U5-CEd">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="yoV-7h-Agc"/>
+                    </connections>
+                </searchBar>
+                <searchBar tag="2" contentMode="redraw" placeholder="Goal point" translatesAutoresizingMaskIntoConstraints="NO" id="vYd-Wr-nbL">
+                    <rect key="frame" x="0.0" y="43" width="600" height="44"/>
+                    <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="vV9-fU-QfZ"/>
+                    </connections>
+                </searchBar>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="J8X-U5-CEd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0G5-DG-eRu"/>
+                <constraint firstItem="vYd-Wr-nbL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2Cf-WM-ayl"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Bot-RJ-BC0"/>
+                <constraint firstAttribute="trailing" secondItem="J8X-U5-CEd" secondAttribute="trailing" id="CcL-qa-f4U"/>
                 <constraint firstAttribute="trailing" secondItem="4Oe-55-78U" secondAttribute="trailing" id="Dvm-K6-EGG"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JfA-5T-mt1"/>
                 <constraint firstAttribute="bottom" secondItem="4Oe-55-78U" secondAttribute="bottom" id="QmT-gy-rES"/>
+                <constraint firstAttribute="trailing" secondItem="vYd-Wr-nbL" secondAttribute="trailing" id="SPh-01-EeX"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dmn-a5-gee"/>
+                <constraint firstItem="4Oe-55-78U" firstAttribute="top" secondItem="vYd-Wr-nbL" secondAttribute="bottom" constant="-87" id="hJL-M8-ssd"/>
+                <constraint firstItem="J8X-U5-CEd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="irV-3L-vNd"/>
+                <constraint firstItem="vYd-Wr-nbL" firstAttribute="top" secondItem="J8X-U5-CEd" secondAttribute="bottom" constant="-1" id="qtm-Kw-XM7"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="wtu-MB-Tri"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>

@@ -8,6 +8,8 @@
 
 #import "FNAMapViewController.h"
 #import <CoreLocation/CoreLocation.h>
+#import "FNAAboutViewController.h"
+
 @interface FNAMapViewController ()
 
 @property (strong,nonatomic) CLLocationManager  * locationManager;
@@ -26,13 +28,16 @@
     
     [super viewWillAppear:animated];
     
-    [self loadDefaultMapView];
+    [self loadDefaultRegionForMapView];
     
     [self startGettingUserLocation];
     
-    [self declareGestureRecognizers];
+    [self declareGestureRecognizersForMapView];
     
-    [self activateNavBarAndToolBar];
+    [self configureNavBarAndToolBarButtons];
+    
+    [self configureView];
+    
 }
 
 - (void)viewDidLoad {
@@ -45,47 +50,11 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) activateNavBarAndToolBar{
-    
-    self.title = @"CTPath";
-    
-    [self.navigationController setToolbarHidden:NO];
-    
-    UIBarButtonItem *userLocationButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtUserLocation)];
-    
-    UIButton * infoAppButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    
-    [infoAppButton addTarget:self action:@selector(moveToInfoViewController:) forControlEvents:UIControlEventTouchUpInside];
-    [infoAppButton setTintColor:[UIColor blackColor]];
-    
-    UIBarButtonItem * infoAppButtonItem = [[UIBarButtonItem alloc] initWithCustomView: infoAppButton];
 
-    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-
-    [userLocationButtonItem setTintColor:[UIColor blackColor]];
-    
-    [infoAppButton setTintColor:[UIColor blackColor]];
-
-    [infoAppButtonItem setTintColor:[UIColor blackColor]];
-    
-    self.toolbarItems = [NSArray arrayWithObjects: userLocationButtonItem,flex,infoAppButtonItem, nil];
-    
-}
-
--(void) centerMapAtUserLocation{
-    
-    [self.mapView setCenterCoordinate:self.locationManager.location.coordinate animated:YES];
-}
-
--(void) moveToInfoViewController:(UIBarButtonItem*) sender{
-#warning Incomplete method implementation.
-
-    
-}
 #pragma mark - UIGestureRecognizer
 
 /*! This method instantiate needed user's gestures recognizer */
--(void) declareGestureRecognizers{
+-(void) declareGestureRecognizersForMapView{
     
     UILongPressGestureRecognizer * longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPress:)];
     
@@ -103,40 +72,55 @@
         
         CLLocationCoordinate2D coordinates = [self.mapView convertPoint:longPressPoint toCoordinateFromView:self.mapView];
         
-       if(self.startPointAnnotation){
-           
-           // We have already put the start annotation, so we will put the goal annotation
-           
-           if(self.endPointAnnotation) {
-               
-               //Remove it if already exists
-               
-               [self.mapView removeAnnotation:self.endPointAnnotation];
-               
-           }
-           self.endPointAnnotation = [[MKPointAnnotation alloc] init];
-            
-           [self.endPointAnnotation setCoordinate:coordinates];
-            
-           [self.mapView addAnnotation:self.endPointAnnotation];
-            
-        }else{
-            
-            // We did not put any annotation, so we will put the start annotation
-            
-            self.startPointAnnotation = [[MKPointAnnotation alloc] init];
-            
-            [self.startPointAnnotation setCoordinate:coordinates];
-            
-            [self.mapView addAnnotation:self.startPointAnnotation];
-            
-        }
+        [self putAnnotationWithCoordinates:coordinates];
+       
     }
 }
 
 #pragma mark - Map procedures
 
--(void) loadDefaultMapView{
+-(void) putAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates{
+    
+    if(self.startPointAnnotation){
+        
+        // We have already put the start annotation, so we will put the goal annotation
+        
+        if(self.endPointAnnotation) {
+            
+            //Remove it if already exists
+            
+            [self.mapView removeAnnotation:self.endPointAnnotation];
+            
+        }
+        self.endPointAnnotation = [[MKPointAnnotation alloc] init];
+        
+        [self.endPointAnnotation setCoordinate:coordinates];
+        
+        [self.mapView addAnnotation:self.endPointAnnotation];
+        
+        //Search path in background
+        
+        [self searchPathWithStartPoint:self.startPointAnnotation.coordinate goalPoint:coordinates];
+        
+    }else{
+        
+        // We did not put any annotation, so we will put the start annotation
+        
+        self.startPointAnnotation = [[MKPointAnnotation alloc] init];
+        
+        [self.startPointAnnotation setCoordinate:coordinates];
+        
+        [self.mapView addAnnotation:self.startPointAnnotation];
+        
+    }
+}
+
+-(void) centerMapAtUserLocation{
+    
+    [self.mapView setCenterCoordinate:self.locationManager.location.coordinate animated:YES];
+}
+
+-(void) loadDefaultRegionForMapView{
     
     // Code to show the initial region in the map
     
@@ -309,7 +293,7 @@
 
 #pragma mark - UIGestureRecognizer Delegate
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
     
     if ([touch.view isKindOfClass:[MKPinAnnotationView class]]){
         
@@ -319,4 +303,204 @@
     return YES;
 }
 
+#pragma mark - Utils
+
+-(void) searchPathWithStartPoint:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) endPoint{
+    
+    
+#warning Incomplete method implementation.
+    //Buscar ruta, se llama cuando la segunda anotación es colocada
+    
+}
+
+-(void) configureView{
+    
+    // Color for view's background
+    
+    UIColor *creamColor = [UIColor colorWithRed:247.0f/255.0f green:243.0f/255.0f blue:232.0f/255.0f alpha:1.0f];
+    
+    [self.view setBackgroundColor:creamColor];
+    
+    // Hide searchbars when app starts
+    
+    self.goalSearchBar.hidden = YES;
+    
+    self.startSearchBar.hidden = YES;
+}
+
+-(void) configureNavBarAndToolBarButtons{
+    
+    self.title = @"CTPath";
+    
+    [self.navigationController setToolbarHidden:NO];
+    
+    // Create buttons for navbar
+    
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showAndHidesearchBar:)];
+    
+    self.navigationItem.rightBarButtonItem = searchButton;
+    
+    //Create buttons for toolbar
+    
+    UIBarButtonItem *userLocationButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtUserLocation)];
+    
+    UIBarButtonItem *flexButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    UIButton * infoAppButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
+    
+    [infoAppButton addTarget:self action:@selector(moveToInfoViewController:) forControlEvents:UIControlEventTouchUpInside];
+    [infoAppButton setTintColor:[UIColor blackColor]];
+    
+    UIBarButtonItem * infoAppButtonItem = [[UIBarButtonItem alloc] initWithCustomView: infoAppButton];    
+    
+    self.toolbarItems = [NSArray arrayWithObjects: userLocationButtonItem,flexButtonItem,infoAppButtonItem, nil];
+    
+}
+/*! Show searchbar when user taps searchButton and search bars are hidden and viceversa */
+-(void) showAndHidesearchBar:(id) sender{
+    
+    if([self.startSearchBar isHidden]){
+        
+        self.startSearchBar.hidden = NO;
+        
+        UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(showAndHidesearchBar:)];
+        
+        self.navigationItem.rightBarButtonItem = searchButton;
+        
+    }else{
+        
+        self.startSearchBar.hidden = YES;
+        
+        UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showAndHidesearchBar:)];
+        
+        self.navigationItem.rightBarButtonItem = searchButton;
+        
+    }
+    
+    if([self.goalSearchBar isHidden]){
+        
+        self.goalSearchBar.hidden = NO;
+        
+    }else{
+        
+        self.goalSearchBar.hidden = YES;
+        
+    }
+}
+
+-(void) moveToInfoViewController:(UIBarButtonItem*) sender{
+    
+    // Create info controller and push it
+    
+    FNAAboutViewController * infoVC = [[FNAAboutViewController alloc] init];
+    
+    [self.navigationController pushViewController:infoVC animated:YES];
+    
+}
+/*
+#pragma mark - TableView Delegate
+
+
+#pragma mark - TableView DataSource
+
+-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    return 3;
+}
+
+-(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
+    
+    return 1;
+}
+
+-(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"path"];
+    
+    if(!cell){
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"path"];
+    }
+    
+    cell.textLabel.text = @"Hola juanra!";
+    
+    return cell;
+    
+}
+*/
+
+#pragma mark - SearchBar Delegate
+
+
+-(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    
+    NSString * address = searchBar.text;
+    
+    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+    
+    request.naturalLanguageQuery = address;
+    
+    request.region = self.mapView.region;
+
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder geocodeAddressString:address
+                 completionHandler:^(NSArray* placemarks, NSError* error){
+                     if (placemarks && placemarks.count > 0) {
+                         CLPlacemark * pl = [placemarks objectAtIndex:0];
+                    
+                         CLLocationCoordinate2D coordinates = pl.location.coordinate;
+                         
+                         if(searchBar.tag == 1){
+                             
+                             // Start
+                             
+                             if(self.startPointAnnotation){
+                                 
+                                 [self.mapView removeAnnotation:self.startPointAnnotation];
+                                 
+                                 self.startPointAnnotation.coordinate = coordinates;
+                                 
+                                 [self.mapView addAnnotation:self.startPointAnnotation];
+                                 
+                             }else{
+                                 
+                                 self.startPointAnnotation = [[MKPointAnnotation alloc] init];
+                                 
+                                 self.startPointAnnotation.coordinate = coordinates;
+                                 
+                                 [self.mapView addAnnotation:self.startPointAnnotation];
+                                 
+                             }
+                         }else{
+                             
+                             // Goal
+                             
+                             if(self.endPointAnnotation){
+                                 
+                                 [self.mapView removeAnnotation:self.endPointAnnotation];
+                                 
+                                 self.endPointAnnotation.coordinate = coordinates;
+                                 
+                                 [self.mapView addAnnotation:self.endPointAnnotation];
+                                 
+                             }else{
+                                 
+                                 self.endPointAnnotation = [[MKPointAnnotation alloc] init];
+                                 
+                                 self.endPointAnnotation.coordinate = coordinates;
+                                 
+                                 [self.mapView addAnnotation:self.endPointAnnotation];
+                                 
+                             }
+                             
+                             
+                         }
+                         
+                     }
+                 }
+     ];
+    
+    [searchBar resignFirstResponder];
+    
+}
 @end

@@ -17,12 +17,11 @@
     UIColor *orangeCTPath = [UIColor colorWithRed:228.0f/255.0f green:82.0f/255.0f blue:35.0f/255.0f alpha:1.0f];
     [[UINavigationBar appearance] setBarTintColor:orangeCTPath];
     
-    [[UINavigationBar appearance] setTintColor:orangeCTPath];
+    [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
     
     [[UINavigationBar appearance] setTranslucent:NO];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"optima" size:23.0]}
-     ];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"optima" size:23.0]}];
     
     [[UIToolbar appearance] setBarTintColor:orangeCTPath];
     
@@ -30,6 +29,11 @@
     
     [[UIToolbar appearance] setTranslucent:NO];
     
+    UIColor *creamColor = [UIColor colorWithRed:247.0f/255.0f green:243.0f/255.0f blue:232.0f/255.0f alpha:1.0f];
+    
+    [[UISearchBar appearance] setBarTintColor:creamColor];
+    
+    [[UIBarButtonItem appearance] setTintColor:[UIColor blackColor]];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
