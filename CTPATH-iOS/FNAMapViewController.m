@@ -231,17 +231,16 @@
             [pinView setAnimatesDrop:YES];
             
             [pinView setDraggable:YES];
-            
-            if(self.endPointAnnotation){
-                
-                pinView.pinTintColor = [MKPinAnnotationView greenPinColor];
-                
-            }else{
-                
-                pinView.pinTintColor = [MKPinAnnotationView redPinColor];
-                
-            }
 
+        }
+        if([annotation isEqual:self.startPointAnnotation]){
+            
+            pinView.pinTintColor = [MKPinAnnotationView redPinColor];
+            
+        }else{
+            
+            pinView.pinTintColor = [MKPinAnnotationView greenPinColor];
+            
         }
         return pinView;
     }
