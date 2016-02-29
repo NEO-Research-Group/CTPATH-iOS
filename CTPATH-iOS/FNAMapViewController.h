@@ -8,11 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+@class FNAMapView;
+
 @interface FNAMapViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate,UIGestureRecognizerDelegate,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet FNAMapView *mapView;
+
 @property (weak, nonatomic) IBOutlet UISearchBar *startSearchBar;
+
 @property (weak, nonatomic) IBOutlet UISearchBar *goalSearchBar;
+
 //@property (weak, nonatomic) IBOutlet UITableView *routesTableView;
 
 @end

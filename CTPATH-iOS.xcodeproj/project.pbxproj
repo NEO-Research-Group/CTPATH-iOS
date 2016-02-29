@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C3FE1C84AF35009F956F /* FNAMapView.m */; };
+		A192C4051C84B735009F956F /* FNAMapViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4041C84B735009F956F /* FNAMapViewDelegate.m */; };
 		A1B515991C7F91C6005EC90D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B515981C7F91C6005EC90D /* main.m */; };
 		A1B5159C1C7F91C6005EC90D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B5159B1C7F91C6005EC90D /* AppDelegate.m */; };
 		A1B5159E1C7F91C6005EC90D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B5159D1C7F91C6005EC90D /* Assets.xcassets */; };
@@ -21,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A192C3FD1C84AF35009F956F /* FNAMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAMapView.h; sourceTree = "<group>"; };
+		A192C3FE1C84AF35009F956F /* FNAMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAMapView.m; sourceTree = "<group>"; };
+		A192C4031C84B735009F956F /* FNAMapViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAMapViewDelegate.h; sourceTree = "<group>"; };
+		A192C4041C84B735009F956F /* FNAMapViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAMapViewDelegate.m; sourceTree = "<group>"; };
 		A1B515941C7F91C6005EC90D /* CTPATH-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CTPATH-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B515981C7F91C6005EC90D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A1B5159A1C7F91C6005EC90D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -52,6 +58,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A192C4001C84B228009F956F /* Other Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A192C3FD1C84AF35009F956F /* FNAMapView.h */,
+				A192C3FE1C84AF35009F956F /* FNAMapView.m */,
+			);
+			name = "Other Classes";
+			sourceTree = "<group>";
+		};
+		A192C4011C84B263009F956F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A1B515A81C7F91E4005EC90D /* Map Controllers */,
+				A1D6E40C1C81E90B0066E310 /* InfoControllers */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		A192C4021C84B71A009F956F /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				A192C4031C84B735009F956F /* FNAMapViewDelegate.h */,
+				A192C4041C84B735009F956F /* FNAMapViewDelegate.m */,
+			);
+			name = Delegates;
+			sourceTree = "<group>";
+		};
 		A1B5158B1C7F91C6005EC90D = {
 			isa = PBXGroup;
 			children = (
@@ -75,8 +108,9 @@
 			children = (
 				A1B5159A1C7F91C6005EC90D /* AppDelegate.h */,
 				A1B5159B1C7F91C6005EC90D /* AppDelegate.m */,
-				A1B515A81C7F91E4005EC90D /* Map Controllers */,
-				A1D6E40C1C81E90B0066E310 /* InfoControllers */,
+				A192C4011C84B263009F956F /* Controllers */,
+				A192C4021C84B71A009F956F /* Delegates */,
+				A192C4001C84B228009F956F /* Other Classes */,
 				A1B5159D1C7F91C6005EC90D /* Assets.xcassets */,
 				A1B5159F1C7F91C6005EC90D /* LaunchScreen.storyboard */,
 				A1B515A21C7F91C6005EC90D /* Info.plist */,
@@ -195,9 +229,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */,
 				A1B5159C1C7F91C6005EC90D /* AppDelegate.m in Sources */,
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,
 				A1D6E4101C81E9310066E310 /* FNAAboutViewController.m in Sources */,
+				A192C4051C84B735009F956F /* FNAMapViewDelegate.m in Sources */,
 				A1B515AC1C7F925E005EC90D /* FNAMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
