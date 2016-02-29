@@ -30,19 +30,16 @@
     
     [self loadDefaultRegionForMapView];
     
-    [self startGettingUserLocation];
-    
-    [self declareGestureRecognizersForMapView];
-    
     [self configureNavBarAndToolBarButtons];
-    
-    [self configureView];
     
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    [self declareGestureRecognizersForView:self.mapView];
+    
+    [self startGettingUserLocation];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,17 +47,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - UIGestureRecognizer
 
 /*! This method instantiate needed user's gestures recognizer */
--(void) declareGestureRecognizersForMapView{
+-(void) declareGestureRecognizersForView:(UIView *) view{
     
     UILongPressGestureRecognizer * longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPress:)];
     
-    [self.mapView addGestureRecognizer:longPressRecognizer];
-    
+    [view addGestureRecognizer:longPressRecognizer];
 }
+
 /*! This method tells us when the user longPressed the view */
 -(void) didLongPress:(UILongPressGestureRecognizer *) longPress{
     
@@ -318,21 +314,6 @@
 #warning Incomplete method implementation.
     //Buscar ruta, se llama cuando la segunda anotación es colocada
     
-}
-
--(void) configureView{
-    
-    // Color for view's background
-    
-    UIColor *creamColor = [UIColor colorWithRed:247.0f/255.0f green:243.0f/255.0f blue:232.0f/255.0f alpha:1.0f];
-    
-    [self.view setBackgroundColor:creamColor];
-    
-    // Hide searchbars when app starts
-    
-    self.goalSearchBar.hidden = YES;
-    
-    self.startSearchBar.hidden = YES;
 }
 
 -(void) configureNavBarAndToolBarButtons{

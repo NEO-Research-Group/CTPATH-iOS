@@ -34,6 +34,9 @@
     [[UISearchBar appearance] setBarTintColor:creamColor];
     
     [[UIBarButtonItem appearance] setTintColor:[UIColor blackColor]];
+    
+    
+    
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

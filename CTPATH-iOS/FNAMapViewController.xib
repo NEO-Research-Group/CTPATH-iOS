@@ -21,14 +21,14 @@
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="4Oe-55-78U">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                 </mapView>
-                <searchBar tag="1" contentMode="redraw" placeholder="Start point" translatesAutoresizingMaskIntoConstraints="NO" id="J8X-U5-CEd">
+                <searchBar hidden="YES" tag="1" contentMode="redraw" placeholder="Start point" translatesAutoresizingMaskIntoConstraints="NO" id="J8X-U5-CEd">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="yoV-7h-Agc"/>
                     </connections>
                 </searchBar>
-                <searchBar tag="2" contentMode="redraw" placeholder="Goal point" translatesAutoresizingMaskIntoConstraints="NO" id="vYd-Wr-nbL">
+                <searchBar hidden="YES" tag="2" contentMode="redraw" placeholder="Goal point" translatesAutoresizingMaskIntoConstraints="NO" id="vYd-Wr-nbL">
                     <rect key="frame" x="0.0" y="43" width="600" height="44"/>
                     <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                     <connections>
