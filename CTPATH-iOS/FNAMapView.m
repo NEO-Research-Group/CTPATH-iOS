@@ -20,11 +20,9 @@
     if(self.startAnnotation){
         
         // We have already put the start annotation, so we will put the goal annotation
-        
         if(self.goalAnnotation) {
             
             //Remove it if already exists
-            
             [self removeAnnotation:self.goalAnnotation];
             
         }
@@ -37,7 +35,6 @@
     }else{
         
         // We did not put any annotation, so we will put the start annotation
-        
         self.startAnnotation = [[MKPointAnnotation alloc] init];
         
         [self.startAnnotation setCoordinate:coordinates];
@@ -49,11 +46,9 @@
 -(void) setDefaultRegion{
     
     // Code to show the initial region in the map
-    
     NSDictionary * regionDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"region"];
     
     //Compute region to show at mapView
-    
     CLLocationDegrees longitude,latitude,longitudeDelta,latitudeDelta;
     
     if(regionDictionary){
@@ -87,38 +82,41 @@
     
     MKCoordinateRegion region = MKCoordinateRegionMake(locCoordinate, coordinateSpan);
     
-    //Set the region to the mapView
-    
     [self setRegion:region animated:YES];
-    
-    //Show current user's location
     
     [self setShowsUserLocation:YES];
     
 }
 -(void) drawPath:(NSDictionary *) path{
-    [self removeOverlay:self.routeLine];
-        NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"];
+    // TODO: Manage 3 itineraries
+    [self removeOverlay:self.routeLine]; // Remove previous overlay in case of it exists
     
-    NSDictionary * route = [itineraries objectAtIndex:0];
+    // Manage JSON to get needed data
     
-        NSArray * steps = [[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"steps"];
+    NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"]; // 3 itineraries
+    
+    NSDictionary * route = [itineraries objectAtIndex:0]; // Get the first one for testing
+    
+    NSArray * steps = [[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"steps"]; // Each middle-point
         
-        CLLocationCoordinate2D coordinates[([steps count] + 2)];
+    CLLocationCoordinate2D coordinates[([steps count] + 2)]; // All points to visit
     
-        coordinates[0] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lon"]) doubleValue]);
-        
-        for (int i = 0; i < [steps count] ; i++) {
-            CLLocationDegrees latitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lat"]) doubleValue];
-            CLLocationDegrees longitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lon"]) doubleValue];
+    // Start point
+    coordinates[0] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lon"]) doubleValue]);
+    
+    // Middle-points
+    for (int i = 0; i < [steps count] ; i++) {
+        CLLocationDegrees latitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lat"]) doubleValue];
+        CLLocationDegrees longitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lon"]) doubleValue];
             coordinates[i+1] = CLLocationCoordinate2DMake(latitude, longitude);
-        }
-        
-        coordinates[([steps count] + 1)] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"to"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"to"] objectForKey:@"lon"]) doubleValue]);
-        self.routeLine = [MKPolyline polylineWithCoordinates:coordinates count:([steps count] + 2)];
-        
-        //[self setVisibleMapRect:[self.routeLine boundingMapRect]]; //If you want the route to be visible
-        
-        [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
+    }
+     // Goal point
+    coordinates[([steps count] + 1)] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"to"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"to"] objectForKey:@"lon"]) doubleValue]);
+    
+    // Adding overlay to map
+    
+    self.routeLine = [MKPolyline polylineWithCoordinates:coordinates count:([steps count] + 2)];
+    
+    [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
 }
 @end

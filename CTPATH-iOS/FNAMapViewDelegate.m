@@ -81,27 +81,25 @@
     NSNumber *longitudeDelta = [NSNumber numberWithDouble:mapView.region.span.longitudeDelta];
     
     //Save variables in a dictionary
-    
     NSDictionary * regionDictionary = @{@"longitude" : longitude,@"latitude" : latitude,
                                         @"longitudeDelta" : longitudeDelta, @"latitudeDelta" : latitudeDelta};
     //Create persistence
-    
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     
     //Save dictionary
-    
     [defaults setObject:regionDictionary forKey:@"region"];
     
     [defaults synchronize];
-    
 }
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id < MKOverlay >)overlay
 {
-    MKPolylineRenderer *renderer =
-    [[MKPolylineRenderer alloc] initWithOverlay:overlay];
+    MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
+    
     renderer.strokeColor = [UIColor blueColor];
+    
     renderer.lineWidth = 5.0;
+    
     return renderer;
 }
 

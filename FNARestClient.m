@@ -25,8 +25,6 @@
 
 -(NSDictionary *) getJSONFromURL:(NSString *)url{
     
-    
-    
     NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
     
     NSError * error;
@@ -37,9 +35,8 @@
         
         NSLog(@"Hola hay error");
     }
-    
+
     return json;
-    
 }
 
 @end

@@ -49,6 +49,7 @@
 }
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     
     [self declareGestureRecognizersForView:self.mapView];
@@ -75,7 +76,7 @@
 /*! This method tells us when the user longPressed the view */
 -(void) didLongPress:(UILongPressGestureRecognizer *) longPress{
     
-    if(longPress.state == UIGestureRecognizerStateBegan){ // We consider only the aproppiate state
+    if(longPress.state == UIGestureRecognizerStateBegan){ // Minimut time elapsed to consider longPress
         
         // Take point where user longPressed and convert it to coordinates a  
         CGPoint longPressPoint = [longPress locationInView:self.mapView];
@@ -83,25 +84,22 @@
         CLLocationCoordinate2D coordinates = [self.mapView convertPoint:longPressPoint toCoordinateFromView:self.mapView];
         
         [self.mapView putAnnotationWithCoordinates:coordinates];
+        
         if(self.mapView.goalAnnotation){
             
             dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(findPathQueue, ^{
-                NSDictionary * path = [self searchPathWithStartPoint:self.mapView.startAnnotation.coordinate
-                                     goalPoint:coordinates];
                 
+                NSDictionary * path = [self searchPathWithStartPoint:self.mapView.startAnnotation.coordinate goalPoint:coordinates];
+                
+                // Changes in views must be done at main thread
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.mapView drawPath:path];
                 });
             });
-            
         }
-        
-       
     }
 }
-
-
 
 #pragma mark - Map procedures
 
@@ -112,25 +110,21 @@
         [self.mapView setCenterCoordinate:self.locationManager.location.coordinate animated:YES];
         
     }else if([sender isKindOfClass:[MKPointAnnotation class]]){
+        
         [self.mapView setCenterCoordinate:((MKPointAnnotation*)sender).coordinate animated:YES];
     }
-    
 }
 
 -(void) startGettingUserLocation{
     
-    //Declare and initialize CLLocationManager
+    // CLLocationManager is in charge of get user's location
     
     self.locationManager = [[CLLocationManager alloc] init];
-    
-    //Request user to get its current location
     
     [self.locationManager requestWhenInUseAuthorization];
     
     self.locationManager.delegate = self;
-    
-    //Accuracy of current user's location
-    
+
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
     [self.locationManager startUpdatingLocation];  
@@ -162,7 +156,7 @@
 
 -(NSDictionary*) searchPathWithStartPoint:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
     
-#warning Preguntar si hay otra forma mejor de hacerlo
+#warning Preguntar si hay otra forma mejor de hacerlo, si cambia api modificar app
     
     NSMutableString * finalURL = [NSMutableString stringWithFormat:@"%@/plan?",@URL_API];
     NSString * fromPlace = [NSString stringWithFormat:@"fromPlace=%f,%f&",startPoint.latitude,startPoint.longitude];
@@ -172,11 +166,13 @@
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"hh:mma"];
     
-    NSString * time = [NSString stringWithFormat:@"time=%@&",[dateFormatter stringFromDate:[NSDate date]]];
+    NSString * time = [NSString stringWithFormat:@"time=%@&",[dateFormatter
+                                                              stringFromDate:[NSDate date]]];
     
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
     
-    NSString * date = [NSString stringWithFormat:@"date=%@&",[dateFormatter stringFromDate:[NSDate date]]];
+    NSString * date = [NSString stringWithFormat:@"date=%@&",[dateFormatter
+                                                              stringFromDate:[NSDate date]]];
 
     [finalURL appendString:fromPlace];
     
@@ -191,10 +187,7 @@
     [finalURL appendString:@"showIntermediateStops=false"];
     
     return [self.restclient getJSONFromURL:finalURL];
-    
 }
-
-
 
 -(void) configureNavBarAndToolBarButtons{
     
