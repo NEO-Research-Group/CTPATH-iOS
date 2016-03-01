@@ -92,5 +92,31 @@
     [self setShowsUserLocation:YES];
     
 }
-
+-(void) drawPath:(NSDictionary *) path{
+    
+    NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"];
+    
+    NSDictionary * route = [itineraries objectAtIndex:0];
+    
+        NSArray * steps = [[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"steps"];
+        
+        CLLocationCoordinate2D coordinates[([steps count] + 2)];
+        
+        coordinates[0] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lon"]) doubleValue]);
+        
+        for (int i = 0; i < [steps count] ; i++) {
+            CLLocationDegrees latitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lat"]) doubleValue];
+            CLLocationDegrees longitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lon"]) doubleValue];
+            coordinates[i+1] = CLLocationCoordinate2DMake(latitude, longitude);
+        }
+        
+        coordinates[([steps count] + 1)] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"to"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"to"] objectForKey:@"lon"]) doubleValue]);
+        self.routeLine = [MKPolyline polylineWithCoordinates:coordinates count:([steps count] + 2)];
+        
+        //[self setVisibleMapRect:[self.routeLine boundingMapRect]]; //If you want the route to be visible
+        
+        [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
+    
+    
+}
 @end

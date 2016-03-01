@@ -40,7 +40,7 @@
     
     [super viewWillAppear:animated];
     
-    [self.mapView setDefaultRegion]; // Change in the future for user location
+    [self.mapView setDefaultRegion]; //TODO: Change in the future for user location
     
     [self.mapView setDelegate:self.mapDelegate];
     
@@ -84,12 +84,24 @@
         
         [self.mapView putAnnotationWithCoordinates:coordinates];
         if(self.mapView.goalAnnotation){
-                [self searchPathWithStartPoint:self.mapView.startAnnotation.coordinate goalPoint:coordinates];
+            
+            dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+            dispatch_async(findPathQueue, ^{
+                NSDictionary * path = [self searchPathWithStartPoint:self.mapView.startAnnotation.coordinate
+                                     goalPoint:coordinates];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.mapView drawPath:path];
+                });
+            });
+            
         }
         
        
     }
 }
+
+
 
 #pragma mark - Map procedures
 
@@ -148,7 +160,9 @@
 
 #pragma mark - Utils
 
--(void) searchPathWithStartPoint:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
+-(NSDictionary*) searchPathWithStartPoint:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
+    
+#warning Preguntar si hay otra forma mejor de hacerlo
     
     NSMutableString * finalURL = [NSMutableString stringWithFormat:@"%@/plan?",@URL_API];
     NSString * fromPlace = [NSString stringWithFormat:@"fromPlace=%f,%f&",startPoint.latitude,startPoint.longitude];
@@ -174,7 +188,11 @@
     
     [finalURL appendString:@"mode=CAR"];
     
+    return [self.restclient getJSONFromURL:finalURL];
+    
 }
+
+
 
 -(void) configureNavBarAndToolBarButtons{
     

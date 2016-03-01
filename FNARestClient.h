@@ -25,6 +25,6 @@
                                     wheelChair:(BOOL) wheelChair
                          showIntermediateStops:(BOOL) showIntermediateStops;
 
--(NSDictionary *) getDataFromURL:(NSString *) url;
+-(NSDictionary *) getJSONFromURL:(NSString *) url;
 
 @end
