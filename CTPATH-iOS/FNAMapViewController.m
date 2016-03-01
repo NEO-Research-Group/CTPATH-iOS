@@ -11,10 +11,15 @@
 #import "FNAAboutViewController.h"
 #import "FNAMapView.h"
 #import "FNAMapViewDelegate.h"
+#import "FNARestClient.h"
+
+
 @interface FNAMapViewController ()
 
 @property (strong,nonatomic) CLLocationManager  * locationManager;
-@property (strong,nonatomic) FNAMapViewDelegate * mapDelegate;
+
+@property (strong,nonatomic) FNARestClient * restclient;
+
 @end
 
 @implementation FNAMapViewController
@@ -24,7 +29,7 @@
     if(self = [super init]){
         
         _mapDelegate = [[FNAMapViewDelegate alloc] init];
-        
+        _restclient = [FNARestClient sharedRestClient];
     }
     
     return self;
@@ -49,6 +54,7 @@
     [self declareGestureRecognizersForView:self.mapView];
     
     [self startGettingUserLocation];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -71,15 +77,16 @@
     
     if(longPress.state == UIGestureRecognizerStateBegan){ // We consider only the aproppiate state
         
-        // Take point where user longPressed and convert it to coordinates at mapView
-        
+        // Take point where user longPressed and convert it to coordinates a  
         CGPoint longPressPoint = [longPress locationInView:self.mapView];
         
         CLLocationCoordinate2D coordinates = [self.mapView convertPoint:longPressPoint toCoordinateFromView:self.mapView];
         
         [self.mapView putAnnotationWithCoordinates:coordinates];
+        if(self.mapView.goalAnnotation){
+                [self searchPathWithStartPoint:self.mapView.startAnnotation.coordinate goalPoint:coordinates];
+        }
         
-         //[self searchPathWithStartPoint:self.startAnnotation.coordinate goalPoint:coordinates]
        
     }
 }
@@ -141,11 +148,31 @@
 
 #pragma mark - Utils
 
--(void) searchPathWithStartPoint:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) endPoint{
+-(void) searchPathWithStartPoint:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
     
+    NSMutableString * finalURL = [NSMutableString stringWithFormat:@"%@/plan?",@URL_API];
+    NSString * fromPlace = [NSString stringWithFormat:@"fromPlace=%f,%f&",startPoint.latitude,startPoint.longitude];
     
-#warning Incomplete method implementation.
-    //Buscar ruta, se llama cuando la segunda anotación es colocada
+    NSString * toPlace = [NSString stringWithFormat:@"toPlace=%f,%f&",goalPoint.latitude,goalPoint.longitude];
+    
+    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"hh:mma"];
+    
+    NSString * time = [NSString stringWithFormat:@"time=%@&",[dateFormatter stringFromDate:[NSDate date]]];
+    
+    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+    
+    NSString * date = [NSString stringWithFormat:@"date=%@&",[dateFormatter stringFromDate:[NSDate date]]];
+
+    [finalURL appendString:fromPlace];
+    
+    [finalURL appendString:toPlace];
+    
+    [finalURL appendString:time];
+    
+    [finalURL appendString:date];
+    
+    [finalURL appendString:@"mode=CAR"];
     
 }
 
