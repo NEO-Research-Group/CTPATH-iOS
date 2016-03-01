@@ -186,7 +186,9 @@
     
     [finalURL appendString:date];
     
-    [finalURL appendString:@"mode=CAR"];
+    [finalURL appendString:@"mode=CAR&"];
+    
+    [finalURL appendString:@"showIntermediateStops=false"];
     
     return [self.restclient getJSONFromURL:finalURL];
     

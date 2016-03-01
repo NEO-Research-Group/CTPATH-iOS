@@ -8,6 +8,10 @@
 
 #import "FNAMapView.h"
 
+@interface FNAMapView ()
+
+@end
+
 @implementation FNAMapView
 
 
@@ -93,15 +97,15 @@
     
 }
 -(void) drawPath:(NSDictionary *) path{
-    
-    NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"];
+    [self removeOverlay:self.routeLine];
+        NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"];
     
     NSDictionary * route = [itineraries objectAtIndex:0];
     
         NSArray * steps = [[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"steps"];
         
         CLLocationCoordinate2D coordinates[([steps count] + 2)];
-        
+    
         coordinates[0] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lon"]) doubleValue]);
         
         for (int i = 0; i < [steps count] ; i++) {
@@ -116,7 +120,5 @@
         //[self setVisibleMapRect:[self.routeLine boundingMapRect]]; //If you want the route to be visible
         
         [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
-    
-    
 }
 @end

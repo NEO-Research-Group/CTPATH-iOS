@@ -33,6 +33,10 @@
     
     NSDictionary * json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
     
+    if(error){
+        
+        NSLog(@"Hola hay error");
+    }
     
     return json;
     
