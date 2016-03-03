@@ -12,7 +12,7 @@
 #import "FNAMapView.h"
 #import "FNAMapViewDelegate.h"
 #import "FNARestClient.h"
-#import "FNASuggestions.h"
+#import "FNASuggestionsDataSource.h"
 
 @interface FNAMapViewController ()
 
@@ -20,7 +20,7 @@
 
 @property (strong,nonatomic) FNARestClient * restclient;
 
-@property (strong,nonatomic) FNASuggestions * suggestions;
+@property (strong,nonatomic) FNASuggestionsDataSource * suggestionDataSource;
 
 @end
 
@@ -46,36 +46,162 @@
     
     self.title = @"CTPath";
     
-    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showAndHidesearchBar:)];
-    
-    self.navigationItem.rightBarButtonItem = searchButton;
+    [self changeRightBarButtonItem:UIBarButtonSystemItemSearch];
     
     [self.mapView setDelegate:self.mapDelegate];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     
     [super viewDidAppear:animated];
     
-    [self declareGestureRecognizersForView:self.mapView];
+    [self declareGestureRecognizers];
     
     [self startGettingUserLocation];
 
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - Utils
+
+-(void) changeRightBarButtonItem:(UIBarButtonSystemItem) barButtonSystemItem{
+    
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:barButtonSystemItem target:self action:@selector(showAndHidesearchBar:)];
+    
+    self.navigationItem.rightBarButtonItem = searchButton;
+    
 }
+
+/*! Show searchbar when user taps searchButton and search bars are hidden and viceversa */
+-(void) showAndHidesearchBar:(id) sender{
+    
+    if([self.startSearchBar isHidden]){
+        
+        self.startSearchBar.hidden = NO;
+        
+        [self changeRightBarButtonItem:UIBarButtonSystemItemStop];
+        
+    }else{
+        
+        self.startSearchBar.hidden = YES;
+        
+        [self changeRightBarButtonItem:UIBarButtonSystemItemSearch];
+        
+        [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews ];
+        
+        [self.startSearchBar resignFirstResponder];
+        
+    }
+    
+    if([self.goalSearchBar isHidden]){
+        
+        self.goalSearchBar.hidden = NO;
+        
+    }else{
+        
+        self.goalSearchBar.hidden = YES;
+        
+        [self.goalSearchBar resignFirstResponder];
+        
+    }
+}
+
+-(void) showMapWithOptions:(UIViewAnimationOptions) options{
+    
+    [UIView transitionFromView:self.suggestionTableView toView:self.mapView duration:0.25 options:options completion:nil];
+    
+}
+
+-(void) showSuggestionsWithOptions:(UIViewAnimationOptions) options{
+    
+    CGRect tableFrame = self.mapView.frame;
+    
+    tableFrame.origin.y = self.goalSearchBar.frame.origin.y + self.goalSearchBar.frame.size.height;
+    
+    self.suggestionTableView = [[UITableView alloc] initWithFrame:tableFrame];
+    
+    [self.view addSubview:self.suggestionTableView];
+    
+    self.suggestionTableView.delegate = self;
+    
+    [UIView transitionFromView:self.mapView toView:self.suggestionTableView duration:0.25 options:options completion:nil];
+    
+}
+
+-(void) findPath{
+    
+    dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(findPathQueue, ^{
+        
+        NSString * url = [self getURLForRoutingService:self.mapView.startAnnotation.coordinate goalPoint:self.mapView.goalAnnotation.coordinate];
+        
+        NSDictionary * path = [self.restclient getJSONFromURL:url];
+        
+        // Changes in views must be done at main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.mapView drawPath:path];
+        });
+    });
+}
+
+-(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
+    
+#warning Preguntar si hay otra forma mejor de hacerlo, si cambia api modificar app
+    
+    NSMutableString * finalURL = [NSMutableString stringWithFormat:@"%@/plan?",@URL_API];
+    
+    NSString * fromPlace = [NSString stringWithFormat:@"fromPlace=%f,%f&",startPoint.latitude,startPoint.longitude];
+    
+    NSString * toPlace = [NSString stringWithFormat:@"toPlace=%f,%f&",goalPoint.latitude,goalPoint.longitude];
+    
+    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"hh:mma"];
+    
+    NSString * time = [NSString stringWithFormat:@"time=%@&",[dateFormatter
+                                                              stringFromDate:[NSDate date]]];
+    
+    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+    
+    NSString * date = [NSString stringWithFormat:@"date=%@&",[dateFormatter
+                                                              stringFromDate:[NSDate date]]];
+    
+    [finalURL appendString:fromPlace];
+    
+    [finalURL appendString:toPlace];
+    
+    [finalURL appendString:time];
+    
+    [finalURL appendString:date];
+    
+    [finalURL appendString:@"mode=CAR&"];
+    
+    [finalURL appendString:@"showIntermediateStops=false"];
+    
+    return finalURL;
+}
+
+
+
+-(IBAction) moveToInfoViewController:(id) sender{
+    
+    // Create info controller and push it
+    
+    FNAAboutViewController * infoVC = [[FNAAboutViewController alloc] init];
+    
+    [self.navigationController pushViewController:infoVC animated:YES];
+    
+}
+
 
 #pragma mark - UIGestureRecognizer
 
 /*! This method instantiate needed user's gestures recognizer */
--(void) declareGestureRecognizersForView:(UIView *) view{
+-(void) declareGestureRecognizers{
     
     UILongPressGestureRecognizer * longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPress:)];
     
-    [view addGestureRecognizer:longPressRecognizer];
+    [self.mapView addGestureRecognizer:longPressRecognizer];
+
 }
 
 /*! This method tells us when the user longPressed the view */
@@ -86,24 +212,28 @@
         // Take point where user longPressed and convert it to coordinates a  
         CGPoint longPressPoint = [longPress locationInView:self.mapView];
         
-        CLLocationCoordinate2D coordinates = [self.mapView convertPoint:longPressPoint toCoordinateFromView:self.mapView];
+        CLLocationCoordinate2D coordinates = [self.mapView convertPoint:longPressPoint
+                                                   toCoordinateFromView:self.mapView];
         
         [self.mapView addAnnotationWithCoordinates:coordinates];
         
         if(self.mapView.goalAnnotation){
             
-            dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_async(findPathQueue, ^{
-                
-                NSDictionary * path = [self searchPathWithStartPoint:self.mapView.startAnnotation.coordinate goalPoint:coordinates];
-                
-                // Changes in views must be done at main thread
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.mapView drawPath:path];
-                });
-            });
+            [self findPath];
         }
     }
+}
+
+#pragma mark - UIGestureRecognizer Delegate
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
+    
+    if ([touch.view isKindOfClass:[MKPinAnnotationView class]]){
+        
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - Map procedures
@@ -135,160 +265,6 @@
     [self.locationManager startUpdatingLocation];  
 }
 
-#pragma mark - UIGestureRecognizer Delegate
-
-- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
-    
-    if ([touch.view isKindOfClass:[MKPinAnnotationView class]]){
-        
-        return NO;
-    }
-    
-    return YES;
-}
-
-#pragma mark - Utils
-
--(NSDictionary*) searchPathWithStartPoint:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
-    
-#warning Preguntar si hay otra forma mejor de hacerlo, si cambia api modificar app
-    
-    NSMutableString * finalURL = [NSMutableString stringWithFormat:@"%@/plan?",@URL_API];
-    
-    NSString * fromPlace = [NSString stringWithFormat:@"fromPlace=%f,%f&",startPoint.latitude,startPoint.longitude];
-    
-    NSString * toPlace = [NSString stringWithFormat:@"toPlace=%f,%f&",goalPoint.latitude,goalPoint.longitude];
-    
-    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"hh:mma"];
-    
-    NSString * time = [NSString stringWithFormat:@"time=%@&",[dateFormatter
-                                                              stringFromDate:[NSDate date]]];
-    
-    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-    
-    NSString * date = [NSString stringWithFormat:@"date=%@&",[dateFormatter
-                                                              stringFromDate:[NSDate date]]];
-
-    [finalURL appendString:fromPlace];
-    
-    [finalURL appendString:toPlace];
-    
-    [finalURL appendString:time];
-    
-    [finalURL appendString:date];
-    
-    [finalURL appendString:@"mode=CAR&"];
-    
-    [finalURL appendString:@"showIntermediateStops=false"];
-    
-    return [self.restclient getJSONFromURL:finalURL];
-}
-
-/*! Show searchbar when user taps searchButton and search bars are hidden and viceversa */
--(void) showAndHidesearchBar:(id) sender{
-    
-    if([self.startSearchBar isHidden]){
-        
-        self.startSearchBar.hidden = NO;
-        
-        UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(showAndHidesearchBar:)];
-        
-        self.navigationItem.rightBarButtonItem = searchButton;
-        
-    }else{
-        
-        self.startSearchBar.hidden = YES;
-        
-        UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showAndHidesearchBar:)];
-        
-        self.navigationItem.rightBarButtonItem = searchButton;
-        
-        [self.startSearchBar resignFirstResponder];
-        
-        UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
-        
-        [UIView transitionFromView:self.suggestionTableView toView:self.mapView duration:0.25 options:options completion:nil];
-        
-    }
-    
-    if([self.goalSearchBar isHidden]){
-        
-        self.goalSearchBar.hidden = NO;
-        
-    }else{
-        
-        self.goalSearchBar.hidden = YES;
-        
-        [self.goalSearchBar resignFirstResponder];
-        
-    }
-}
-
--(IBAction)moveToInfoViewController:(id) sender{
-    
-    // Create info controller and push it
-    
-    FNAAboutViewController * infoVC = [[FNAAboutViewController alloc] init];
-    
-    [self.navigationController pushViewController:infoVC animated:YES];
-    
-}
-
-#pragma mark - TableView Delegate
-
-
-#pragma mark - TableView DataSource
-
--(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    return [self.suggestions.mapItems count];
-}
-
--(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    
-    return 1;
-}
-
--(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"point"];
-    
-    if(!cell){
-        
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"point"];
-    }
-    
-//
-    NSString * name = [[[(MKMapItem*)([self.suggestions.mapItems objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Name"];
-    
-    NSString * country = [[[(MKMapItem*)([self.suggestions.mapItems objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Country"];
-    
-    NSString * city = [[[(MKMapItem*)([self.suggestions.mapItems objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"City"];
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%@, %@, %@",name,city,country];
-    
-    return cell;
-    
-}
--(void) showSuggestionsWithOptions:(UIViewAnimationOptions) options{
-    
-    CGRect tableFrame = self.mapView.frame;
-    
-    tableFrame.origin.y = self.goalSearchBar.frame.origin.y + self.goalSearchBar.frame.size.height;
-    
-    self.suggestionTableView = [[UITableView alloc] initWithFrame:tableFrame];
-    
-    [self.view addSubview:self.suggestionTableView];
-    
-    self.suggestionTableView.dataSource = self;
-    
-    self.suggestionTableView.delegate = self;
-    
-    [UIView transitionFromView:self.mapView toView:self.suggestionTableView duration:0.25 options:options completion:nil];
-    
-}
-
 #pragma mark - SearchBar Delegate
 
 -(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
@@ -298,9 +274,7 @@
     UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
     
     if([searchBar.text isEqualToString:@""]){
-        UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
-        
-        [UIView transitionFromView:self.suggestionTableView toView:self.mapView duration:0.25 options:options completion:nil];
+        [self showMapWithOptions:options];
         tableViewDisplayed = NO;
     }else{
         
@@ -322,8 +296,10 @@
         [searcher startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
             
             if (response && response.mapItems.count > 0) {
-            
-                self.suggestions = [[FNASuggestions alloc] initWithMapItems:response.mapItems];
+                
+                self.suggestionDataSource = [[FNASuggestionsDataSource alloc] initWithData:response.mapItems];
+                
+                self.suggestionTableView.dataSource = self.suggestionDataSource;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.suggestionTableView reloadData];
@@ -333,7 +309,6 @@
         }];
     }
 }
-
 
 -(void) searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     [searchBar resignFirstResponder];
