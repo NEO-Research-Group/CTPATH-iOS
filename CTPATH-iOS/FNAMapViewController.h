@@ -16,7 +16,7 @@
 
 
 
-@interface FNAMapViewController : UIViewController <CLLocationManagerDelegate,UIGestureRecognizerDelegate,UITableViewDelegate,UISearchBarDelegate>
+@interface FNAMapViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate,UIGestureRecognizerDelegate,UITableViewDelegate,UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet FNAMapView *mapView;
 

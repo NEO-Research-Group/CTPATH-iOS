@@ -76,8 +76,8 @@
 		A192C4011C84B263009F956F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A1B515A81C7F91E4005EC90D /* Map Controllers */,
 				A1D6E40C1C81E90B0066E310 /* InfoControllers */,
+				A1B515A81C7F91E4005EC90D /* Map Controllers */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -133,8 +133,8 @@
 			children = (
 				A1B5159A1C7F91C6005EC90D /* AppDelegate.h */,
 				A1B5159B1C7F91C6005EC90D /* AppDelegate.m */,
-				A192C4011C84B263009F956F /* Controllers */,
 				A192C4061C85A81F009F956F /* API Accessing */,
+				A192C4011C84B263009F956F /* Controllers */,
 				A192C4171C889F10009F956F /* DataSource */,
 				A192C4021C84B71A009F956F /* Delegates */,
 				A192C4001C84B228009F956F /* Other Classes */,

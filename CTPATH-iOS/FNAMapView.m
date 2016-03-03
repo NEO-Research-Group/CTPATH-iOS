@@ -86,32 +86,90 @@
     // TODO: Manage 3 itineraries
     [self removeOverlay:self.routeLine]; // Remove previous overlay in case of it exists
     
-    // Manage JSON to get needed data
+//    // Manage JSON to get needed data
+//    
+//    NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"]; // 3 itineraries
+//    
+//    NSDictionary * route = [itineraries objectAtIndex:0]; // Get the first one for testing
+//    
+//    NSArray * steps = [[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"steps"]; // Each middle-point
+//        
+//    CLLocationCoordinate2D coordinates[([steps count] + 2)]; // All points to visit
+//    
+//    // Start point
+//    coordinates[0] = self.startAnnotation.coordinate;
+//    
+//    // Middle-points
+//    for (int i = 0; i < [steps count] ; i++) {
+//        CLLocationDegrees latitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lat"]) doubleValue];
+//        CLLocationDegrees longitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lon"]) doubleValue];
+//            coordinates[i+1] = CLLocationCoordinate2DMake(latitude, longitude);
+//    }
+//     // Goal point
+//    coordinates[([steps count] + 1)] = self.goalAnnotation.coordinate;
+//    
+//    // Adding overlay to map
+//    
+//    self.routeLine = [MKPolyline polylineWithCoordinates:coordinates count:([steps count] + 2)];
+//    
+//    [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
+    NSDictionary * polylineGeometry = [[[[[[path objectForKey:@"plan"] objectForKey:@"itineraries"] objectAtIndex:0] objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"legGeometry"];
     
-    NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"]; // 3 itineraries
-    
-    NSDictionary * route = [itineraries objectAtIndex:0]; // Get the first one for testing
-    
-    NSArray * steps = [[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"steps"]; // Each middle-point
+        const char *bytes = [[polylineGeometry objectForKey:@"points"] UTF8String];
+        NSUInteger length = [[polylineGeometry objectForKey:@"points"]
+                             lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+        NSUInteger idx = 0;
         
-    CLLocationCoordinate2D coordinates[([steps count] + 2)]; // All points to visit
+        NSUInteger count = length / 4;
+        CLLocationCoordinate2D *coords = calloc(count, sizeof(CLLocationCoordinate2D));
+        NSUInteger coordIdx = 0;
+        
+        float latitude = 0;
+        float longitude = 0;
+        while (idx < length) {
+            char byte = 0;
+            int res = 0;
+            char shift = 0;
+            
+            do {
+                byte = bytes[idx++] - 63;
+                res |= (byte & 0x1F) << shift;
+                shift += 5;
+            } while (byte >= 0x20);
+            
+            float deltaLat = ((res & 1) ? ~(res >> 1) : (res >> 1));
+            latitude += deltaLat;
+            
+            shift = 0;
+            res = 0;
+            
+            do {
+                byte = bytes[idx++] - 0x3F;
+                res |= (byte & 0x1F) << shift;
+                shift += 5;
+            } while (byte >= 0x20);
+            
+            float deltaLon = ((res & 1) ? ~(res >> 1) : (res >> 1));
+            longitude += deltaLon;
+            
+            float finalLat = latitude * 1E-5;
+            float finalLon = longitude * 1E-5;
+            
+            CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(finalLat, finalLon);
+            coords[coordIdx++] = coord;
+            
+            if (coordIdx == count) {
+                NSUInteger newCount = count + 10;
+                coords = realloc(coords, newCount * sizeof(CLLocationCoordinate2D));
+                count = newCount;
+            }
+        }
+        
+        self.routeLine = [MKPolyline polylineWithCoordinates:coords count:coordIdx];
+        [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
+        free(coords);
+        
     
-    // Start point
-    coordinates[0] = self.startAnnotation.coordinate;
     
-    // Middle-points
-    for (int i = 0; i < [steps count] ; i++) {
-        CLLocationDegrees latitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lat"]) doubleValue];
-        CLLocationDegrees longitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lon"]) doubleValue];
-            coordinates[i+1] = CLLocationCoordinate2DMake(latitude, longitude);
-    }
-     // Goal point
-    coordinates[([steps count] + 1)] = self.goalAnnotation.coordinate;
-    
-    // Adding overlay to map
-    
-    self.routeLine = [MKPolyline polylineWithCoordinates:coordinates count:([steps count] + 2)];
-    
-    [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
 }
 @end
