@@ -10,7 +10,6 @@
 #import "FNAMapViewController.h"
 #import "FNAAboutViewController.h"
 #import "FNAMapView.h"
-#import "FNAMapViewDelegate.h"
 #import "FNARestClient.h"
 #import "FNASuggestionsDataSource.h"
 
@@ -30,7 +29,6 @@
     
     if(self = [super init]){
         
-        _mapDelegate = [[FNAMapViewDelegate alloc] init];
         _restclient = [FNARestClient sharedRestClient];
     }
     
