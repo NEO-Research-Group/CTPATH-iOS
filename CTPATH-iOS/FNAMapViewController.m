@@ -12,13 +12,15 @@
 #import "FNAMapView.h"
 #import "FNAMapViewDelegate.h"
 #import "FNARestClient.h"
-
+#import "FNASuggestions.h"
 
 @interface FNAMapViewController ()
 
 @property (strong,nonatomic) CLLocationManager  * locationManager;
 
 @property (strong,nonatomic) FNARestClient * restclient;
+
+@property (strong,nonatomic) FNASuggestions * suggestions;
 
 @end
 
@@ -86,7 +88,7 @@
         
         CLLocationCoordinate2D coordinates = [self.mapView convertPoint:longPressPoint toCoordinateFromView:self.mapView];
         
-        [self.mapView putAnnotationWithCoordinates:coordinates];
+        [self.mapView addAnnotationWithCoordinates:coordinates];
         
         if(self.mapView.goalAnnotation){
             
@@ -106,7 +108,7 @@
 
 #pragma mark - Map procedures
 
--(IBAction)centerMapAtCoordinates:(id) sender{
+-(IBAction) centerMapAtCoordinates:(id) sender{
     
     if([sender isKindOfClass:[UIBarButtonItem class]]){
         
@@ -202,6 +204,12 @@
         
         self.navigationItem.rightBarButtonItem = searchButton;
         
+        [self.startSearchBar resignFirstResponder];
+        
+        UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
+        
+        [UIView transitionFromView:self.suggestionTableView toView:self.mapView duration:0.25 options:options completion:nil];
+        
     }
     
     if([self.goalSearchBar isHidden]){
@@ -211,6 +219,8 @@
     }else{
         
         self.goalSearchBar.hidden = YES;
+        
+        [self.goalSearchBar resignFirstResponder];
         
     }
 }
@@ -224,7 +234,7 @@
     [self.navigationController pushViewController:infoVC animated:YES];
     
 }
-/*
+
 #pragma mark - TableView Delegate
 
 
@@ -232,7 +242,7 @@
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 3;
+    return [self.suggestions.mapItems count];
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
@@ -242,93 +252,94 @@
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"path"];
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"point"];
     
     if(!cell){
         
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"path"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"point"];
     }
     
-    cell.textLabel.text = @"Hola juanra!";
+//
+    NSString * name = [[[(MKMapItem*)([self.suggestions.mapItems objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Name"];
+    
+    NSString * country = [[[(MKMapItem*)([self.suggestions.mapItems objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Country"];
+    
+    NSString * city = [[[(MKMapItem*)([self.suggestions.mapItems objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"City"];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@, %@, %@",name,city,country];
     
     return cell;
     
 }
-*/
+-(void) showSuggestionsWithOptions:(UIViewAnimationOptions) options{
+    
+    CGRect tableFrame = self.mapView.frame;
+    
+    tableFrame.origin.y = self.goalSearchBar.frame.origin.y + self.goalSearchBar.frame.size.height;
+    
+    self.suggestionTableView = [[UITableView alloc] initWithFrame:tableFrame];
+    
+    [self.view addSubview:self.suggestionTableView];
+    
+    self.suggestionTableView.dataSource = self;
+    
+    self.suggestionTableView.delegate = self;
+    
+    [UIView transitionFromView:self.mapView toView:self.suggestionTableView duration:0.25 options:options completion:nil];
+    
+}
 
 #pragma mark - SearchBar Delegate
 
+-(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    
+    static BOOL tableViewDisplayed = NO;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
+    
+    if([searchBar.text isEqualToString:@""]){
+        UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
+        
+        [UIView transitionFromView:self.suggestionTableView toView:self.mapView duration:0.25 options:options completion:nil];
+        tableViewDisplayed = NO;
+    }else{
+        
+        if(!tableViewDisplayed){
+            [self showSuggestionsWithOptions:(UIViewAnimationOptions) options];
+            tableViewDisplayed = YES;
+        }
+    
+        NSString * address = searchText;
+        
+        MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+        
+        request.naturalLanguageQuery = address;
+        
+        request.region = self.mapView.region;
+        
+        MKLocalSearch * searcher = [[MKLocalSearch alloc] initWithRequest:request];
+        
+        [searcher startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
+            
+            if (response && response.mapItems.count > 0) {
+            
+                self.suggestions = [[FNASuggestions alloc] initWithMapItems:response.mapItems];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.suggestionTableView reloadData];
+                });
+            }
+               
+        }];
+    }
+}
+
+
+-(void) searchBarTextDidEndEditing:(UISearchBar *)searchBar{
+    [searchBar resignFirstResponder];
+}
 
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    
-    NSString * address = searchBar.text;
-    
-    MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
-    
-    request.naturalLanguageQuery = address;
-    
-    request.region = self.mapView.region;
-
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    [geocoder geocodeAddressString:address
-                 completionHandler:^(NSArray* placemarks, NSError* error){
-                     if (placemarks && placemarks.count > 0) {
-                         CLPlacemark * pl = [placemarks objectAtIndex:0];
-                    
-                         CLLocationCoordinate2D coordinates = pl.location.coordinate;
-                         
-                         if(searchBar.tag == 1){
-                             
-                             // Start
-                             
-                             if(self.mapView.startAnnotation){
-                                 
-                                 [self.mapView removeAnnotation:self.mapView.startAnnotation];
-                                 
-                                 self.mapView.startAnnotation.coordinate = coordinates;
-                                 
-                                 [self.mapView addAnnotation:self.mapView.startAnnotation];
-                                 
-                             }else{
-                                 
-                                 self.mapView.startAnnotation = [[MKPointAnnotation alloc] init];
-                                 
-                                 self.mapView.startAnnotation.coordinate = coordinates;
-                                 
-                                 [self.mapView addAnnotation:self.mapView.startAnnotation];
-                                 
-                             }
-                             
-                            [self centerMapAtCoordinates:self.mapView.startAnnotation];
-                             
-                         }else{
-                             
-                             // Goal
-                             
-                             if(self.mapView.goalAnnotation){
-                                 
-                                 [self.mapView removeAnnotation:self.mapView.goalAnnotation];
-                                 
-                                 self.mapView.goalAnnotation.coordinate = coordinates;
-                                 
-                                 [self.mapView addAnnotation:self.mapView.goalAnnotation];
-                                 
-                             }else{
-                                 
-                                 self.mapView.goalAnnotation = [[MKPointAnnotation alloc] init];
-                                 
-                                 self.mapView.goalAnnotation.coordinate = coordinates;
-                                 
-                                 [self.mapView addAnnotation:self.mapView.goalAnnotation];
-                                 
-                             }
-                             
-                             [self centerMapAtCoordinates:self.mapView.goalAnnotation];
-                             
-                         }
-                     }
-                 }
-     ];
     
     [searchBar resignFirstResponder];
     

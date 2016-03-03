@@ -8,14 +8,9 @@
 
 #import "FNAMapView.h"
 
-@interface FNAMapView ()
-
-@end
-
 @implementation FNAMapView
 
-
--(void) putAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates{
+-(void) addAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates{
     
     if(self.startAnnotation){
         

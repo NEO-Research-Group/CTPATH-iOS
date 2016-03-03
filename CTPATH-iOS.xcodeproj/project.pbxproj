@@ -10,6 +10,7 @@
 		A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C3FE1C84AF35009F956F /* FNAMapView.m */; };
 		A192C4051C84B735009F956F /* FNAMapViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4041C84B735009F956F /* FNAMapViewDelegate.m */; };
 		A192C4091C85AB9C009F956F /* FNARestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4081C85AB9C009F956F /* FNARestClient.m */; };
+		A192C4131C88745C009F956F /* FNASuggestions.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4121C88745C009F956F /* FNASuggestions.m */; };
 		A1B515991C7F91C6005EC90D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B515981C7F91C6005EC90D /* main.m */; };
 		A1B5159C1C7F91C6005EC90D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B5159B1C7F91C6005EC90D /* AppDelegate.m */; };
 		A1B5159E1C7F91C6005EC90D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B5159D1C7F91C6005EC90D /* Assets.xcassets */; };
@@ -30,6 +31,8 @@
 		A192C4041C84B735009F956F /* FNAMapViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAMapViewDelegate.m; sourceTree = "<group>"; };
 		A192C4071C85AB9C009F956F /* FNARestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNARestClient.h; sourceTree = "<group>"; };
 		A192C4081C85AB9C009F956F /* FNARestClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNARestClient.m; sourceTree = "<group>"; };
+		A192C4111C88745C009F956F /* FNASuggestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNASuggestions.h; sourceTree = "<group>"; };
+		A192C4121C88745C009F956F /* FNASuggestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNASuggestions.m; sourceTree = "<group>"; };
 		A1B515941C7F91C6005EC90D /* CTPATH-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CTPATH-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B515981C7F91C6005EC90D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A1B5159A1C7F91C6005EC90D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -98,6 +101,15 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		A192C4101C88744A009F956F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A192C4111C88745C009F956F /* FNASuggestions.h */,
+				A192C4121C88745C009F956F /* FNASuggestions.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		A1B5158B1C7F91C6005EC90D = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +131,7 @@
 		A1B515961C7F91C6005EC90D /* CTPATH-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A192C4101C88744A009F956F /* Models */,
 				A1B5159A1C7F91C6005EC90D /* AppDelegate.h */,
 				A1B5159B1C7F91C6005EC90D /* AppDelegate.m */,
 				A192C4011C84B263009F956F /* Controllers */,
@@ -246,6 +259,7 @@
 				A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */,
 				A1B5159C1C7F91C6005EC90D /* AppDelegate.m in Sources */,
 				A192C4091C85AB9C009F956F /* FNARestClient.m in Sources */,
+				A192C4131C88745C009F956F /* FNASuggestions.m in Sources */,
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,
 				A1D6E4101C81E9310066E310 /* FNAAboutViewController.m in Sources */,
 				A192C4051C84B735009F956F /* FNAMapViewDelegate.m in Sources */,

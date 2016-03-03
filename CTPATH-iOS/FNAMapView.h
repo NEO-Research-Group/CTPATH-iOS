@@ -16,6 +16,6 @@
 
 @property (nonatomic, retain) MKPolylineView *routeLineView; //overlay view
 -(void) setDefaultRegion;
--(void) putAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates;
+-(void) addAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates;
 -(void) drawPath:(NSDictionary *) path;
 @end

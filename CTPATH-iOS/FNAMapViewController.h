@@ -26,7 +26,7 @@
 
 @property (strong,nonatomic) FNAMapViewDelegate * mapDelegate;
 
-//@property (weak, nonatomic) IBOutlet UITableView *routesTableView;
+@property (strong,nonatomic)  UITableView *suggestionTableView;
 
 
 @end
