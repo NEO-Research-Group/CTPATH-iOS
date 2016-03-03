@@ -102,7 +102,7 @@
     CLLocationCoordinate2D coordinates[([steps count] + 2)]; // All points to visit
     
     // Start point
-    coordinates[0] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"from"] objectForKey:@"lon"]) doubleValue]);
+    coordinates[0] = self.startAnnotation.coordinate;
     
     // Middle-points
     for (int i = 0; i < [steps count] ; i++) {
@@ -111,7 +111,7 @@
             coordinates[i+1] = CLLocationCoordinate2DMake(latitude, longitude);
     }
      // Goal point
-    coordinates[([steps count] + 1)] = CLLocationCoordinate2DMake([((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"to"] objectForKey:@"lat"]) doubleValue], [((NSString*)[[[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"to"] objectForKey:@"lon"]) doubleValue]);
+    coordinates[([steps count] + 1)] = self.goalAnnotation.coordinate;
     
     // Adding overlay to map
     

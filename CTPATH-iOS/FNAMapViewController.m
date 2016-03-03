@@ -42,15 +42,18 @@
     
     [self.mapView setDefaultRegion]; //TODO: Change in the future for user location
     
+    self.title = @"CTPath";
+    
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showAndHidesearchBar:)];
+    
+    self.navigationItem.rightBarButtonItem = searchButton;
+    
     [self.mapView setDelegate:self.mapDelegate];
-    
-    [self configureNavBarAndToolBarButtons];
-    
 }
 
-- (void)viewDidLoad {
+- (void)viewDidAppear:(BOOL)animated {
     
-    [super viewDidLoad];
+    [super viewDidAppear:animated];
     
     [self declareGestureRecognizersForView:self.mapView];
     
@@ -103,7 +106,7 @@
 
 #pragma mark - Map procedures
 
--(void) centerMapAtCoordinates:(id) sender{
+-(IBAction)centerMapAtCoordinates:(id) sender{
     
     if([sender isKindOfClass:[UIBarButtonItem class]]){
         
@@ -130,16 +133,6 @@
     [self.locationManager startUpdatingLocation];  
 }
 
-#pragma mark - CoreLocation Delegate
-
--(void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
-    
-    #warning Incomplete method implementation.
-    
-    //Hacer algo cuando la posición del usuario cambie
-
-}
-
 #pragma mark - UIGestureRecognizer Delegate
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
@@ -159,6 +152,7 @@
 #warning Preguntar si hay otra forma mejor de hacerlo, si cambia api modificar app
     
     NSMutableString * finalURL = [NSMutableString stringWithFormat:@"%@/plan?",@URL_API];
+    
     NSString * fromPlace = [NSString stringWithFormat:@"fromPlace=%f,%f&",startPoint.latitude,startPoint.longitude];
     
     NSString * toPlace = [NSString stringWithFormat:@"toPlace=%f,%f&",goalPoint.latitude,goalPoint.longitude];
@@ -189,34 +183,6 @@
     return [self.restclient getJSONFromURL:finalURL];
 }
 
--(void) configureNavBarAndToolBarButtons{
-    
-    self.title = @"CTPath";
-    
-    [self.navigationController setToolbarHidden:NO];
-    
-    // Create buttons for navbar
-    
-    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(showAndHidesearchBar:)];
-    
-    self.navigationItem.rightBarButtonItem = searchButton;
-    
-    //Create buttons for toolbar
-    
-    UIBarButtonItem *userLocationButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"localization"] landscapeImagePhone:[UIImage imageNamed:@"localization"] style:UIBarButtonItemStyleDone target:self action:@selector(centerMapAtCoordinates:)];
-    
-    UIBarButtonItem *flexButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-    
-    UIButton * infoAppButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    
-    [infoAppButton addTarget:self action:@selector(moveToInfoViewController:) forControlEvents:UIControlEventTouchUpInside];
-    [infoAppButton setTintColor:[UIColor blackColor]];
-    
-    UIBarButtonItem * infoAppButtonItem = [[UIBarButtonItem alloc] initWithCustomView: infoAppButton];    
-    
-    self.toolbarItems = [NSArray arrayWithObjects: userLocationButtonItem,flexButtonItem,infoAppButtonItem, nil];
-    
-}
 /*! Show searchbar when user taps searchButton and search bars are hidden and viceversa */
 -(void) showAndHidesearchBar:(id) sender{
     
@@ -249,7 +215,7 @@
     }
 }
 
--(void) moveToInfoViewController:(UIBarButtonItem*) sender{
+-(IBAction)moveToInfoViewController:(id) sender{
     
     // Create info controller and push it
     

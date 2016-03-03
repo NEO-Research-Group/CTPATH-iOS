@@ -55,7 +55,7 @@
     return nil;
 }
 
--(void) mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState{
+-(void) mapView:(FNAMapView *)mapView annotationView:(MKAnnotationView *)view didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState{
     
 #warning Incomplete method implementation.
     
@@ -66,7 +66,7 @@
     
 }
 
--(void) mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+-(void) mapView:(FNAMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     
     //When region changes, we saves this new region to load it next time user opens the app
     
