@@ -10,6 +10,7 @@
 
 @implementation FNAMapView
 
+
 -(void) addAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates{
     
     if(self.startAnnotation){
@@ -86,33 +87,6 @@
     // TODO: Manage 3 itineraries
     [self removeOverlay:self.routeLine]; // Remove previous overlay in case of it exists
     
-//    // Manage JSON to get needed data
-//    
-//    NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"]; // 3 itineraries
-//    
-//    NSDictionary * route = [itineraries objectAtIndex:0]; // Get the first one for testing
-//    
-//    NSArray * steps = [[[route objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"steps"]; // Each middle-point
-//        
-//    CLLocationCoordinate2D coordinates[([steps count] + 2)]; // All points to visit
-//    
-//    // Start point
-//    coordinates[0] = self.startAnnotation.coordinate;
-//    
-//    // Middle-points
-//    for (int i = 0; i < [steps count] ; i++) {
-//        CLLocationDegrees latitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lat"]) doubleValue];
-//        CLLocationDegrees longitude = [((NSString *)[[steps objectAtIndex:i] objectForKey:@"lon"]) doubleValue];
-//            coordinates[i+1] = CLLocationCoordinate2DMake(latitude, longitude);
-//    }
-//     // Goal point
-//    coordinates[([steps count] + 1)] = self.goalAnnotation.coordinate;
-//    
-//    // Adding overlay to map
-//    
-//    self.routeLine = [MKPolyline polylineWithCoordinates:coordinates count:([steps count] + 2)];
-//    
-//    [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
     NSDictionary * polylineGeometry = [[[[[[path objectForKey:@"plan"] objectForKey:@"itineraries"] objectAtIndex:0] objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"legGeometry"];
     
         const char *bytes = [[polylineGeometry objectForKey:@"points"] UTF8String];

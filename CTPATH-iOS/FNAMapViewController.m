@@ -20,6 +20,7 @@
 @property (strong,nonatomic) FNARestClient * restclient;
 
 @property (strong,nonatomic) FNASuggestionsDataSource * suggestionDataSource;
+@property (nonatomic) BOOL searchBarTag;
 
 @end
 
@@ -70,7 +71,7 @@
     
 }
 
-/*! Show searchbar when user taps searchButton and search bars are hidden and viceversa */
+/*! Show searchbar when user taps  and search bars are hidden and viceversa */
 -(void) showAndHidesearchBar:(id) sender{
     
     if([self.startSearchBar isHidden]){
@@ -262,8 +263,13 @@
 }
 
 #pragma mark - SearchBar Delegate
-
+-(void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    
+    [self searchBar:searchBar textDidChange:searchBar.text];
+}
 -(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    
+    self.searchBarTag = [searchBar isEqual:self.startSearchBar] ? YES: NO;
     
     static BOOL tableViewDisplayed = NO;
     
@@ -295,6 +301,7 @@
                 
                 self.suggestionDataSource = [[FNASuggestionsDataSource alloc] initWithData:response.mapItems];
                 
+                self.suggestionTableView.delegate = self;
                 self.suggestionTableView.dataSource = self.suggestionDataSource;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -407,5 +414,31 @@
     return renderer;
 }
 
+#pragma mark - TableViewDelegate
 
+-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    MKMapItem * mapItem = [self.suggestionDataSource.suggestions objectAtIndex:indexPath.row];
+    
+    
+    
+    if(self.searchBarTag){
+        self.mapView.startAnnotation = [[MKPointAnnotation alloc] init];
+        self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
+        [self.mapView addAnnotation:self.mapView.startAnnotation];
+    }else{
+        self.mapView.goalAnnotation = [[MKPointAnnotation alloc] init];
+        self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
+        [self.mapView addAnnotation:self.mapView.goalAnnotation];
+        
+        [self findPath];
+    }
+    
+    
+    [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews];
+    
+    [self showAndHidesearchBar:nil];
+    
+    
+}
 @end
