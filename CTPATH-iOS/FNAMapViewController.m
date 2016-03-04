@@ -21,6 +21,8 @@
 
 @property (strong,nonatomic) FNASuggestionsDataSource * suggestionDataSource;
 
+@property (nonatomic) BOOL tableViewDisplayed;
+
 /*!@brief YES for editing start point, NO for editing goal point */
 @property (nonatomic) BOOL searchBarTag;
 
@@ -104,6 +106,7 @@
     
     [UIView transitionFromView:self.suggestionTableView
                         toView:self.mapView duration:0.25 options:options completion:nil];
+    self.tableViewDisplayed = NO;
 }
 
 -(void) showSuggestionsWithOptions:(UIViewAnimationOptions) options{
@@ -120,6 +123,8 @@
     
     [UIView transitionFromView:self.mapView
                         toView:self.suggestionTableView duration:0.25 options:options completion:nil];
+    
+    self.tableViewDisplayed = YES;
 }
 
 -(void) findPath{
@@ -244,18 +249,17 @@
     
     self.searchBarTag = [searchBar isEqual:self.startSearchBar] ? YES: NO;
     
-    BOOL tableViewDisplayed = NO;
     
     UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
     
     if([searchBar.text isEqualToString:@""]){
         [self showMapWithOptions:options];
-        tableViewDisplayed = NO;
+        
     }else{
         
-        if(!tableViewDisplayed){
+        if(!self.tableViewDisplayed){
             [self showSuggestionsWithOptions:(UIViewAnimationOptions) options];
-            tableViewDisplayed = YES;
+            
         }
     
         NSString * address = searchText;
