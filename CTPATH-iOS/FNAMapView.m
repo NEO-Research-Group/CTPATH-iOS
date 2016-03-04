@@ -20,9 +20,8 @@
             
             //Remove it if already exists
             [self removeAnnotation:self.goalAnnotation];
-            
         }
-        self.goalAnnotation = [[MKPointAnnotation alloc] init];
+        self.goalAnnotation = [MKPointAnnotation new];
         
         [self.goalAnnotation setCoordinate:coordinates];
         
@@ -31,7 +30,7 @@
     }else{
         
         // We did not put any annotation, so we will put the start annotation
-        self.startAnnotation = [[MKPointAnnotation alloc] init];
+        self.startAnnotation = [MKPointAnnotation new];
         
         [self.startAnnotation setCoordinate:coordinates];
         

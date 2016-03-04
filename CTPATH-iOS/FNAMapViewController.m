@@ -20,6 +20,8 @@
 @property (strong,nonatomic) FNARestClient * restclient;
 
 @property (strong,nonatomic) FNASuggestionsDataSource * suggestionDataSource;
+
+/*!@brief YES for editing start point, NO for editing goal point */
 @property (nonatomic) BOOL searchBarTag;
 
 @end
@@ -78,37 +80,30 @@
         
         self.startSearchBar.hidden = NO;
         
+        self.goalSearchBar.hidden = NO;
+        
         [self changeRightBarButtonItem:UIBarButtonSystemItemStop];
         
     }else{
         
         self.startSearchBar.hidden = YES;
         
+        self.goalSearchBar.hidden = YES;
+        
         [self changeRightBarButtonItem:UIBarButtonSystemItemSearch];
         
-        [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews ];
+        [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews];
         
         [self.startSearchBar resignFirstResponder];
         
-    }
-    
-    if([self.goalSearchBar isHidden]){
-        
-        self.goalSearchBar.hidden = NO;
-        
-    }else{
-        
-        self.goalSearchBar.hidden = YES;
-        
         [self.goalSearchBar resignFirstResponder];
-        
     }
 }
 
 -(void) showMapWithOptions:(UIViewAnimationOptions) options{
     
-    [UIView transitionFromView:self.suggestionTableView toView:self.mapView duration:0.25 options:options completion:nil];
-    
+    [UIView transitionFromView:self.suggestionTableView
+                        toView:self.mapView duration:0.25 options:options completion:nil];
 }
 
 -(void) showSuggestionsWithOptions:(UIViewAnimationOptions) options{
@@ -123,24 +118,29 @@
     
     self.suggestionTableView.delegate = self;
     
-    [UIView transitionFromView:self.mapView toView:self.suggestionTableView duration:0.25 options:options completion:nil];
-    
+    [UIView transitionFromView:self.mapView
+                        toView:self.suggestionTableView duration:0.25 options:options completion:nil];
 }
 
 -(void) findPath{
     
-    dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(findPathQueue, ^{
+    if(self.mapView.goalAnnotation){
+        [self.activityView startAnimating];
+        dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(findPathQueue, ^{
         
-        NSString * url = [self getURLForRoutingService:self.mapView.startAnnotation.coordinate goalPoint:self.mapView.goalAnnotation.coordinate];
+            NSString * url = [self getURLForRoutingService:self.mapView.startAnnotation.coordinate
+                                             goalPoint:self.mapView.goalAnnotation.coordinate];
         
-        NSDictionary * path = [self.restclient getJSONFromURL:url];
+            NSDictionary * path = [self.restclient getJSONFromURL:url];
         
-        // Changes in views must be done at main thread
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.mapView drawPath:path];
+            // Changes in views must be done at main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mapView drawPath:path];
+                [self.activityView stopAnimating];
+            });
         });
-    });
+    }
 }
 
 -(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
@@ -181,12 +181,9 @@
 
 -(IBAction) moveToInfoViewController:(id) sender{
     
-    // Create info controller and push it
-    
-    FNAAboutViewController * infoVC = [[FNAAboutViewController alloc] init];
-    
+    // Create info controller and show it
+    FNAAboutViewController * infoVC = [FNAAboutViewController new];
     [self.navigationController pushViewController:infoVC animated:YES];
-    
 }
 
 #pragma mark - UIGestureRecognizer
@@ -197,40 +194,20 @@
     UILongPressGestureRecognizer * longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPress:)];
     
     [self.mapView addGestureRecognizer:longPressRecognizer];
-
 }
 
 /*! This method tells us when the user longPressed the view */
 -(void) didLongPress:(UILongPressGestureRecognizer *) longPress{
     
     if(longPress.state == UIGestureRecognizerStateBegan){ // Minimut time elapsed to consider longPress
-        
-        // Take point where user longPressed and convert it to coordinates a  
-        CGPoint longPressPoint = [longPress locationInView:self.mapView];
-        
-        CLLocationCoordinate2D coordinates = [self.mapView convertPoint:longPressPoint
-                                                   toCoordinateFromView:self.mapView];
+
+        CLLocationCoordinate2D coordinates = [self.mapView
+                                              convertPoint:[longPress locationInView:self.mapView]toCoordinateFromView:self.mapView];
         
         [self.mapView addAnnotationWithCoordinates:coordinates];
         
-        if(self.mapView.goalAnnotation){
-            
-            [self findPath];
-        }
+        [self findPath];
     }
-}
-
-#pragma mark - UIGestureRecognizer Delegate
-
-- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
-        shouldReceiveTouch:(UITouch *)touch{
-    
-    if ([touch.view isKindOfClass:[MKPinAnnotationView class]]){
-        
-        return NO;
-    }
-    
-    return YES;
 }
 
 #pragma mark - Map procedures
@@ -263,10 +240,6 @@
 }
 
 #pragma mark - SearchBar Delegate
--(void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-    
-    [self searchBar:searchBar textDidChange:searchBar.text];
-}
 -(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     
     self.searchBarTag = [searchBar isEqual:self.startSearchBar] ? YES: NO;
@@ -287,7 +260,7 @@
     
         NSString * address = searchText;
         
-        MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
+        MKLocalSearchRequest *request = [MKLocalSearchRequest new];
         
         request.naturalLanguageQuery = address;
         
@@ -299,7 +272,8 @@
             
             if (response && response.mapItems.count > 0) {
                 
-                self.suggestionDataSource = [[FNASuggestionsDataSource alloc] initWithData:response.mapItems];
+                self.suggestionDataSource = [[FNASuggestionsDataSource alloc]
+                                             initWithData:response.mapItems];
                 
                 self.suggestionTableView.delegate = self;
                 self.suggestionTableView.dataSource = self.suggestionDataSource;
@@ -312,11 +286,13 @@
         }];
     }
 }
-
+-(void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    
+    [self searchBar:searchBar textDidChange:searchBar.text];
+}
 -(void) searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     [searchBar resignFirstResponder];
 }
-
 -(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     
     [searchBar resignFirstResponder];
@@ -420,25 +396,21 @@
     
     MKMapItem * mapItem = [self.suggestionDataSource.suggestions objectAtIndex:indexPath.row];
     
-    
-    
     if(self.searchBarTag){
-        self.mapView.startAnnotation = [[MKPointAnnotation alloc] init];
+        self.mapView.startAnnotation = [MKPointAnnotation new];
         self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
         [self.mapView addAnnotation:self.mapView.startAnnotation];
+        [self centerMapAtCoordinates:self.mapView.startAnnotation];
     }else{
-        self.mapView.goalAnnotation = [[MKPointAnnotation alloc] init];
+        self.mapView.goalAnnotation = [MKPointAnnotation new];
         self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
         [self.mapView addAnnotation:self.mapView.goalAnnotation];
         
         [self findPath];
     }
     
-    
     [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews];
     
     [self showAndHidesearchBar:nil];
-    
-    
 }
 @end

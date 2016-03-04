@@ -28,5 +28,7 @@
 
 @property (strong,nonatomic)  UITableView *suggestionTableView;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
+
 
 @end

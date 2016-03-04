@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FNAMapViewController">
             <connections>
+                <outlet property="activityView" destination="cVL-hx-E4E" id="E4r-xI-xeQ"/>
                 <outlet property="goalSearchBar" destination="vYd-Wr-nbL" id="tqP-yj-uRy"/>
                 <outlet property="mapView" destination="4Oe-55-78U" id="AZ1-Ky-urV"/>
                 <outlet property="startSearchBar" destination="J8X-U5-CEd" id="32B-yp-Xcp"/>
@@ -58,6 +59,10 @@
                     </items>
                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                 </toolbar>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cVL-hx-E4E">
+                    <rect key="frame" x="282" y="259" width="37" height="37"/>
+                    <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
@@ -73,9 +78,11 @@
                 <constraint firstItem="mXr-yO-UMB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XSN-Il-6ti"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dmn-a5-gee"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="top" secondItem="vYd-Wr-nbL" secondAttribute="bottom" constant="-87" id="hJL-M8-ssd"/>
+                <constraint firstItem="cVL-hx-E4E" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="hWK-Ia-mOD"/>
                 <constraint firstAttribute="trailing" secondItem="mXr-yO-UMB" secondAttribute="trailing" id="hlP-WF-5hZ"/>
                 <constraint firstItem="J8X-U5-CEd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="irV-3L-vNd"/>
                 <constraint firstItem="mXr-yO-UMB" firstAttribute="top" secondItem="4Oe-55-78U" secondAttribute="bottom" id="irw-lz-YI1"/>
+                <constraint firstItem="cVL-hx-E4E" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-22.5" id="qte-uQ-Fad"/>
                 <constraint firstItem="vYd-Wr-nbL" firstAttribute="top" secondItem="J8X-U5-CEd" secondAttribute="bottom" constant="-1" id="qtm-Kw-XM7"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="wtu-MB-Tri"/>
             </constraints>
