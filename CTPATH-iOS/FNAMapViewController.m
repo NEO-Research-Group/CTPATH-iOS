@@ -244,7 +244,7 @@
     
     self.searchBarTag = [searchBar isEqual:self.startSearchBar] ? YES: NO;
     
-    static BOOL tableViewDisplayed = NO;
+    BOOL tableViewDisplayed = NO;
     
     UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
     
