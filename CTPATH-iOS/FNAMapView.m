@@ -8,6 +8,7 @@
 
 #import "FNAMapView.h"
 
+
 @implementation FNAMapView
 
 
@@ -83,11 +84,16 @@
     
 }
 -(void) drawPath:(NSDictionary *) path{
-    // TODO: Manage 3 itineraries
-    [self removeOverlay:self.routeLine]; // Remove previous overlay in case of it exists
     
-    NSDictionary * polylineGeometry = [[[[[[path objectForKey:@"plan"] objectForKey:@"itineraries"] objectAtIndex:0] objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"legGeometry"];
+    [self removeOverlays:self.itineraries];
+
+    self.itineraries = [NSMutableArray new];
+
+    NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"];
     
+    for(NSDictionary * itinerary in itineraries){
+        NSDictionary * polylineGeometry = [[[itinerary objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"legGeometry"];
+        double carbonDioxide = [[itinerary objectForKey:@"carbonDioxide"] doubleValue];
         const char *bytes = [[polylineGeometry objectForKey:@"points"] UTF8String];
         NSUInteger length = [[polylineGeometry objectForKey:@"points"]
                              lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
@@ -139,9 +145,14 @@
         }
         
         self.routeLine = [MKPolyline polylineWithCoordinates:coords count:coordIdx];
-        [self addOverlay:self.routeLine level:MKOverlayLevelAboveRoads];
+        
+        [self.itineraries addObject:self.routeLine];
+        
+        [self insertOverlay:self.routeLine atIndex:0 level:MKOverlayLevelAboveRoads];
         free(coords);
         
+    }
+
     
     
 }

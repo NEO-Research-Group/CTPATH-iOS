@@ -15,6 +15,9 @@
 @property (nonatomic, retain) MKPolyline *routeLine; //your line
 
 @property (nonatomic, retain) MKPolylineView *routeLineView; //overlay view
+
+@property (strong,nonatomic) NSMutableArray * itineraries;
+
 -(void) setDefaultRegion;
 -(void) addAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates;
 -(void) drawPath:(NSDictionary *) path;

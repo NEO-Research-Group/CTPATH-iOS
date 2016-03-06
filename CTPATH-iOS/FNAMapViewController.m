@@ -38,7 +38,6 @@
     }
     
     return self;
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -384,10 +383,22 @@
     [defaults synchronize];
 }
 
-- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id < MKOverlay >)overlay{
+- (MKOverlayRenderer *)mapView:(FNAMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay{
+    
     MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
     
-    renderer.strokeColor = [UIColor blueColor];
+    UIColor * overlayColor;
+    
+    if([overlay isEqual:[mapView.itineraries objectAtIndex:0]]){
+        overlayColor = [UIColor colorWithRed:153.0/255.0 green:207.0/255.0 blue:28.0/255.0 alpha:1.0];
+        
+    }else if([overlay isEqual:[mapView.itineraries objectAtIndex:1]]){
+        overlayColor = [UIColor colorWithRed:128.0/255.0 green:129.0/255.0 blue:0 alpha:1.0];
+    }else{
+        overlayColor = [UIColor colorWithRed:0 green:20.0/255.0 blue:0 alpha:1.0];
+    }
+    
+    renderer.strokeColor = overlayColor;
     
     renderer.lineWidth = 5.0;
     
