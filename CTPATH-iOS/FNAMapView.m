@@ -93,7 +93,6 @@
     
     for(NSDictionary * itinerary in itineraries){
         NSDictionary * polylineGeometry = [[[itinerary objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"legGeometry"];
-        double carbonDioxide = [[itinerary objectForKey:@"carbonDioxide"] doubleValue];
         const char *bytes = [[polylineGeometry objectForKey:@"points"] UTF8String];
         NSUInteger length = [[polylineGeometry objectForKey:@"points"]
                              lengthOfBytesUsingEncoding:NSUTF8StringEncoding];

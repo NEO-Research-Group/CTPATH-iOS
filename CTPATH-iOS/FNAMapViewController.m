@@ -52,6 +52,11 @@
     
     [self.mapView setDelegate:self];
     
+    
+    self.suggestionDataSource = [FNASuggestionsDataSource new];
+    self.itinerariesTableView.delegate = self;
+    self.itinerariesTableView.dataSource = self.suggestionDataSource;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -140,8 +145,10 @@
         
             // Changes in views must be done at main thread
             dispatch_async(dispatch_get_main_queue(), ^{
+                
                 [self.mapView drawPath:path];
                 [self.activityView stopAnimating];
+                
             });
         });
     }
@@ -275,11 +282,7 @@
             
             if (response && response.mapItems.count > 0) {
                 
-                self.suggestionDataSource = [[FNASuggestionsDataSource alloc]
-                                             initWithData:response.mapItems];
-                
-                self.suggestionTableView.delegate = self;
-                self.suggestionTableView.dataSource = self.suggestionDataSource;
+                self.suggestionDataSource.suggestions = response.mapItems;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.suggestionTableView reloadData];
@@ -401,6 +404,7 @@
     renderer.strokeColor = overlayColor;
     
     renderer.lineWidth = 5.0;
+    
     
     return renderer;
 }

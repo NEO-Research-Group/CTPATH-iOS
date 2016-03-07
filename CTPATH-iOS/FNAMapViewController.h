@@ -30,5 +30,7 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 
+@property (weak, nonatomic) IBOutlet UIView *itinerariesView;
+@property (weak, nonatomic) IBOutlet UITableView *itinerariesTableView;
 
 @end

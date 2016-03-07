@@ -19,10 +19,12 @@
     }
     return self;
 }
-
+-(NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return tableView.tag == 1 ? @"Itinerarios devueltos:" : @"Sugerencias";
+}
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return [self.suggestions count];
+    return tableView.tag == 1 ? 3 :[self.suggestions count];
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
@@ -39,14 +41,23 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"point"];
     }
     
+    if(tableView.tag == 1){
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"Ruta %li",(indexPath.row + 1)];
+        
+    }else{
+        
+        NSString * name = [[[(MKMapItem*)([self.suggestions objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Name"];
+        
+        NSString * country = [[[(MKMapItem*)([self.suggestions objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Country"];
+        
+        NSString * city = [[[(MKMapItem*)([self.suggestions objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"City"];
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"%@, %@, %@",name,city,country];
+        
+    }
     
-    NSString * name = [[[(MKMapItem*)([self.suggestions objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Name"];
     
-    NSString * country = [[[(MKMapItem*)([self.suggestions objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Country"];
-    
-    NSString * city = [[[(MKMapItem*)([self.suggestions objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"City"];
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%@, %@, %@",name,city,country];
     
     return cell;
     

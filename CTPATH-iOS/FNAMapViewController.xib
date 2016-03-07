@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -9,6 +9,8 @@
             <connections>
                 <outlet property="activityView" destination="cVL-hx-E4E" id="E4r-xI-xeQ"/>
                 <outlet property="goalSearchBar" destination="vYd-Wr-nbL" id="tqP-yj-uRy"/>
+                <outlet property="itinerariesTableView" destination="sho-kV-lim" id="siG-Um-DqX"/>
+                <outlet property="itinerariesView" destination="98X-MJ-u4O" id="VTj-Eg-ODl"/>
                 <outlet property="mapView" destination="4Oe-55-78U" id="AZ1-Ky-urV"/>
                 <outlet property="startSearchBar" destination="J8X-U5-CEd" id="32B-yp-Xcp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -36,6 +38,26 @@
                         <outlet property="delegate" destination="-1" id="vV9-fU-QfZ"/>
                     </connections>
                 </searchBar>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cVL-hx-E4E">
+                    <rect key="frame" x="282" y="259" width="37" height="37"/>
+                    <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                </activityIndicatorView>
+                <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="98X-MJ-u4O">
+                    <rect key="frame" x="0.0" y="556" width="600" height="196"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="37" sectionHeaderHeight="20" sectionFooterHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="sho-kV-lim">
+                            <rect key="frame" x="8" y="20" width="584" height="133"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="sho-kV-lim" firstAttribute="top" secondItem="98X-MJ-u4O" secondAttribute="top" constant="20" id="HRc-NS-v3m"/>
+                        <constraint firstAttribute="trailing" secondItem="sho-kV-lim" secondAttribute="trailing" constant="8" id="KQw-3L-e64"/>
+                        <constraint firstAttribute="bottom" secondItem="sho-kV-lim" secondAttribute="bottom" constant="43" id="UF1-wU-oIF"/>
+                        <constraint firstItem="sho-kV-lim" firstAttribute="leading" secondItem="98X-MJ-u4O" secondAttribute="leading" constant="8" id="wJx-8p-SNZ"/>
+                    </constraints>
+                </view>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mXr-yO-UMB">
                     <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                     <items>
@@ -59,27 +81,27 @@
                     </items>
                     <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                 </toolbar>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cVL-hx-E4E">
-                    <rect key="frame" x="282" y="259" width="37" height="37"/>
-                    <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="J8X-U5-CEd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="0G5-DG-eRu"/>
                 <constraint firstItem="vYd-Wr-nbL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2Cf-WM-ayl"/>
+                <constraint firstItem="98X-MJ-u4O" firstAttribute="top" secondItem="cVL-hx-E4E" secondAttribute="bottom" constant="260" id="2gb-yZ-PT2"/>
+                <constraint firstItem="98X-MJ-u4O" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="3QC-JY-sAL"/>
                 <constraint firstAttribute="bottom" secondItem="mXr-yO-UMB" secondAttribute="bottom" id="B3y-IE-xlC"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-22" id="Bot-RJ-BC0"/>
                 <constraint firstAttribute="trailing" secondItem="J8X-U5-CEd" secondAttribute="trailing" id="CcL-qa-f4U"/>
                 <constraint firstAttribute="trailing" secondItem="4Oe-55-78U" secondAttribute="trailing" id="Dvm-K6-EGG"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JfA-5T-mt1"/>
                 <constraint firstAttribute="bottom" secondItem="4Oe-55-78U" secondAttribute="bottom" constant="44" id="QmT-gy-rES"/>
+                <constraint firstAttribute="trailing" secondItem="98X-MJ-u4O" secondAttribute="trailing" id="RgD-0a-hhf"/>
                 <constraint firstAttribute="trailing" secondItem="vYd-Wr-nbL" secondAttribute="trailing" id="SPh-01-EeX"/>
                 <constraint firstItem="mXr-yO-UMB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XSN-Il-6ti"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dmn-a5-gee"/>
                 <constraint firstItem="4Oe-55-78U" firstAttribute="top" secondItem="vYd-Wr-nbL" secondAttribute="bottom" constant="-87" id="hJL-M8-ssd"/>
                 <constraint firstItem="cVL-hx-E4E" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="hWK-Ia-mOD"/>
                 <constraint firstAttribute="trailing" secondItem="mXr-yO-UMB" secondAttribute="trailing" id="hlP-WF-5hZ"/>
+                <constraint firstItem="mXr-yO-UMB" firstAttribute="top" secondItem="98X-MJ-u4O" secondAttribute="bottom" constant="-196" id="icU-mW-cEu"/>
                 <constraint firstItem="J8X-U5-CEd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="irV-3L-vNd"/>
                 <constraint firstItem="mXr-yO-UMB" firstAttribute="top" secondItem="4Oe-55-78U" secondAttribute="bottom" id="irw-lz-YI1"/>
                 <constraint firstItem="cVL-hx-E4E" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-22.5" id="qte-uQ-Fad"/>
