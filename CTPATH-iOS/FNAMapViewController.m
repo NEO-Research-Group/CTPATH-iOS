@@ -48,14 +48,11 @@
     
     self.title = @"CTPath";
     
-    [self changeRightBarButtonItem:UIBarButtonSystemItemSearch];
+    [self setRightBarButtonItem:UIBarButtonSystemItemSearch];
     
-    [self.mapView setDelegate:self];
-    
+    self.mapView.delegate = self;
     
     self.suggestionDataSource = [FNASuggestionsDataSource new];
-    self.itinerariesTableView.delegate = self;
-    self.itinerariesTableView.dataSource = self.suggestionDataSource;
     
 }
 
@@ -66,12 +63,16 @@
     [self declareGestureRecognizers];
     
     [self startGettingUserLocation];
+    
+    
+    self.itinerariesTableView.delegate = self;
+    self.itinerariesTableView.dataSource = self.suggestionDataSource;
 
 }
 
 #pragma mark - Utils
 
--(void) changeRightBarButtonItem:(UIBarButtonSystemItem) barButtonSystemItem{
+-(void) setRightBarButtonItem:(UIBarButtonSystemItem) barButtonSystemItem{
     
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:barButtonSystemItem target:self action:@selector(showAndHidesearchBar:)];
     
@@ -88,7 +89,7 @@
         
         self.goalSearchBar.hidden = NO;
         
-        [self changeRightBarButtonItem:UIBarButtonSystemItemStop];
+        [self setRightBarButtonItem:UIBarButtonSystemItemStop];
         
     }else{
         
@@ -96,7 +97,7 @@
         
         self.goalSearchBar.hidden = YES;
         
-        [self changeRightBarButtonItem:UIBarButtonSystemItemSearch];
+        [self setRightBarButtonItem:UIBarButtonSystemItemSearch];
         
         [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews];
         
@@ -124,7 +125,7 @@
     [self.view addSubview:self.suggestionTableView];
     
     self.suggestionTableView.delegate = self;
-    
+    self.suggestionTableView.dataSource = self.suggestionDataSource;
     [UIView transitionFromView:self.mapView
                         toView:self.suggestionTableView duration:0.25 options:options completion:nil];
     
@@ -134,6 +135,7 @@
 -(void) findPath{
     
     if(self.mapView.goalAnnotation){
+        
         [self.activityView startAnimating];
         dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_async(findPathQueue, ^{
@@ -148,12 +150,26 @@
                 
                 [self.mapView drawPath:path];
                 [self.activityView stopAnimating];
-                
+                [self showDetailView:path];
             });
         });
     }
 }
-
+-(void) showDetailView:(NSDictionary *) path{
+    
+   //self.itinerariesView.frame = CGRectMake(self.itinerariesView.frame.origin.x, , self.itinerariesView.frame.size.width, self.mapView.frame.size.height);
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        
+        self.mapView.transform = CGAffineTransformMakeTranslation(0, -self.mapView.frame.size.height/3);
+        
+        
+    } completion:nil];
+   
+    
+    
+    
+}
 -(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
     
 #warning Preguntar si hay otra forma mejor de hacerlo, si cambia api modificar app
@@ -349,13 +365,8 @@
 -(void) mapView:(FNAMapView *)mapView annotationView:(MKAnnotationView *)view didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState{
     
     if(newState == MKAnnotationViewDragStateEnding){
-        
-        if(mapView.goalAnnotation){
             
             [self findPath];
-            
-        }
-        
     }
     
 }
@@ -363,27 +374,7 @@
 -(void) mapView:(FNAMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     
     //When region changes, we saves this new region to load it next time user opens the app
-    
-    //Variables to compute a region
-    
-    NSNumber *latitude = [NSNumber numberWithDouble:mapView.region.center.latitude];
-    
-    NSNumber *longitude = [NSNumber numberWithDouble:mapView.region.center.longitude];
-    
-    NSNumber *latitudeDelta = [NSNumber numberWithDouble:mapView.region.span.latitudeDelta];
-    
-    NSNumber *longitudeDelta = [NSNumber numberWithDouble:mapView.region.span.longitudeDelta];
-    
-    //Save variables in a dictionary
-    NSDictionary * regionDictionary = @{@"longitude" : longitude,@"latitude" : latitude,
-                                        @"longitudeDelta" : longitudeDelta, @"latitudeDelta" : latitudeDelta};
-    //Create persistence
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    
-    //Save dictionary
-    [defaults setObject:regionDictionary forKey:@"region"];
-    
-    [defaults synchronize];
+    [mapView saveLastRegion];
 }
 
 - (MKOverlayRenderer *)mapView:(FNAMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay{

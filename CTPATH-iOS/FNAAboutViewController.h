@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FNAAboutViewController : UIViewController
+@interface FNAAboutViewController : UIViewController 
 @property (weak, nonatomic) IBOutlet UITextView *infoTextView;
 
 @end

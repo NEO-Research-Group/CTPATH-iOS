@@ -17,14 +17,11 @@
     if(self.startAnnotation){
         
         // We have already put the start annotation, so we will put the goal annotation
-        if(self.goalAnnotation) {
-            
-            //Remove it if already exists
-            [self removeAnnotation:self.goalAnnotation];
-        }
+        [self removeAnnotation:self.goalAnnotation];
+        
         self.goalAnnotation = [MKPointAnnotation new];
         
-        [self.goalAnnotation setCoordinate:coordinates];
+        self.goalAnnotation.coordinate = coordinates;
         
         [self addAnnotation:self.goalAnnotation];
         
@@ -33,10 +30,35 @@
         // We did not put any annotation, so we will put the start annotation
         self.startAnnotation = [MKPointAnnotation new];
         
-        [self.startAnnotation setCoordinate:coordinates];
+        self.startAnnotation.coordinate = coordinates;
         
         [self addAnnotation:self.startAnnotation];
     }
+}
+
+-(void) saveLastRegion{
+    
+    //Variables to compute a region
+    
+    NSNumber *latitude = [NSNumber numberWithDouble:self.region.center.latitude];
+    
+    NSNumber *longitude = [NSNumber numberWithDouble:self.region.center.longitude];
+    
+    NSNumber *latitudeDelta = [NSNumber numberWithDouble:self.region.span.latitudeDelta];
+    
+    NSNumber *longitudeDelta = [NSNumber numberWithDouble:self.region.span.longitudeDelta];
+    
+    //Save variables in a dictionary
+    NSDictionary * regionDictionary = @{@"longitude" : longitude,@"latitude" : latitude,
+                                        @"longitudeDelta" : longitudeDelta, @"latitudeDelta" : latitudeDelta};
+    //Create persistence
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    
+    //Save dictionary
+    [defaults setObject:regionDictionary forKey:@"region"];
+    
+    [defaults synchronize];
+    
 }
 
 -(void) setDefaultRegion{
@@ -44,38 +66,28 @@
     // Code to show the initial region in the map
     NSDictionary * regionDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"region"];
     
-    //Compute region to show at mapView
+    // Compute region to show at mapView
     CLLocationDegrees longitude,latitude,longitudeDelta,latitudeDelta;
     
     if(regionDictionary){
-        
         // Load last region selected by user
         
-        latitude = [(NSNumber*) [regionDictionary objectForKey:@"latitude"] doubleValue];
-        
-        longitude = [(NSNumber*) [regionDictionary objectForKey:@"longitude"] doubleValue];
-        
-        latitudeDelta = [(NSNumber*) [regionDictionary objectForKey:@"latitudeDelta"] doubleValue];
-        
-        longitudeDelta = [(NSNumber*) [regionDictionary objectForKey:@"longitudeDelta"] doubleValue];
+        latitude = [[regionDictionary objectForKey:@"latitude"] doubleValue];
+        longitude = [[regionDictionary objectForKey:@"longitude"] doubleValue];
+        latitudeDelta = [[regionDictionary objectForKey:@"latitudeDelta"] doubleValue];
+        longitudeDelta = [[regionDictionary objectForKey:@"longitudeDelta"] doubleValue];
         
     }else{
-        
         // Load initial region
         
         latitude = 36.7206;
-        
         longitude = -4.4211;
-        
         latitudeDelta = 0.05;
-        
         longitudeDelta = 0.05;
     }
     
     CLLocationCoordinate2D locCoordinate = CLLocationCoordinate2DMake(latitude,longitude);
-    
     MKCoordinateSpan coordinateSpan = MKCoordinateSpanMake(latitudeDelta,longitudeDelta);
-    
     MKCoordinateRegion region = MKCoordinateRegionMake(locCoordinate, coordinateSpan);
     
     [self setRegion:region animated:YES];
@@ -143,16 +155,16 @@
             }
         }
         
-        self.routeLine = [MKPolyline polylineWithCoordinates:coords count:coordIdx];
+        MKPolyline * route = [MKPolyline polylineWithCoordinates:coords count:coordIdx];
         
-        [self.itineraries addObject:self.routeLine];
-        
-        [self insertOverlay:self.routeLine atIndex:0 level:MKOverlayLevelAboveRoads];
         free(coords);
         
+        [self.itineraries addObject:route];
+        
+        [self insertOverlay:route atIndex:0 level:MKOverlayLevelAboveRoads];
+        
+        
     }
-
-    
     
 }
 @end

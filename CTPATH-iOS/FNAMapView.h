@@ -12,12 +12,10 @@
 
 @property (strong,nonatomic) MKPointAnnotation * startAnnotation;
 @property (strong,nonatomic)MKPointAnnotation * goalAnnotation;
-@property (nonatomic, retain) MKPolyline *routeLine; //your line
-
-@property (nonatomic, retain) MKPolylineView *routeLineView; //overlay view
 
 @property (strong,nonatomic) NSMutableArray * itineraries;
 
+-(void) saveLastRegion;
 -(void) setDefaultRegion;
 -(void) addAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates;
 -(void) drawPath:(NSDictionary *) path;
