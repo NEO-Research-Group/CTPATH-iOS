@@ -8,6 +8,7 @@
 
 #import "FNASuggestionsDataSource.h"
 #import <MapKit/MapKit.h>
+#import "FNAItineraryCell.h"
 @implementation FNASuggestionsDataSource
 
 -(id) initWithData:(NSArray *) suggestions{
@@ -34,19 +35,25 @@
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"point"];
-    
-    if(!cell){
-        
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"point"];
-    }
+    FNAItineraryCell * cell;
     
     if(tableView.tag == 1){
         
-        cell.textLabel.text = [NSString stringWithFormat:@"Ruta %li",(indexPath.row + 1)];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"route"];
+        
+        cell.routeLabel.text = [NSString stringWithFormat:@"Ruta %li",(indexPath.row + 1)];
+        
+        cell.timeLabel.text = [NSString stringWithFormat:@"%f minutos",[[[self.suggestions objectAtIndex:indexPath.row] objectForKey:@"duration"] doubleValue]/60];
+        
+        
         
     }else{
+        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"point"];
         
+        if(!cell){
+            
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"point"];
+        }
         NSString * name = [[[(MKMapItem*)([self.suggestions objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Name"];
         
         NSString * country = [[[(MKMapItem*)([self.suggestions objectAtIndex:indexPath.row]) placemark] addressDictionary] objectForKey:@"Country"];

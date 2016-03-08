@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A16C70381C8EC9AC001BBB16 /* FNAItinerariesView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */; };
+		A16C703A1C8EC9BF001BBB16 /* FNAItinerariesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */; };
+		A16C703F1C8EE2BC001BBB16 /* FNAItineraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C703D1C8EE2BC001BBB16 /* FNAItineraryCell.m */; };
+		A16C70401C8EE2BC001BBB16 /* FNAItineraryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A16C703E1C8EE2BC001BBB16 /* FNAItineraryCell.xib */; };
 		A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C3FE1C84AF35009F956F /* FNAMapView.m */; };
 		A192C4091C85AB9C009F956F /* FNARestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4081C85AB9C009F956F /* FNARestClient.m */; };
 		A192C4161C889F0B009F956F /* FNASuggestionsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4151C889F0B009F956F /* FNASuggestionsDataSource.m */; };
@@ -24,6 +28,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A16C70361C8EC9AC001BBB16 /* FNAItinerariesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAItinerariesView.h; sourceTree = "<group>"; };
+		A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAItinerariesView.m; sourceTree = "<group>"; };
+		A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAItinerariesView.xib; sourceTree = "<group>"; };
+		A16C703C1C8EE2BC001BBB16 /* FNAItineraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAItineraryCell.h; sourceTree = "<group>"; };
+		A16C703D1C8EE2BC001BBB16 /* FNAItineraryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAItineraryCell.m; sourceTree = "<group>"; };
+		A16C703E1C8EE2BC001BBB16 /* FNAItineraryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAItineraryCell.xib; sourceTree = "<group>"; };
 		A192C3FD1C84AF35009F956F /* FNAMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAMapView.h; sourceTree = "<group>"; };
 		A192C3FE1C84AF35009F956F /* FNAMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAMapView.m; sourceTree = "<group>"; };
 		A192C4071C85AB9C009F956F /* FNARestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNARestClient.h; sourceTree = "<group>"; };
@@ -61,6 +71,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A16C703B1C8EE296001BBB16 /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				A16C703C1C8EE2BC001BBB16 /* FNAItineraryCell.h */,
+				A16C703D1C8EE2BC001BBB16 /* FNAItineraryCell.m */,
+				A16C703E1C8EE2BC001BBB16 /* FNAItineraryCell.xib */,
+			);
+			name = TableViewCells;
+			sourceTree = "<group>";
+		};
 		A192C4001C84B228009F956F /* Other Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +95,9 @@
 			children = (
 				A1D6E40C1C81E90B0066E310 /* InfoControllers */,
 				A1B515A81C7F91E4005EC90D /* Map Controllers */,
+				A16C70361C8EC9AC001BBB16 /* FNAItinerariesView.h */,
+				A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */,
+				A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -132,6 +155,7 @@
 				A192C4011C84B263009F956F /* Controllers */,
 				A192C4171C889F10009F956F /* DataSource */,
 				A192C4021C84B71A009F956F /* Delegates */,
+				A16C703B1C8EE296001BBB16 /* TableViewCells */,
 				A192C4001C84B228009F956F /* Other Classes */,
 				A1B5159D1C7F91C6005EC90D /* Assets.xcassets */,
 				A1B5159F1C7F91C6005EC90D /* LaunchScreen.storyboard */,
@@ -240,6 +264,8 @@
 				A1D6E4111C81E9310066E310 /* FNAAboutViewController.xib in Resources */,
 				A1B515AD1C7F925E005EC90D /* FNAMapViewController.xib in Resources */,
 				A1B5159E1C7F91C6005EC90D /* Assets.xcassets in Resources */,
+				A16C70401C8EE2BC001BBB16 /* FNAItineraryCell.xib in Resources */,
+				A16C703A1C8EC9BF001BBB16 /* FNAItinerariesView.xib in Resources */,
 				A1B515A11C7F91C6005EC90D /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,7 +282,9 @@
 				A192C4091C85AB9C009F956F /* FNARestClient.m in Sources */,
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,
 				A1D6E4101C81E9310066E310 /* FNAAboutViewController.m in Sources */,
+				A16C703F1C8EE2BC001BBB16 /* FNAItineraryCell.m in Sources */,
 				A1B515AC1C7F925E005EC90D /* FNAMapViewController.m in Sources */,
+				A16C70381C8EC9AC001BBB16 /* FNAItinerariesView.m in Sources */,
 				A192C4161C889F0B009F956F /* FNASuggestionsDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

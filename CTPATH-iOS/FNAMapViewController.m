@@ -12,7 +12,7 @@
 #import "FNAMapView.h"
 #import "FNARestClient.h"
 #import "FNASuggestionsDataSource.h"
-
+#import "FNAItinerariesView.h"
 @interface FNAMapViewController ()
 
 @property (strong,nonatomic) CLLocationManager  * locationManager;
@@ -22,6 +22,8 @@
 @property (strong,nonatomic) FNASuggestionsDataSource * suggestionDataSource;
 
 @property (nonatomic) BOOL tableViewDisplayed;
+
+@property (strong,nonatomic) FNAItinerariesView * itineraries;
 
 /*!@brief YES for editing start point, NO for editing goal point */
 @property (nonatomic) BOOL searchBarTag;
@@ -54,6 +56,7 @@
     
     self.suggestionDataSource = [FNASuggestionsDataSource new];
     
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -63,14 +66,14 @@
     [self declareGestureRecognizers];
     
     [self startGettingUserLocation];
-    
-    
-    self.itinerariesTableView.delegate = self;
-    self.itinerariesTableView.dataSource = self.suggestionDataSource;
-
 }
 
 #pragma mark - Utils
+
+- (IBAction)itinerariesAction:(id)sender {
+    
+    [self.itineraries removeFromSuperview];
+}
 
 -(void) setRightBarButtonItem:(UIBarButtonSystemItem) barButtonSystemItem{
     
@@ -157,18 +160,23 @@
 }
 -(void) showDetailView:(NSDictionary *) path{
     
-   //self.itinerariesView.frame = CGRectMake(self.itinerariesView.frame.origin.x, , self.itinerariesView.frame.size.width, self.mapView.frame.size.height);
+    [self.itineraries removeFromSuperview];
+    
+    self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesView" owner:nil options:nil] objectAtIndex:0];
+    
+    self.itineraries.itinerariesTableView.dataSource = self.suggestionDataSource;
+    self.suggestionDataSource.suggestions = [[path objectForKey:@"plan"] objectForKey:@"itineraries"];
+    [self.itineraries.itinerariesTableView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
+                                                                      bundle:nil] forCellReuseIdentifier:@"route"];
+    
+    
+    self.itineraries.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, self.mapView.frame.size.height/3);
+    
+    [self.view addSubview:self.itineraries];
     
     [UIView animateWithDuration:0.25 animations:^{
-        
-        self.mapView.transform = CGAffineTransformMakeTranslation(0, -self.mapView.frame.size.height/3);
-        
-        
-    } completion:nil];
-   
-    
-    
-    
+        self.itineraries.frame = CGRectMake(0, 2*self.mapView.frame.size.height/3, self.mapView.frame.size.width, self.mapView.frame.size.height/3);
+    }];
 }
 -(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
     
@@ -238,6 +246,8 @@
 }
 
 #pragma mark - Map procedures
+
+
 
 -(IBAction) centerMapAtCoordinates:(id) sender{
     

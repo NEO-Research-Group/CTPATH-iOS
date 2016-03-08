@@ -30,7 +30,11 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 
-@property (weak, nonatomic) IBOutlet UIView *itinerariesView;
-@property (weak, nonatomic) IBOutlet UITableView *itinerariesTableView;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *itinerariesButton;
+
+- (IBAction)itinerariesAction:(id)sender;
+
+
+-(IBAction) centerMapAtCoordinates:(id) sender;
 @end
