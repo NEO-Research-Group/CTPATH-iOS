@@ -10,6 +10,8 @@
 
 @implementation FNAItineraryCell
 
+
+
 - (void)awakeFromNib {
     // Initialization code
 }

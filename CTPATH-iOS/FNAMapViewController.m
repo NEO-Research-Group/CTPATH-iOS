@@ -165,7 +165,8 @@
     self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesView" owner:nil options:nil] objectAtIndex:0];
     
     self.itineraries.itinerariesTableView.dataSource = self.suggestionDataSource;
-    self.suggestionDataSource.suggestions = [[path objectForKey:@"plan"] objectForKey:@"itineraries"];
+    
+    self.suggestionDataSource.path = path;
     [self.itineraries.itinerariesTableView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
                                                                       bundle:nil] forCellReuseIdentifier:@"route"];
     

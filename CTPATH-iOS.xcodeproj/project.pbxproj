@@ -81,6 +81,16 @@
 			name = TableViewCells;
 			sourceTree = "<group>";
 		};
+		A16C70411C8EF931001BBB16 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A16C70361C8EC9AC001BBB16 /* FNAItinerariesView.h */,
+				A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */,
+				A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		A192C4001C84B228009F956F /* Other Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -95,9 +105,6 @@
 			children = (
 				A1D6E40C1C81E90B0066E310 /* InfoControllers */,
 				A1B515A81C7F91E4005EC90D /* Map Controllers */,
-				A16C70361C8EC9AC001BBB16 /* FNAItinerariesView.h */,
-				A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */,
-				A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -157,6 +164,7 @@
 				A192C4021C84B71A009F956F /* Delegates */,
 				A16C703B1C8EE296001BBB16 /* TableViewCells */,
 				A192C4001C84B228009F956F /* Other Classes */,
+				A16C70411C8EF931001BBB16 /* Views */,
 				A1B5159D1C7F91C6005EC90D /* Assets.xcassets */,
 				A1B5159F1C7F91C6005EC90D /* LaunchScreen.storyboard */,
 				A1B515A21C7F91C6005EC90D /* Info.plist */,
