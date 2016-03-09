@@ -11,5 +11,6 @@
 @interface FNAItineraryCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *routeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UIView *routeColor;
 
 @end

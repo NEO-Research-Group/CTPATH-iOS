@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FNAMapViewController">
             <connections>
                 <outlet property="activityView" destination="cVL-hx-E4E" id="E4r-xI-xeQ"/>
+                <outlet property="bottomToolbar" destination="mXr-yO-UMB" id="S7w-Gm-E9s"/>
                 <outlet property="goalSearchBar" destination="vYd-Wr-nbL" id="tqP-yj-uRy"/>
                 <outlet property="itinerariesButton" destination="mTy-KT-haK" id="dyg-TI-BNc"/>
                 <outlet property="mapView" destination="4Oe-55-78U" id="AZ1-Ky-urV"/>

@@ -30,6 +30,7 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *itinerariesButton;
 

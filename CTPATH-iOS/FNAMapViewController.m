@@ -165,8 +165,9 @@
     self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesView" owner:nil options:nil] objectAtIndex:0];
     
     self.itineraries.itinerariesTableView.dataSource = self.suggestionDataSource;
-    
+    self.itineraries.itinerariesTableView.delegate = self;
     self.suggestionDataSource.path = path;
+
     [self.itineraries.itinerariesTableView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
                                                                       bundle:nil] forCellReuseIdentifier:@"route"];
     
@@ -247,8 +248,6 @@
 }
 
 #pragma mark - Map procedures
-
-
 
 -(IBAction) centerMapAtCoordinates:(id) sender{
     
@@ -434,4 +433,11 @@
     
     [self showAndHidesearchBar:nil];
 }
-@end
+-(UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return [UIView new];
+}
+
+-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return self.itineraries.frame.size.height / 3;
+}
+  @end
