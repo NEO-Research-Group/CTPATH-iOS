@@ -13,6 +13,8 @@
 #import "FNARestClient.h"
 #import "FNASuggestionsDataSource.h"
 #import "FNAItinerariesView.h"
+#import "FNAItineraryCell.h"
+#import "FNAColor.h"
 @interface FNAMapViewController ()
 
 @property (strong,nonatomic) CLLocationManager  * locationManager;
@@ -415,12 +417,12 @@
     UIColor * overlayColor;
     
     if([overlay isEqual:[mapView.itineraries objectAtIndex:0]]){
-        overlayColor = [UIColor colorWithRed:153.0/255.0 green:207.0/255.0 blue:28.0/255.0 alpha:1.0];
+        overlayColor = [FNAColor bestPathColorWithAlpha:1.0];
         
     }else if([overlay isEqual:[mapView.itineraries objectAtIndex:1]]){
-        overlayColor = [UIColor colorWithRed:128.0/255.0 green:129.0/255.0 blue:0 alpha:1.0];
+        overlayColor = [FNAColor middlePathColorWithAlpha:1.0];
     }else{
-        overlayColor = [UIColor colorWithRed:0 green:20.0/255.0 blue:0 alpha:1.0];
+        overlayColor = [FNAColor worstPathColorWithAlpha:1.0];
     }
     
     renderer.strokeColor = overlayColor;
@@ -434,25 +436,47 @@
 #pragma mark - TableViewDelegate
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    // TODO: Show data of selected route
+
     MKMapItem * mapItem = [self.suggestionDataSource.suggestions objectAtIndex:indexPath.row];
     
-    if(self.searchBarTag){
-        self.mapView.startAnnotation = [MKPointAnnotation new];
-        self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
-        [self.mapView addAnnotation:self.mapView.startAnnotation];
-        [self centerMapAtCoordinates:self.mapView.startAnnotation];
-    }else{
-        self.mapView.goalAnnotation = [MKPointAnnotation new];
-        self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
-        [self.mapView addAnnotation:self.mapView.goalAnnotation];
+    if([tableView isEqual:self.suggestionTableView]){
+        if(self.searchBarTag){
+            self.mapView.startAnnotation = [MKPointAnnotation new];
+            self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
+            [self.mapView addAnnotation:self.mapView.startAnnotation];
+            [self centerMapAtCoordinates:self.mapView.startAnnotation];
+        }else{
+            self.mapView.goalAnnotation = [MKPointAnnotation new];
+            self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
+            [self.mapView addAnnotation:self.mapView.goalAnnotation];
+            
+            [self findPath];
+        }
         
-        [self findPath];
+        [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews];
+        
+        [self showAndHidesearchBar:nil];
+        
+    }else{
+        
+        FNAItineraryCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        UIColor * routeColor;
+        
+        if(indexPath.row == 0){
+            routeColor = [FNAColor bestPathColorWithAlpha:1.0];
+        }else if(indexPath.row == 1){
+            routeColor = [FNAColor middlePathColorWithAlpha:1.0];
+        }else{
+            routeColor = [FNAColor worstPathColorWithAlpha:1.0];
+        }
+        
+        [cell setSelected:YES animated:YES routeColor:routeColor];
+        
+        
     }
     
-    [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews];
     
-    [self showAndHidesearchBar:nil];
 }
 -(UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     return [UIView new];

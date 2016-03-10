@@ -93,7 +93,7 @@
     [self setRegion:region animated:YES];
     
     [self setShowsUserLocation:YES];
-    
+        
 }
 -(void) drawPath:(NSDictionary *) path{
     

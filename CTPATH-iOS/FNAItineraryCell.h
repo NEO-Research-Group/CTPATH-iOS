@@ -13,4 +13,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIView *routeColor;
 
+-(void) setSelected:(BOOL)selected animated:(BOOL)animated routeColor:(UIColor*) color;
+
 @end

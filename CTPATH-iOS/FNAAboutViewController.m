@@ -7,7 +7,7 @@
 //
 
 #import "FNAAboutViewController.h"
-
+#import "FNAColor.h"
 @interface FNAAboutViewController ()
 
 @end
@@ -18,7 +18,7 @@
     
     [super viewWillAppear:animated];
     
-    UIColor *creamColor = [UIColor colorWithRed:247.0f/255.0f green:243.0f/255.0f blue:232.0f/255.0f alpha:1.0f];
+    UIColor *creamColor = [FNAColor creamColorWithAlpha:1.0];
     
     [self.view setBackgroundColor:creamColor];
     

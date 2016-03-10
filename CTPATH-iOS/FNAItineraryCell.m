@@ -16,10 +16,10 @@
     // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated routeColor:(UIColor *)color{
     [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
+    self.routeColor.backgroundColor = color;
 }
 
 @end

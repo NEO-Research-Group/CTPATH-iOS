@@ -9,6 +9,7 @@
 #import "FNASuggestionsDataSource.h"
 #import <MapKit/MapKit.h>
 #import "FNAItineraryCell.h"
+#import "FNAColor.h"
 @implementation FNASuggestionsDataSource
 
 -(id) initWithData:(NSArray *) suggestions{
@@ -77,17 +78,17 @@
     UIColor * color;
     
     if(indexPath.row == 0){
-        color = [UIColor colorWithRed:153.0/255.0 green:207.0/255.0 blue:28.0/255.0 alpha:1.0];
+        color = [FNAColor bestPathColorWithAlpha:1.0];
 
     }else if(indexPath.row == 1){
-        color = [UIColor colorWithRed:128.0/255.0 green:129.0/255.0 blue:0 alpha:1.0];
+        color = [FNAColor middlePathColorWithAlpha:1.0];
     }else{
-        color = [UIColor colorWithRed:0 green:20.0/255.0 blue:0 alpha:1.0];
+        color = [FNAColor worstPathColorWithAlpha:1.0];
     }
     cell.routeColor.backgroundColor = color;
     cell.routeColor.layer.cornerRadius = cell.routeColor.frame.size.height/2;
     [cell.routeColor clipsToBounds];
-    
+
     return cell;
 }
 

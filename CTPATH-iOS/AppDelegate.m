@@ -8,13 +8,13 @@
 
 #import "AppDelegate.h"
 #import "FNAMapViewController.h"
-
+#import "FNAColor.h"
 
 @implementation AppDelegate
 
 -(void) makeAppStyle{
    
-    UIColor *orangeCTPath = [UIColor colorWithRed:228.0f/255.0f green:82.0f/255.0f blue:35.0f/255.0f alpha:1.0f];
+    UIColor *orangeCTPath = [FNAColor CTPathColorWithAlpha:1.0];
     [[UINavigationBar appearance] setBarTintColor:orangeCTPath];
     
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
@@ -29,7 +29,7 @@
     
     [[UIToolbar appearance] setTranslucent:NO];
     
-    UIColor *creamColor = [UIColor colorWithRed:247.0f/255.0f green:243.0f/255.0f blue:232.0f/255.0f alpha:1.0f];
+    UIColor *creamColor = [FNAColor creamColorWithAlpha:1.0];
     
     [[UISearchBar appearance] setBarTintColor:creamColor];
     

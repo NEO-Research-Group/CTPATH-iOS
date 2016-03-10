@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A106541D1C91CFC800B11E67 /* FNAColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A106541C1C91CFC800B11E67 /* FNAColor.m */; };
 		A16C70381C8EC9AC001BBB16 /* FNAItinerariesView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */; };
 		A16C703A1C8EC9BF001BBB16 /* FNAItinerariesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */; };
 		A16C703F1C8EE2BC001BBB16 /* FNAItineraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C703D1C8EE2BC001BBB16 /* FNAItineraryCell.m */; };
@@ -28,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A106541B1C91CFC800B11E67 /* FNAColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAColor.h; sourceTree = "<group>"; };
+		A106541C1C91CFC800B11E67 /* FNAColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAColor.m; sourceTree = "<group>"; };
 		A16C70361C8EC9AC001BBB16 /* FNAItinerariesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAItinerariesView.h; sourceTree = "<group>"; };
 		A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAItinerariesView.m; sourceTree = "<group>"; };
 		A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAItinerariesView.xib; sourceTree = "<group>"; };
@@ -96,6 +99,8 @@
 			children = (
 				A192C3FD1C84AF35009F956F /* FNAMapView.h */,
 				A192C3FE1C84AF35009F956F /* FNAMapView.m */,
+				A106541B1C91CFC800B11E67 /* FNAColor.h */,
+				A106541C1C91CFC800B11E67 /* FNAColor.m */,
 			);
 			name = "Other Classes";
 			sourceTree = "<group>";
@@ -290,6 +295,7 @@
 				A192C4091C85AB9C009F956F /* FNARestClient.m in Sources */,
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,
 				A1D6E4101C81E9310066E310 /* FNAAboutViewController.m in Sources */,
+				A106541D1C91CFC800B11E67 /* FNAColor.m in Sources */,
 				A16C703F1C8EE2BC001BBB16 /* FNAItineraryCell.m in Sources */,
 				A1B515AC1C7F925E005EC90D /* FNAMapViewController.m in Sources */,
 				A16C70381C8EC9AC001BBB16 /* FNAItinerariesView.m in Sources */,
