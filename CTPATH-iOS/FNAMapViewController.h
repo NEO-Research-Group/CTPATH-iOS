@@ -13,7 +13,7 @@
 
 @class FNAMapView;
 @class FNAMapViewDelegate;
-
+@class FNAItineraryDetailView;
 
 
 @interface FNAMapViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate,UIGestureRecognizerDelegate,UITableViewDelegate,UISearchBarDelegate,UIViewControllerTransitioningDelegate>
@@ -33,6 +33,8 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *itinerariesButton;
+
+@property (strong,nonatomic) FNAItineraryDetailView * itinerary;
 
 - (IBAction)itinerariesAction:(id)sender;
 

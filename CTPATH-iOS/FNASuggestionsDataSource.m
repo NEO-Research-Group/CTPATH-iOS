@@ -21,10 +21,12 @@
     }
     return self;
 }
+
 -(NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     
     return tableView.tag == 1 ? @"Itinerarios devueltos:" : @"Sugerencias";
 }
+
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     return tableView.tag == 1 ? [[self itineraries] count] : [self.suggestions count];
@@ -35,7 +37,8 @@
     return 1;
 }
 
--(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(UITableViewCell *) tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if(tableView.tag == 1){
         
@@ -112,4 +115,5 @@
     return cell;
     
 }
+
 @end

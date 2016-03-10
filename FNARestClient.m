@@ -29,7 +29,8 @@
     
     NSError * error;
     
-    NSDictionary * json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+    NSDictionary * json = [NSJSONSerialization
+                           JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
     
     if(error){
         

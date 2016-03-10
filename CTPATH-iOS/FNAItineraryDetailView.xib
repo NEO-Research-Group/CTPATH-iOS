@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9532"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="FNAItineraryDetailView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIb-2H-aS5" customClass="UITableView">
+                    <rect key="frame" x="8" y="8" width="584" height="300"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="MIb-2H-aS5" secondAttribute="trailing" constant="8" id="BCn-Wy-hTZ"/>
+                <constraint firstItem="MIb-2H-aS5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="BLd-CQ-hdg"/>
+                <constraint firstItem="MIb-2H-aS5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="ZYL-Ge-hQa"/>
+                <constraint firstAttribute="bottom" secondItem="MIb-2H-aS5" secondAttribute="bottom" constant="292" id="fkM-iX-2dq"/>
+            </constraints>
+            <connections>
+                <outlet property="itinerariesView" destination="MIb-2H-aS5" id="UQ2-DF-wNT"/>
+            </connections>
+        </view>
+    </objects>
+</document>

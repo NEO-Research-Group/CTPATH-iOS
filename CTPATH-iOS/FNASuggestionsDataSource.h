@@ -13,6 +13,7 @@
 
 @property (strong,nonatomic) NSArray * suggestions;
 @property (strong,nonatomic) NSDictionary * path;
+
 -(id) initWithData:(NSArray *) suggestions;
 
 @end

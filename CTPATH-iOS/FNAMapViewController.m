@@ -15,6 +15,7 @@
 #import "FNAItinerariesView.h"
 #import "FNAItineraryCell.h"
 #import "FNAColor.h"
+#import "FNAItineraryDetailView.h"
 @interface FNAMapViewController ()
 
 @property (strong,nonatomic) CLLocationManager  * locationManager;
@@ -26,6 +27,8 @@
 @property (nonatomic) BOOL tableViewDisplayed;
 
 @property (strong,nonatomic) FNAItinerariesView * itineraries;
+
+
 
 /*!@brief YES for editing start point, NO for editing goal point */
 @property (nonatomic) BOOL searchBarTag;
@@ -163,21 +166,39 @@
                                              goalPoint:self.mapView.goalAnnotation.coordinate];
         
             NSDictionary * path = [self.restclient getJSONFromURL:url];
-        
-            // Changes in views must be done at main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if([path objectForKey:@"error"]){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self.activityView stopAnimating];
+                    
+                    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"¡Lo sentimos!" message:@"No se han encontrado rutas entre estos dos puntos" preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                    
+                    [alertController addAction:defaultAction];
+                    
+                    [self presentViewController:alertController animated:YES completion:nil];
+                });
                 
-                [self.mapView drawPath:path];
-                [self.activityView stopAnimating];
-                [self showDetailView:path];
-            });
+                
+            }else{
+                // Changes in views must be done at main thread
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self.mapView drawPath:path];
+                    [self.activityView stopAnimating];
+                    [self showDetailView:path];
+                });
+            }
+            
         });
     }
 }
 -(void) showDetailView:(NSDictionary *) path{
     
     [self.itineraries removeFromSuperview];
-    
+    [self removeCenterButtonItem];
     self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesView" owner:nil options:nil] objectAtIndex:0];
     
     self.itineraries.itinerariesTableView.dataSource = self.suggestionDataSource;
@@ -473,7 +494,20 @@
         
         [cell setSelected:YES animated:YES routeColor:routeColor];
         
+        [self.itinerary removeFromSuperview];
         
+        self.itinerary = [[[NSBundle mainBundle]
+                           loadNibNamed:@"FNAItineraryDetailView" owner:nil options:nil] objectAtIndex:0];
+        self.itinerary.itinerariesView = self.itineraries.itinerariesTableView;
+        [self.itinerary.itinerariesView reloadData];
+        self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
+        
+        [self.view addSubview:self.itinerary];
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
+        }];
+
     }
     
     
