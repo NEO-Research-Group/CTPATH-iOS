@@ -10,7 +10,7 @@
                 <outlet property="activityView" destination="cVL-hx-E4E" id="E4r-xI-xeQ"/>
                 <outlet property="bottomToolbar" destination="mXr-yO-UMB" id="S7w-Gm-E9s"/>
                 <outlet property="goalSearchBar" destination="vYd-Wr-nbL" id="tqP-yj-uRy"/>
-                <outlet property="itinerariesButton" destination="mTy-KT-haK" id="dyg-TI-BNc"/>
+                <outlet property="itinerariesButton" destination="mTy-KT-haK" id="vug-z6-DKv"/>
                 <outlet property="mapView" destination="4Oe-55-78U" id="AZ1-Ky-urV"/>
                 <outlet property="startSearchBar" destination="J8X-U5-CEd" id="32B-yp-Xcp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -52,7 +52,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ncl-vC-5NV"/>
-                        <barButtonItem style="plain" systemItem="stop" id="mTy-KT-haK">
+                        <barButtonItem title="Cancelar" style="plain" id="mTy-KT-haK">
                             <connections>
                                 <action selector="itinerariesAction:" destination="-1" id="XPl-c5-Cg5"/>
                             </connections>

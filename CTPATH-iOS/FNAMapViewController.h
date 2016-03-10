@@ -32,7 +32,7 @@
 
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *itinerariesButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *itinerariesButton;
 
 - (IBAction)itinerariesAction:(id)sender;
 

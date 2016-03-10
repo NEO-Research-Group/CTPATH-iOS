@@ -56,7 +56,7 @@
     
     self.suggestionDataSource = [FNASuggestionsDataSource new];
     
-    
+    [self removeCenterButtonItem];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -70,9 +70,23 @@
 
 #pragma mark - Utils
 
-- (IBAction)itinerariesAction:(id)sender {
+-(void) removeCenterButtonItem{
+    NSMutableArray *toolbarButtons = [self.bottomToolbar.items mutableCopy];
     
-    [self.itineraries removeFromSuperview];
+    [toolbarButtons removeObject:self.itinerariesButton];
+    [self.bottomToolbar setItems:toolbarButtons];
+}
+
+- (IBAction)itinerariesAction:(id)sender {
+
+    [UIView animateWithDuration:0.25 animations:^{
+        self.itineraries.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
+    } completion:^(BOOL finished) {
+        [self.itineraries removeFromSuperview];
+    }];
+    
+    [self removeCenterButtonItem];
+    
 }
 
 -(void) setRightBarButtonItem:(UIBarButtonSystemItem) barButtonSystemItem{
@@ -179,8 +193,15 @@
     [UIView animateWithDuration:0.25 animations:^{
         self.itineraries.frame = CGRectMake(0, 2*self.mapView.frame.size.height/3, self.mapView.frame.size.width, self.mapView.frame.size.height/3);
     }];
+    
+    NSMutableArray *toolbarButtons = [self.bottomToolbar.items mutableCopy];
+    
+
+    [toolbarButtons insertObject:self.itinerariesButton atIndex:2];
+    [self.bottomToolbar setItems:toolbarButtons];
 }
--(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint goalPoint:(CLLocationCoordinate2D) goalPoint{
+-(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint
+                           goalPoint:(CLLocationCoordinate2D) goalPoint{
     
 #warning Preguntar si hay otra forma mejor de hacerlo, si cambia api modificar app
     
@@ -413,7 +434,7 @@
 #pragma mark - TableViewDelegate
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    // TODO: Show data of selected route
     MKMapItem * mapItem = [self.suggestionDataSource.suggestions objectAtIndex:indexPath.row];
     
     if(self.searchBarTag){
