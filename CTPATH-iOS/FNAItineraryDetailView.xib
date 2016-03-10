@@ -2,7 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,20 +12,32 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIb-2H-aS5" customClass="UITableView">
-                    <rect key="frame" x="8" y="8" width="584" height="300"/>
+                <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="35" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Xyy-gm-ZKe">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Xyy-gm-ZKe" secondAttribute="height" multiplier="2:1" id="su6-4R-0v7"/>
+                        <constraint firstAttribute="height" constant="300" id="wL2-Zx-ciM"/>
+                    </constraints>
+                </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNt-mG-PoT">
+                    <rect key="frame" x="262" y="432" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="MIb-2H-aS5" secondAttribute="trailing" constant="8" id="BCn-Wy-hTZ"/>
-                <constraint firstItem="MIb-2H-aS5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="BLd-CQ-hdg"/>
-                <constraint firstItem="MIb-2H-aS5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="ZYL-Ge-hQa"/>
-                <constraint firstAttribute="bottom" secondItem="MIb-2H-aS5" secondAttribute="bottom" constant="292" id="fkM-iX-2dq"/>
+                <constraint firstAttribute="trailing" secondItem="lNt-mG-PoT" secondAttribute="trailing" constant="296" id="4LH-JF-d54"/>
+                <constraint firstItem="lNt-mG-PoT" firstAttribute="top" secondItem="Xyy-gm-ZKe" secondAttribute="bottom" constant="132" id="AW5-J2-lyG"/>
+                <constraint firstItem="lNt-mG-PoT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="262" id="GBh-UU-ulr"/>
+                <constraint firstItem="Xyy-gm-ZKe" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PR0-WA-c3C"/>
+                <constraint firstAttribute="trailing" secondItem="Xyy-gm-ZKe" secondAttribute="trailing" id="gcT-Bn-fLQ"/>
+                <constraint firstItem="Xyy-gm-ZKe" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pJG-eX-GEM"/>
             </constraints>
             <connections>
-                <outlet property="itinerariesView" destination="MIb-2H-aS5" id="UQ2-DF-wNT"/>
+                <outlet property="itinerariesView" destination="Xyy-gm-ZKe" id="VIk-Zo-NNN"/>
             </connections>
         </view>
     </objects>

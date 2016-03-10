@@ -86,8 +86,10 @@
 
     [UIView animateWithDuration:0.25 animations:^{
         self.itineraries.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
+        self.itinerary.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
     } completion:^(BOOL finished) {
         [self.itineraries removeFromSuperview];
+        [self.itinerary removeFromSuperview];
     }];
     
     [self removeCenterButtonItem];
@@ -494,15 +496,22 @@
         
         [cell setSelected:YES animated:YES routeColor:routeColor];
         
+        [self.itineraries removeFromSuperview];
         [self.itinerary removeFromSuperview];
         
         self.itinerary = [[[NSBundle mainBundle]
                            loadNibNamed:@"FNAItineraryDetailView" owner:nil options:nil] objectAtIndex:0];
-        self.itinerary.itinerariesView = self.itineraries.itinerariesTableView;
-        [self.itinerary.itinerariesView reloadData];
+        
+        self.itinerary.itinerariesView.dataSource = self.suggestionDataSource;
+        self.itinerary.itinerariesView.delegate = self;
+        [self.itinerary.itinerariesView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
+                                                                          bundle:nil] forCellReuseIdentifier:@"route"];
+         self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
+      
         self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
         
         [self.view addSubview:self.itinerary];
+        
         
         [UIView animateWithDuration:0.25 animations:^{
             self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);

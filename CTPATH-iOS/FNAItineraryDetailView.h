@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 @interface FNAItineraryDetailView : UIView
 
-@property (strong, nonatomic) IBOutlet UITableView *itinerariesView;
+@property (weak, nonatomic) IBOutlet UITableView *itinerariesView;
 
 @end
