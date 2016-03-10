@@ -10,6 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "FNAItineraryCell.h"
 #import "FNAColor.h"
+
 @implementation FNASuggestionsDataSource
 
 -(id) initWithData:(NSArray *) suggestions{
@@ -17,11 +18,11 @@
     if(self = [super init]){
         
         _suggestions = suggestions;
-        
     }
     return self;
 }
 -(NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    
     return tableView.tag == 1 ? @"Itinerarios devueltos:" : @"Sugerencias";
 }
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -36,8 +37,6 @@
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    
     if(tableView.tag == 1){
         
         return [self showItinerary:tableView indexPath:indexPath];
@@ -47,9 +46,7 @@
         return [self showSuggestions:tableView indexPath:indexPath];
         
     }
-    
     return nil;
-    
 }
 
 #pragma mark - JSON parsers
@@ -57,7 +54,6 @@
 -(NSDictionary *) plan{
     
     return [self.path objectForKey:@"plan"];
-    
 }
 
 -(NSArray *) itineraries{
@@ -73,7 +69,12 @@
     
     cell.routeLabel.text = [NSString stringWithFormat:@"Ruta %li",(indexPath.row + 1)];
     
-    cell.timeLabel.text = [NSString stringWithFormat:@"%f minutos",[[[[self itineraries] objectAtIndex:indexPath.row] objectForKey:@"duration"] doubleValue]/60];
+    int duration = [[[[self itineraries] objectAtIndex:indexPath.row] objectForKey:@"duration"] intValue];
+    int minutes = duration / 60;
+    int seconds = duration % 60;
+    
+    NSString *time = [NSString stringWithFormat:@"%d:%02d", minutes, seconds];
+    cell.timeLabel.text = [NSString stringWithFormat:@"%@ minutos",time];
     
     UIColor * color;
     
