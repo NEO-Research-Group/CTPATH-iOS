@@ -11,4 +11,5 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *itinerariesView;
 
+@property (weak, nonatomic) IBOutlet UILabel *routeName;
 @end

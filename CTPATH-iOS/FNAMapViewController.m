@@ -509,23 +509,22 @@
          self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
       
         self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
-        
+        self.itinerary.routeName.text = [NSString stringWithFormat:@"Ruta %li",indexPath.row + 1];
         [self.view addSubview:self.itinerary];
         
         
         [UIView animateWithDuration:0.25 animations:^{
             self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
         }];
+        
 
     }
     
     
 }
--(UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    return [UIView new];
-}
+
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return self.itineraries.frame.size.height / 3;
+    return self.itineraries.frame.size.height / 4;
 }
   @end
