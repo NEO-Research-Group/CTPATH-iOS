@@ -20,14 +20,8 @@
 
 @interface FNAMapViewController ()
 
-@property (strong,nonatomic) CLLocationManager  * locationManager;
-
-@property (strong,nonatomic) FNARestClient * restclient;
-
-@property (strong,nonatomic) FNADataSource * suggestionDataSource;
-
+@property (strong,nonatomic) FNADataSource * dataSource;
 @property (nonatomic) BOOL tableViewDisplayed;
-
 @property (strong,nonatomic) FNAItinerariesView * itineraries;
 
 /*!@brief YES for editing start point, NO for editing goal point */
@@ -42,6 +36,7 @@
     if(self = [super init]){
         
         _restclient = [FNARestClient sharedRestClient];
+        self.dataSource = [FNADataSource new];
     }
     
     return self;
@@ -50,17 +45,11 @@
 -(void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
-    
-    [self.mapView setDefaultRegion]; //TODO: Change in the future for user location
-    
     self.title = @"CTPath";
     
+    [self.mapView setDefaultRegion]; //TODO: Change in the future for user location
     [self setRightBarButtonItem:UIBarButtonSystemItemSearch];
-    
     self.mapView.delegate = self;
-    
-    self.suggestionDataSource = [FNADataSource new];
-    
     [self removeCenterButtonItem];
 }
 
@@ -69,7 +58,6 @@
     [super viewDidAppear:animated];
     
     [self declareGestureRecognizers];
-    
     [self startGettingUserLocation];
 }
 
@@ -82,23 +70,25 @@
     [self.bottomToolbar setItems:toolbarButtons];
 }
 
-- (IBAction)itinerariesAction:(id)sender {
+- (IBAction)removeItinerariesView:(id)sender {
 
     [UIView animateWithDuration:0.25 animations:^{
+        
         self.itineraries.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
         self.itinerary.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
+        
     } completion:^(BOOL finished) {
         [self.itineraries removeFromSuperview];
         [self.itinerary removeFromSuperview];
+        [self removeCenterButtonItem];
     }];
-    
-    [self removeCenterButtonItem];
-    
 }
 
 -(void) setRightBarButtonItem:(UIBarButtonSystemItem) barButtonSystemItem{
     
-    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:barButtonSystemItem target:self action:@selector(showAndHidesearchBar:)];
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc]
+                                     initWithBarButtonSystemItem:barButtonSystemItem
+                                     target:self action:@selector(showAndHidesearchBar:)];
     
     self.navigationItem.rightBarButtonItem = searchButton;
     
@@ -110,23 +100,18 @@
     if([self.startSearchBar isHidden]){
         
         self.startSearchBar.hidden = NO;
-        
         self.goalSearchBar.hidden = NO;
-        
         [self setRightBarButtonItem:UIBarButtonSystemItemStop];
         
     }else{
         
         self.startSearchBar.hidden = YES;
-        
         self.goalSearchBar.hidden = YES;
-        
         [self setRightBarButtonItem:UIBarButtonSystemItemSearch];
         
         [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews];
         
         [self.startSearchBar resignFirstResponder];
-        
         [self.goalSearchBar resignFirstResponder];
     }
 }
@@ -149,11 +134,15 @@
     [self.view addSubview:self.suggestionTableView];
     
     self.suggestionTableView.delegate = self;
-    self.suggestionTableView.dataSource = self.suggestionDataSource;
-    [UIView transitionFromView:self.mapView
-                        toView:self.suggestionTableView duration:0.25 options:options completion:nil];
+    self.suggestionTableView.dataSource = self.dataSource;
     
-    self.tableViewDisplayed = YES;
+    [UIView transitionFromView:self.mapView
+                        toView:self.suggestionTableView
+                      duration:0.25 options:options
+                    completion:^(BOOL finished) {
+                            self.tableViewDisplayed = YES;
+                        }];
+    
 }
 
 -(void) findPath{
@@ -161,6 +150,7 @@
     if(self.mapView.goalAnnotation){
         
         [self.activityView startAnimating];
+        
         dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_async(findPathQueue, ^{
         
@@ -173,14 +163,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
                     [self.activityView stopAnimating];
-                    
-                    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"¡Lo sentimos!" message:@"No se han encontrado rutas entre estos dos puntos" preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                    
-                    [alertController addAction:defaultAction];
-                    
-                    [self presentViewController:alertController animated:YES completion:nil];
+                    [self presentAlertViewControllerWithMessage:@"No se han encontrado rutas entre estos dos puntos"];
                 });
                 
             }else{
@@ -196,6 +179,18 @@
         });
     }
 }
+-(void)presentAlertViewControllerWithMessage:(NSString *) message{
+    
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"¡Lo sentimos!" message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    
+    [alertController addAction:defaultAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+
+    
+}
 -(void) showItinerariesTableView{
     
     // Removing views already showed
@@ -208,9 +203,9 @@
     
     self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesView" owner:nil options:nil] objectAtIndex:0];
     
-    self.itineraries.itinerariesTableView.dataSource = self.suggestionDataSource;
+    self.itineraries.itinerariesTableView.dataSource = self.dataSource;
     self.itineraries.itinerariesTableView.delegate = self;
-    self.suggestionDataSource.route = self.route;
+    self.dataSource.route = self.route;
 
     [self.itineraries.itinerariesTableView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
                                                                       bundle:nil] forCellReuseIdentifier:@"route"];
@@ -271,8 +266,10 @@
 }
 
 -(IBAction) moveToInfoViewController:(id) sender{
+    // Remove views if exists
     [self.itineraries removeFromSuperview];
     [self.itinerary removeFromSuperview];
+    
     // Create info controller and show it
     FNAAboutViewController * infoVC = [FNAAboutViewController new];
     [self.navigationController pushViewController:infoVC animated:YES];
@@ -321,13 +318,9 @@
     // CLLocationManager is in charge of get user's location
     
     self.locationManager = [[CLLocationManager alloc] init];
-    
     [self.locationManager requestWhenInUseAuthorization];
-    
     self.locationManager.delegate = self;
-
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
     [self.locationManager startUpdatingLocation];  
 }
 
@@ -335,7 +328,6 @@
 -(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     
     self.searchBarTag = [searchBar isEqual:self.startSearchBar] ? YES: NO;
-    
     
     UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
     
@@ -350,20 +342,17 @@
         }
     
         NSString * address = searchText;
-        
         MKLocalSearchRequest *request = [MKLocalSearchRequest new];
         
         request.naturalLanguageQuery = address;
-        
         request.region = self.mapView.region;
-        
         MKLocalSearch * searcher = [[MKLocalSearch alloc] initWithRequest:request];
         
         [searcher startWithCompletionHandler:^(MKLocalSearchResponse * _Nullable response, NSError * _Nullable error) {
             
-            if (response && response.mapItems.count > 0) {
+            if (response.mapItems.count > 0) {
                 
-                self.suggestionDataSource.suggestions = response.mapItems;
+                self.dataSource.suggestions = response.mapItems;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.suggestionTableView reloadData];
@@ -403,15 +392,12 @@
         if(pinView){
             
             pinView.annotation = annotation;
-            
         }else{
             
-            pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"endAnnotationView"];
-            
+            pinView = [[MKPinAnnotationView alloc]
+                       initWithAnnotation:annotation reuseIdentifier:@"endAnnotationView"];
             [pinView setAnimatesDrop:YES];
-            
             [pinView setDraggable:YES];
-            
         }
         if([annotation isEqual:mapView.startAnnotation]){
             
@@ -450,7 +436,6 @@
     
     if([overlay isEqual:[mapView.itineraries objectAtIndex:0]]){
         overlayColor = [FNAColor bestPathColorWithAlpha:1.0];
-        
     }else if([overlay isEqual:[mapView.itineraries objectAtIndex:1]]){
         overlayColor = [FNAColor middlePathColorWithAlpha:1.0];
     }else{
@@ -458,20 +443,17 @@
     }
     
     renderer.strokeColor = overlayColor;
-    
     renderer.lineWidth = 5.0;
-    
-    
+
     return renderer;
 }
 
 #pragma mark - TableViewDelegate
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
-    MKMapItem * mapItem = [self.suggestionDataSource.suggestions objectAtIndex:indexPath.row];
     
     if([tableView isEqual:self.suggestionTableView]){
+        MKMapItem * mapItem = [self.dataSource.suggestions objectAtIndex:indexPath.row];
         if(self.searchBarTag){
             self.mapView.startAnnotation = [MKPointAnnotation new];
             self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
@@ -495,9 +477,10 @@
         [self.itinerary removeFromSuperview];
         
         self.itinerary = [[[NSBundle mainBundle]
-                           loadNibNamed:@"FNAItineraryDetailView" owner:nil options:nil] objectAtIndex:0];
+                           loadNibNamed:@"FNAItineraryDetailView" owner:nil options:nil]
+                          objectAtIndex:0];
         
-        self.itinerary.itinerariesView.dataSource = self.suggestionDataSource;
+        self.itinerary.itinerariesView.dataSource = self.dataSource;
         self.itinerary.itinerariesView.delegate = self;
         [self.itinerary.itinerariesView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
                                                                           bundle:nil] forCellReuseIdentifier:@"route"];

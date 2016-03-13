@@ -12,21 +12,17 @@
 
 @implementation AppDelegate
 
--(void) makeAppStyle{
+-(void) customize{
    
     UIColor *orangeCTPath = [FNAColor CTPathColorWithAlpha:1.0];
+    
     [[UINavigationBar appearance] setBarTintColor:orangeCTPath];
-    
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
-    
     [[UINavigationBar appearance] setTranslucent:NO];
-    
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"optima" size:23.0]}];
     
     [[UIToolbar appearance] setBarTintColor:orangeCTPath];
-    
     [[UIToolbar appearance] setTintColor:orangeCTPath];
-    
     [[UIToolbar appearance] setTranslucent:NO];
     
     UIColor *creamColor = [FNAColor creamColorWithAlpha:1.0];
@@ -34,21 +30,18 @@
     [[UISearchBar appearance] setBarTintColor:creamColor];
     
     [[UIBarButtonItem appearance] setTintColor:[UIColor blackColor]];
-    
-    
-    
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    [self makeAppStyle];
+    [self customize];
     
     // Create root controller
     FNAMapViewController * rootMapVC = [[FNAMapViewController alloc] init];
     
     // Create a navigation controller as container of root controller
-    UINavigationController * navVC = [[UINavigationController alloc]initWithRootViewController:rootMapVC];
+    UINavigationController * navVC = [[UINavigationController alloc] initWithRootViewController:rootMapVC];
     
     // Set it as root of application
     [self.window setRootViewController:navVC];

@@ -26,7 +26,6 @@
 -(NSDictionary *) getJSONFromURL:(NSString *)url{
     
     NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-    
     NSError * error;
     
     NSDictionary * json = [NSJSONSerialization

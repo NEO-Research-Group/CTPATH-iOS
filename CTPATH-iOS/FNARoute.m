@@ -29,12 +29,13 @@
 }
 
 -(NSString *) date{
+    
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"MM-dd-yyyy";
     NSDate *date = [dateFormatter dateFromString:[[self requestParameters] objectForKey:@"date"]];
     dateFormatter.dateFormat = @"dd-MM-yyyy";
-    return [dateFormatter stringFromDate:date];
     
+    return [dateFormatter stringFromDate:date];
 }
 
 -(NSString *) time{
