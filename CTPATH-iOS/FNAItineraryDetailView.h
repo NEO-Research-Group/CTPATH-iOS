@@ -12,4 +12,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *itinerariesView;
 
 @property (weak, nonatomic) IBOutlet UILabel *routeName;
+@property (weak, nonatomic) IBOutlet UILabel *startTime;
+@property (weak, nonatomic) IBOutlet UILabel *duration;
 @end

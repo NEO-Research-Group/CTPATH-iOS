@@ -200,6 +200,7 @@
 -(void) showDetailView:(NSDictionary *) path{
     
     [self.itineraries removeFromSuperview];
+    [self.itinerary removeFromSuperview];
     [self removeCenterButtonItem];
     self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesView" owner:nil options:nil] objectAtIndex:0];
     
@@ -509,7 +510,9 @@
          self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
       
         self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
-        self.itinerary.routeName.text = [NSString stringWithFormat:@"Ruta %li",indexPath.row + 1];
+        self.itinerary.routeName.text = [NSString stringWithFormat:@"Ruta %i",indexPath.row + 1];
+        self.itinerary.startTime.text = [NSString stringWithFormat:@"%@ %@",[[self.suggestionDataSource.path objectForKey:@"requestParameters"]objectForKey:@"time"],[[self.suggestionDataSource.path objectForKey:@"requestParameters"]objectForKey:@"date"]];
+        self.itinerary.duration.text = [[tableView cellForRowAtIndexPath:indexPath] timeLabel].text;
         [self.view addSubview:self.itinerary];
         
         
@@ -517,14 +520,11 @@
             self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
         }];
         
-
-    }
+            }
     
     
 }
 
 
--(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return self.itineraries.frame.size.height / 4;
-}
+
   @end

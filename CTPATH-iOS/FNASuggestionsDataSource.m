@@ -70,7 +70,7 @@
     
     FNAItineraryCell * cell = [tableView dequeueReusableCellWithIdentifier:@"route"];
     
-    cell.routeLabel.text = [NSString stringWithFormat:@"Ruta %li",(indexPath.row + 1)];
+    cell.routeLabel.text = [NSString stringWithFormat:@"Ruta %i",(indexPath.row + 1)];
     
     int duration = [[[[self itineraries] objectAtIndex:indexPath.row] objectForKey:@"duration"] intValue];
     int minutes = duration / 60;

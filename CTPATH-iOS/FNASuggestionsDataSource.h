@@ -15,5 +15,5 @@
 @property (strong,nonatomic) NSDictionary * path;
 
 -(id) initWithData:(NSArray *) suggestions;
-
+-(NSArray *) itineraries;
 @end
