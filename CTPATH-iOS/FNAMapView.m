@@ -7,7 +7,7 @@
 //
 
 #import "FNAMapView.h"
-
+#import "FNARoute.h"
 
 @implementation FNAMapView
 
@@ -95,18 +95,18 @@
     [self setShowsUserLocation:YES];
         
 }
--(void) drawPath:(NSDictionary *) path{
+-(void) drawPath:(FNARoute *) route{
     
     [self removeOverlays:self.itineraries];
 
     self.itineraries = [NSMutableArray new];
 
-    NSArray * itineraries = [[path objectForKey:@"plan"] objectForKey:@"itineraries"];
+    NSArray * itineraries = route.itineraries;
     
     for(NSDictionary * itinerary in itineraries){
-        NSDictionary * polylineGeometry = [[[itinerary objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"legGeometry"];
-        const char *bytes = [[polylineGeometry objectForKey:@"points"] UTF8String];
-        NSUInteger length = [[polylineGeometry objectForKey:@"points"]
+    
+        const char *bytes = [[route pointsForItinerary:itinerary] UTF8String];
+        NSUInteger length = [[route pointsForItinerary:itinerary]
                              lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
         NSUInteger idx = 0;
         
@@ -155,13 +155,13 @@
             }
         }
         
-        MKPolyline * route = [MKPolyline polylineWithCoordinates:coords count:coordIdx];
+        MKPolyline * routeLine = [MKPolyline polylineWithCoordinates:coords count:coordIdx];
         
         free(coords);
         
-        [self.itineraries addObject:route];
+        [self.itineraries addObject:routeLine];
         
-        [self insertOverlay:route atIndex:0 level:MKOverlayLevelAboveRoads];
+        [self insertOverlay:routeLine atIndex:0 level:MKOverlayLevelAboveRoads];
         
         
     }

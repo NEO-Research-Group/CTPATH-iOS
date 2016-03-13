@@ -11,24 +11,24 @@
 #import "FNAAboutViewController.h"
 #import "FNAMapView.h"
 #import "FNARestClient.h"
-#import "FNASuggestionsDataSource.h"
+#import "FNADataSource.h"
 #import "FNAItinerariesView.h"
 #import "FNAItineraryCell.h"
 #import "FNAColor.h"
 #import "FNAItineraryDetailView.h"
+#import "FNARoute.h"
+
 @interface FNAMapViewController ()
 
 @property (strong,nonatomic) CLLocationManager  * locationManager;
 
 @property (strong,nonatomic) FNARestClient * restclient;
 
-@property (strong,nonatomic) FNASuggestionsDataSource * suggestionDataSource;
+@property (strong,nonatomic) FNADataSource * suggestionDataSource;
 
 @property (nonatomic) BOOL tableViewDisplayed;
 
 @property (strong,nonatomic) FNAItinerariesView * itineraries;
-
-
 
 /*!@brief YES for editing start point, NO for editing goal point */
 @property (nonatomic) BOOL searchBarTag;
@@ -59,7 +59,7 @@
     
     self.mapView.delegate = self;
     
-    self.suggestionDataSource = [FNASuggestionsDataSource new];
+    self.suggestionDataSource = [FNADataSource new];
     
     [self removeCenterButtonItem];
 }
@@ -167,9 +167,9 @@
             NSString * url = [self getURLForRoutingService:self.mapView.startAnnotation.coordinate
                                              goalPoint:self.mapView.goalAnnotation.coordinate];
         
-            NSDictionary * path = [self.restclient getJSONFromURL:url];
+            self.route = [[FNARoute alloc] initWithRoute:[self.restclient getJSONFromURL:url]];
             
-            if([path objectForKey:@"error"]){
+            if(self.route.error){
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
                     [self.activityView stopAnimating];
@@ -183,46 +183,53 @@
                     [self presentViewController:alertController animated:YES completion:nil];
                 });
                 
-                
             }else{
                 // Changes in views must be done at main thread
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
-                    [self.mapView drawPath:path];
+                    [self.mapView drawPath:self.route];
                     [self.activityView stopAnimating];
-                    [self showDetailView:path];
+                    [self showItinerariesTableView];
                 });
             }
             
         });
     }
 }
--(void) showDetailView:(NSDictionary *) path{
+-(void) showItinerariesTableView{
+    
+    // Removing views already showed
     
     [self.itineraries removeFromSuperview];
     [self.itinerary removeFromSuperview];
     [self removeCenterButtonItem];
+    
+    // Load itineraries tableView and initialising its properties
+    
     self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesView" owner:nil options:nil] objectAtIndex:0];
     
     self.itineraries.itinerariesTableView.dataSource = self.suggestionDataSource;
     self.itineraries.itinerariesTableView.delegate = self;
-    self.suggestionDataSource.path = path;
+    self.suggestionDataSource.route = self.route;
 
     [self.itineraries.itinerariesTableView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
                                                                       bundle:nil] forCellReuseIdentifier:@"route"];
-    
+    // Set frame to appear at bottom of screen
     
     self.itineraries.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, self.mapView.frame.size.height/3);
     
     [self.view addSubview:self.itineraries];
     
+    // Animate to show it at properly position
+    
     [UIView animateWithDuration:0.25 animations:^{
+        
         self.itineraries.frame = CGRectMake(0, 2*self.mapView.frame.size.height/3, self.mapView.frame.size.width, self.mapView.frame.size.height/3);
     }];
     
-    NSMutableArray *toolbarButtons = [self.bottomToolbar.items mutableCopy];
+    // Add new button to close this new view
     
-
+    NSMutableArray *toolbarButtons = [self.bottomToolbar.items mutableCopy];
     [toolbarButtons insertObject:self.itinerariesButton atIndex:2];
     [self.bottomToolbar setItems:toolbarButtons];
 }
@@ -264,7 +271,8 @@
 }
 
 -(IBAction) moveToInfoViewController:(id) sender{
-    
+    [self.itineraries removeFromSuperview];
+    [self.itinerary removeFromSuperview];
     // Create info controller and show it
     FNAAboutViewController * infoVC = [FNAAboutViewController new];
     [self.navigationController pushViewController:infoVC animated:YES];
@@ -483,20 +491,6 @@
         
     }else{
         
-        FNAItineraryCell * cell = [tableView cellForRowAtIndexPath:indexPath];
-        
-        UIColor * routeColor;
-        
-        if(indexPath.row == 0){
-            routeColor = [FNAColor bestPathColorWithAlpha:1.0];
-        }else if(indexPath.row == 1){
-            routeColor = [FNAColor middlePathColorWithAlpha:1.0];
-        }else{
-            routeColor = [FNAColor worstPathColorWithAlpha:1.0];
-        }
-        
-        [cell setSelected:YES animated:YES routeColor:routeColor];
-        
         [self.itineraries removeFromSuperview];
         [self.itinerary removeFromSuperview];
         
@@ -507,11 +501,13 @@
         self.itinerary.itinerariesView.delegate = self;
         [self.itinerary.itinerariesView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
                                                                           bundle:nil] forCellReuseIdentifier:@"route"];
-         self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
       
         self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
+        
         self.itinerary.routeName.text = [NSString stringWithFormat:@"Ruta %i",indexPath.row + 1];
-        self.itinerary.startTime.text = [NSString stringWithFormat:@"%@ %@",[[self.suggestionDataSource.path objectForKey:@"requestParameters"]objectForKey:@"time"],[[self.suggestionDataSource.path objectForKey:@"requestParameters"]objectForKey:@"date"]];
+        
+        self.itinerary.startTime.text = [NSString stringWithFormat:@"%@ %@",[self.route time],[self.route date]];
+        
         self.itinerary.duration.text = [[tableView cellForRowAtIndexPath:indexPath] timeLabel].text;
         [self.view addSubview:self.itinerary];
         
@@ -520,11 +516,6 @@
             self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
         }];
         
-            }
-    
-    
+    }
 }
-
-
-
-  @end
+@end

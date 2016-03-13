@@ -14,9 +14,11 @@
 @class FNAMapView;
 @class FNAMapViewDelegate;
 @class FNAItineraryDetailView;
-
+@class FNARoute;
 
 @interface FNAMapViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate,UIGestureRecognizerDelegate,UITableViewDelegate,UISearchBarDelegate,UIViewControllerTransitioningDelegate>
+
+@property (strong,nonatomic) FNARoute * route;
 
 @property (weak, nonatomic) IBOutlet FNAMapView *mapView;
 

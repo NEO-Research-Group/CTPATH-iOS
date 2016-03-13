@@ -8,6 +8,7 @@
 
 #import <MapKit/MapKit.h>
 
+@class FNARoute;
 @interface FNAMapView : MKMapView
 
 @property (strong,nonatomic) MKPointAnnotation * startAnnotation;
@@ -18,5 +19,5 @@
 -(void) saveLastRegion;
 -(void) setDefaultRegion;
 -(void) addAnnotationWithCoordinates:(CLLocationCoordinate2D) coordinates;
--(void) drawPath:(NSDictionary *) path;
+-(void) drawPath:(FNARoute *) plan;
 @end
