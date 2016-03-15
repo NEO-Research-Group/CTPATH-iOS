@@ -18,6 +18,8 @@
     return tableView.tag == 1 ? @"Itinerarios devueltos:" : @"Sugerencias";
 }
 
+
+
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     return tableView.tag == 1 ? [[self.route itineraries] count] : [self.suggestions count];
