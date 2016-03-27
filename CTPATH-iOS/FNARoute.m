@@ -89,4 +89,34 @@
     
 }
 
+-(NSString *) carbonMonoxideForItinerary:(NSDictionary *) itinerary{
+    
+    return [NSString stringWithFormat:@"%ld",[[itinerary objectForKey:@"carbonMonoxide"]
+                                             integerValue]/1000];
+    
+}
+
+-(NSString *) carbonDioxideForItinerary:(NSDictionary *) itinerary{
+    
+    return [NSString stringWithFormat:@"%ld",[[itinerary objectForKey:@"carbonDioxide"]
+                                            integerValue]/1000];
+    
+    
+}
+
+-(NSString *) hydrocarbureForItinerary:(NSDictionary *) itinerary{
+    
+    return [NSString stringWithFormat:@"%ld",[[itinerary objectForKey:@"hydrocarbure"]
+                                            integerValue]/1000];
+    
+    
+}
+
+-(NSString *) nitrogenOxidesForItinerary:(NSDictionary *) itinerary{
+    
+    return [NSString stringWithFormat:@"%ld",[[itinerary objectForKey:@"nitrogenOxides"]
+                                            integerValue]/1000];
+    
+    
+}
 @end

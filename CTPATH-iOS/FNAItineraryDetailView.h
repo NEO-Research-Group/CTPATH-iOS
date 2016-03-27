@@ -14,4 +14,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *routeName;
 @property (weak, nonatomic) IBOutlet UILabel *startTime;
 @property (weak, nonatomic) IBOutlet UILabel *duration;
+@property (weak, nonatomic) IBOutlet UILabel *COLabel;
+@property (weak, nonatomic) IBOutlet UILabel *CO2Label;
+@property (weak, nonatomic) IBOutlet UILabel *HCLabel;
+@property (weak, nonatomic) IBOutlet UILabel *NO2Label;
 @end

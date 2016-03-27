@@ -484,12 +484,17 @@
         self.itinerary.itinerariesView.delegate = self;
         [self.itinerary.itinerariesView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
                                                                           bundle:nil] forCellReuseIdentifier:@"route"];
-      
+     
         self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
         
-        self.itinerary.routeName.text = [NSString stringWithFormat:@"Ruta %i",indexPath.row + 1];
+        self.itinerary.routeName.text = [NSString stringWithFormat:@"Ruta %li",indexPath.row + 1];
         
         self.itinerary.startTime.text = [NSString stringWithFormat:@"%@ %@",[self.route time],[self.route date]];
+        
+        self.itinerary.COLabel.text = [self.route carbonMonoxideForItinerary:[self.route itineraryAtIndex:indexPath.row]];
+        self.itinerary.CO2Label.text = [self.route carbonDioxideForItinerary:[self.route itineraryAtIndex:indexPath.row]];
+        self.itinerary.HCLabel.text = [self.route hydrocarbureForItinerary:[self.route itineraryAtIndex:indexPath.row]];
+        self.itinerary.NO2Label.text = [self.route nitrogenOxidesForItinerary:[self.route itineraryAtIndex:indexPath.row]];
         
         self.itinerary.duration.text = [[tableView cellForRowAtIndexPath:indexPath] timeLabel].text;
         [self.view addSubview:self.itinerary];
@@ -502,5 +507,16 @@
     }
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([[UIScreen mainScreen] bounds].size.height >= 568)
+    {
+        
+        return 40;
+    }
+    else
+    {
+        return 25;
+    }
+}
 
 @end

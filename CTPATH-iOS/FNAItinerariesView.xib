@@ -13,11 +13,12 @@
             <subviews>
                 <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="35" sectionHeaderHeight="20" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0bQ-V1-fka">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.96541943009999998" green="0.96760574489999995" blue="0.9614036507" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="sectionIndexBackgroundColor" red="0.96541943009999998" green="0.96760574489999995" blue="0.9614036507" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="sectionIndexTrackingBackgroundColor" red="0.96541943009999998" green="0.96760574489999995" blue="0.9614036507" alpha="1" colorSpace="calibratedRGB"/>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.96541943009999998" green="0.96760574489999995" blue="0.9614036507" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="0bQ-V1-fka" secondAttribute="bottom" id="GnK-dq-jdJ"/>
                 <constraint firstAttribute="trailing" secondItem="0bQ-V1-fka" secondAttribute="trailing" id="RJO-p1-ZxY"/>
