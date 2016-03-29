@@ -163,6 +163,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
                     [self.activityView stopAnimating];
+                    
                     [self presentAlertViewControllerWithMessage:@"No se han encontrado rutas entre estos dos puntos"];
                 });
                 
