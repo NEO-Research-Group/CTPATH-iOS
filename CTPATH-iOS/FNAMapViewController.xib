@@ -52,7 +52,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ncl-vC-5NV"/>
-                        <barButtonItem title="Cancelar" style="plain" id="mTy-KT-haK">
+                        <barButtonItem title="Ocultar" style="plain" id="mTy-KT-haK">
                             <connections>
                                 <action selector="removeItinerariesView:" destination="-1" id="SXZ-WA-r3f"/>
                             </connections>

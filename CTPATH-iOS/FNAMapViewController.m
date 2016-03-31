@@ -78,9 +78,10 @@
         self.itinerary.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
         
     } completion:^(BOOL finished) {
+        [self removeCenterButtonItem];
         [self.itineraries removeFromSuperview];
         [self.itinerary removeFromSuperview];
-        [self removeCenterButtonItem];
+        
     }];
 }
 
@@ -99,11 +100,17 @@
     
     if([self.startSearchBar isHidden]){
         
+        [UIView transitionWithView:self.startSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromTop animations:nil completion:nil];
+        [UIView transitionWithView:self.goalSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromTop animations:nil completion:nil];
+        
+       
         self.startSearchBar.hidden = NO;
         self.goalSearchBar.hidden = NO;
         [self setRightBarButtonItem:UIBarButtonSystemItemStop];
         
     }else{
+        [UIView transitionWithView:self.startSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
+        [UIView transitionWithView:self.goalSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
         
         self.startSearchBar.hidden = YES;
         self.goalSearchBar.hidden = YES;
@@ -141,6 +148,8 @@
                       duration:0.25 options:options
                     completion:^(BOOL finished) {
                             self.tableViewDisplayed = YES;
+                        [self.itinerary removeFromSuperview];
+                        [self.itineraries removeFromSuperview];
                         }];
     
 }
@@ -158,13 +167,21 @@
                                              goalPoint:self.mapView.goalAnnotation.coordinate];
         
             self.route = [[FNARoute alloc] initWithRoute:[self.restclient getJSONFromURL:url]];
-            
-            if(self.route.error){
+            if(!self.route){
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
                     [self.activityView stopAnimating];
                     
-                    [self presentAlertViewControllerWithMessage:@"No se han encontrado rutas entre estos dos puntos"];
+                    [self presentAlertViewControllerWithTitle:@"Error inesperado" message:@"Comprueba tu conexión a internet"];
+                });
+                
+            }else if(self.route.error){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self.activityView stopAnimating];
+                    
+                    [self presentAlertViewControllerWithTitle:@"¡Lo sentimos!" message:@"No se han encontrado rutas entre estos dos puntos"];
                 });
                 
             }else{
@@ -180,9 +197,9 @@
         });
     }
 }
--(void)presentAlertViewControllerWithMessage:(NSString *) message{
+-(void)presentAlertViewControllerWithTitle:(NSString *) title message:(NSString *) message{
     
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"¡Lo sentimos!" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
     
@@ -192,6 +209,7 @@
 
     
 }
+
 -(void) showItinerariesTableView{
     
     // Removing views already showed
@@ -466,11 +484,13 @@
             [self.mapView addAnnotation:self.mapView.goalAnnotation];
             
             [self findPath];
+            
+            [self showAndHidesearchBar:nil];
         }
         
         [self showMapWithOptions:UIViewAnimationOptionTransitionCrossDissolve | UIViewAnimationOptionShowHideTransitionViews];
         
-        [self showAndHidesearchBar:nil];
+        
         
     }else{
         

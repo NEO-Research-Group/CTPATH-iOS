@@ -11,6 +11,8 @@
 @implementation FNARoute
 
 -(id) initWithRoute:(NSDictionary *) route{
+    
+    if(!route) return nil;
 
     if(self = [super init]){
         

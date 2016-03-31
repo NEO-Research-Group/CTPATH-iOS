@@ -25,18 +25,25 @@
 
 -(NSDictionary *) getJSONFromURL:(NSString *)url{
     
-    NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
     NSError * error;
     
-    NSDictionary * json = [NSJSONSerialization
-                           JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+    NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url] options:NSDataReadingUncached error:&error];
     
     if(error){
         
-        NSLog(@"Hola hay error");
+        
+        
+    }else{
+        NSDictionary * json = [NSJSONSerialization
+                               JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+        return json;
     }
+    
+    
+    
+    
 
-    return json;
+    return nil;
 }
 
 @end
