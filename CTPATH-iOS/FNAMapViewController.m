@@ -520,6 +520,8 @@
         self.itinerary.duration.text = [[tableView cellForRowAtIndexPath:indexPath] timeLabel].text;
         [self.view addSubview:self.itinerary];
         
+        self.itinerary.frame = self.itineraries.frame;
+        
         
         [UIView animateWithDuration:0.25 animations:^{
             self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
