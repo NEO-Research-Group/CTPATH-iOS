@@ -30,7 +30,6 @@
 		A1B515B51C8074B2005EC90D /* localization.png in Resources */ = {isa = PBXBuildFile; fileRef = A1B515B41C8074B2005EC90D /* localization.png */; };
 		A1D6E4101C81E9310066E310 /* FNAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D6E40E1C81E9310066E310 /* FNAAboutViewController.m */; };
 		A1D6E4111C81E9310066E310 /* FNAAboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1D6E40F1C81E9310066E310 /* FNAAboutViewController.xib */; };
-		A1FE8E6C1C958DB40014A004 /* FNAItinerary.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E6B1C958DB40014A004 /* FNAItinerary.m */; };
 		A1FE8E6F1C95911B0014A004 /* FNARoute.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E6E1C95911B0014A004 /* FNARoute.m */; };
 		A1FE8E721C9594500014A004 /* FNARestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E711C9594500014A004 /* FNARestClient.m */; };
 /* End PBXBuildFile section */
@@ -70,8 +69,6 @@
 		A1D6E40D1C81E9310066E310 /* FNAAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAAboutViewController.h; sourceTree = "<group>"; };
 		A1D6E40E1C81E9310066E310 /* FNAAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAAboutViewController.m; sourceTree = "<group>"; };
 		A1D6E40F1C81E9310066E310 /* FNAAboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAAboutViewController.xib; sourceTree = "<group>"; };
-		A1FE8E6A1C958DB40014A004 /* FNAItinerary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAItinerary.h; sourceTree = "<group>"; };
-		A1FE8E6B1C958DB40014A004 /* FNAItinerary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAItinerary.m; sourceTree = "<group>"; };
 		A1FE8E6D1C95911B0014A004 /* FNARoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNARoute.h; sourceTree = "<group>"; };
 		A1FE8E6E1C95911B0014A004 /* FNARoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNARoute.m; sourceTree = "<group>"; };
 		A1FE8E701C9594500014A004 /* FNARestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FNARestClient.h; path = "CTPATH-iOS/FNARestClient.h"; sourceTree = "<group>"; };
@@ -242,8 +239,6 @@
 		A1FE8E691C958CDC0014A004 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A1FE8E6A1C958DB40014A004 /* FNAItinerary.h */,
-				A1FE8E6B1C958DB40014A004 /* FNAItinerary.m */,
 				A1FE8E6D1C95911B0014A004 /* FNARoute.h */,
 				A1FE8E6E1C95911B0014A004 /* FNARoute.m */,
 			);
@@ -334,7 +329,6 @@
 				A1B5159C1C7F91C6005EC90D /* AppDelegate.m in Sources */,
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,
 				A10654201C91D93600B11E67 /* FNAItineraryDetailView.m in Sources */,
-				A1FE8E6C1C958DB40014A004 /* FNAItinerary.m in Sources */,
 				A1FE8E6F1C95911B0014A004 /* FNARoute.m in Sources */,
 				A1D6E4101C81E9310066E310 /* FNAAboutViewController.m in Sources */,
 				A106541D1C91CFC800B11E67 /* FNAColor.m in Sources */,

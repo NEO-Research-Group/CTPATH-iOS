@@ -19,8 +19,7 @@
     [[UINavigationBar appearance] setBarTintColor:orangeCTPath];
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
     [[UINavigationBar appearance] setTranslucent:NO];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"optima" size:23.0]}];
-    
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"Helvetica" size:23.0]}];
     [[UIToolbar appearance] setBarTintColor:orangeCTPath];
     [[UIToolbar appearance] setTintColor:orangeCTPath];
     [[UIToolbar appearance] setTranslucent:NO];

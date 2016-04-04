@@ -17,6 +17,7 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated routeColor:(UIColor *)color{
+    
     [super setSelected:selected animated:animated];
 
     self.routeColor.backgroundColor = color;

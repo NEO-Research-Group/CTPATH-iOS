@@ -84,4 +84,11 @@
     
 }
 
+#pragma mark - Utilities
+
+-(MKMapItem *) mapItemAtIndex:(NSInteger)index{
+    
+    return [self.suggestions objectAtIndex:index];
+}
+
 @end

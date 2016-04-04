@@ -11,4 +11,13 @@
 @implementation FNAItinerariesView
 
 
+
+-(void) awakeFromNib{
+    
+    [self.itinerariesTableView registerNib:[UINib nibWithNibName:@"FNAItineraryCell"
+                                                                      bundle:nil] forCellReuseIdentifier:@"route"];
+    
+    
+}
+
 @end

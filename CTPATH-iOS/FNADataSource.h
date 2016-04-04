@@ -8,12 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 @class FNARoute;
+
 @interface FNADataSource : NSObject <UITableViewDataSource>
 
 @property (strong,nonatomic) NSArray * suggestions;
 @property (strong,nonatomic) FNARoute * route;
 
+-(MKMapItem *) mapItemAtIndex:(NSInteger) index;
 
 
 @end
