@@ -16,7 +16,7 @@
 #import "FNAColor.h"
 #import "FNAItineraryDetailView.h"
 #import "FNARoute.h"
-#import "FNASuggestionsTableViewController.h"
+
 
 @interface FNAMapViewController ()
 
@@ -103,9 +103,11 @@
 
 -(void) showSuggestions{
     
+    FNASuggestionsTableViewController * suggestionsTVC =[[FNASuggestionsTableViewController alloc] init];
     
+    suggestionsTVC.delegate = self;
     
-    [self presentViewController:[[UINavigationController alloc]initWithRootViewController:[[FNASuggestionsTableViewController alloc] init]] animated:YES completion:nil];
+    [self presentViewController:[[UINavigationController alloc]initWithRootViewController:suggestionsTVC] animated:YES completion:nil];
     
 }
 
@@ -406,33 +408,7 @@
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if([tableView isEqual:self.suggestionTableView]){
-        
-        // Selected cell is from suggestions tableView
-        
-        MKMapItem * mapItem = [self.dataSource mapItemAtIndex:indexPath.row];
-        
-        if(self.searchBarTag){
-            [self.startSearchBar resignFirstResponder];
-            [self.mapView removeAnnotation:self.mapView.startAnnotation];
-            self.mapView.startAnnotation = [MKPointAnnotation new];
-            self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
-            [self.mapView addAnnotation:self.mapView.startAnnotation];
-            [self centerMapAtCoordinates:self.mapView.startAnnotation];
-            
-        }else{
-            [self.goalSearchBar resignFirstResponder];
-            [self.mapView removeAnnotation:self.mapView.goalAnnotation];
-            self.mapView.goalAnnotation = [MKPointAnnotation new];
-            self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
-            [self.mapView addAnnotation:self.mapView.goalAnnotation];
-            [self findPath];
-            
-        }
-        
-      
-        
-    }else if([tableView isEqual:self.itineraries.itinerariesTableView]){
+    if([tableView isEqual:self.itineraries.itinerariesTableView]){
         
         // Selected cell is from FNAItinerariesView, so we create the FNAItineraryDetailView
         
@@ -474,11 +450,7 @@
         
         cell.routeColor.backgroundColor = [self.route routeColorAtIndex:indexPath.row];
     }
-    
-    
-    
-    
-    
+
 }
 
 // Functions to keep backgroundColor of routeColor
@@ -498,6 +470,33 @@
         cell.routeColor.backgroundColor = [self.route routeColorAtIndex:indexPath.row];
     }
 
+}
+
+#pragma mark - FNASuggestionsTableViewDelegate
+
+-(void) suggestionsTableViewController:(FNASuggestionsTableViewController *)suggestionsTableView didSelectMapItem:(MKMapItem *)mapItem withSearchBar:(NSString *)searchBar{
+    
+    
+    // Selected cell is from suggestions tableView
+    
+    if([searchBar isEqualToString:START_SEARCH_BAR]){
+        
+        [self.mapView removeAnnotation:self.mapView.startAnnotation];
+        self.mapView.startAnnotation = [MKPointAnnotation new];
+        self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
+        [self.mapView addAnnotation:self.mapView.startAnnotation];
+        [self centerMapAtCoordinates:self.mapView.startAnnotation];
+        
+    }else{
+        
+        [self.mapView removeAnnotation:self.mapView.goalAnnotation];
+        self.mapView.goalAnnotation = [MKPointAnnotation new];
+        self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
+        [self.mapView addAnnotation:self.mapView.goalAnnotation];
+        [self findPath];
+        
+    }
+    
 }
 
 @end

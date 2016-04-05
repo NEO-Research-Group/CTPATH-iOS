@@ -8,14 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-
+#import "FNASuggestionsTableViewController.h"
 #define URL_API @"http://mallba3.lcc.uma.es/otp/routers/default"
 
 @class FNAMapView;
 @class FNAItineraryDetailView;
 @class FNARoute;
 @class FNARestClient;
-@interface FNAMapViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate,UITableViewDelegate,UISearchBarDelegate>
+
+
+@interface FNAMapViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate,UITableViewDelegate,UISearchBarDelegate,FNASuggestionsTableViewDelegate>
 
 @property (strong,nonatomic)  UITableView *suggestionTableView;
 @property (strong,nonatomic) FNARoute * route;

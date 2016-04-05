@@ -107,6 +107,13 @@
         
     }];
     
+    if ([searchBar isEqual:self.startSearchBar]) {
+        self.active_searchBar = START_SEARCH_BAR;
+    }else{
+        self.active_searchBar = GOAL_SEARCH_BAR;
+    }
+    
+    
 }
 
 
@@ -145,8 +152,15 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.delegate suggestionsTableViewController:self didSelectMapItem:[self.mapItems objectAtIndex:indexPath.row] withSearchBar:self.active_searchBar];
+    }];
    
-    [self.delegate suggestionsTableViewController:self didSelectMapItem:[self.mapItems objectAtIndex:indexPath.row]];
+    
+    
+    
+    
 }
 
 @end
