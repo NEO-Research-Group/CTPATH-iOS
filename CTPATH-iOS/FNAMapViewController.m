@@ -16,6 +16,7 @@
 #import "FNAColor.h"
 #import "FNAItineraryDetailView.h"
 #import "FNARoute.h"
+#import "FNASuggestionsTableViewController.h"
 
 @interface FNAMapViewController ()
 
@@ -47,13 +48,14 @@
     self.title = @"CTPath";
     
     [self.mapView setDefaultRegion]; //TODO: Change in the future for user location
-    [self setRightBarButtonItem:UIBarButtonSystemItemSearch];
     self.mapView.delegate = self;
     
     self.itinerariesButton.title = @"";
     self.itinerariesButton.enabled = NO;
     self.directionsButton.image = nil;
     self.directionsButton.enabled = NO;
+    
+    [self setRightBarButtonItem];
     
 }
 
@@ -88,88 +90,22 @@
     }];
 }
 
--(void) setRightBarButtonItem:(UIBarButtonSystemItem) barButtonSystemItem{
+-(void) setRightBarButtonItem{
     
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc]
-                                     initWithBarButtonSystemItem:barButtonSystemItem
-                                     target:self action:@selector(showAndHidesearchBar:)];
+                                     initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
+                                     target:self action:@selector(showSuggestions)];
     
     self.navigationItem.rightBarButtonItem = searchButton;
     
 }
 
-/*! Show searchbar when user taps  and search bars are hidden and viceversa */
--(void) showAndHidesearchBar:(id) sender{
-    
-    if([self.startSearchBar isHidden]){
-        
-        [UIView transitionWithView:self.startSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromTop animations:nil completion:nil];
-        
-        [UIView transitionWithView:self.goalSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromTop animations:nil completion:nil];
-        
-        self.startSearchBar.hidden = NO;
-        
-        self.goalSearchBar.hidden = NO;
-        
-        [self setRightBarButtonItem:UIBarButtonSystemItemStop];
-        
-    }else{
-        if(self.tableViewDisplayed){
-            [self showMap];
-        }else{
-            [UIView transitionWithView:self.startSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
-            
-            [UIView transitionWithView:self.goalSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
-        }
-        
-        
-        self.startSearchBar.hidden = YES;
-        
-        self.goalSearchBar.hidden = YES;
-        
-        [self setRightBarButtonItem:UIBarButtonSystemItemSearch];
-        
-        
-        
-        [self.startSearchBar resignFirstResponder];
-        
-        [self.goalSearchBar resignFirstResponder];
-    }
-}
-
--(void) showMap{
-    
-    UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
-    
-    [UIView transitionFromView:self.suggestionTableView
-                        toView:self.mapView duration:0.25 options:options completion:nil];
-    self.tableViewDisplayed = NO;
-}
 
 -(void) showSuggestions{
     
-    self.itinerariesButton.title = @"";
-    [self removeItinerariesView:nil];
-    UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
     
-    CGRect tableFrame = self.mapView.frame;
     
-    tableFrame.origin.y = self.goalSearchBar.frame.origin.y + self.goalSearchBar.frame.size.height;
-    
-    self.suggestionTableView = [[UITableView alloc] initWithFrame:tableFrame];
-    
-    [self.view addSubview:self.suggestionTableView];
-    
-    self.suggestionTableView.delegate = self;
-    self.suggestionTableView.dataSource = self.dataSource;
-    
-    [UIView transitionFromView:self.mapView
-                        toView:self.suggestionTableView
-                      duration:0.25 options:options
-                    completion:^(BOOL finished) {
-                        self.tableViewDisplayed = YES;
-                        
-                    }];
+    [self presentViewController:[[UINavigationController alloc]initWithRootViewController:[[FNASuggestionsTableViewController alloc] init]] animated:YES completion:nil];
     
 }
 
@@ -382,42 +318,6 @@
     
 }
 
-#pragma mark - SearchBar Delegate
--(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-    
-    // Get editing searchBar
-    
-    self.searchBarTag = [searchBar isEqual:self.startSearchBar] ? YES: NO;
-    
-    // Proceed according kind of searchBar
-    
-    if([searchBar.text isEqualToString:@""]){ // Show map if searchBar has empty text
-        [self showMap];
-        
-    }else{
-        
-        if(!self.tableViewDisplayed){ // Show suggestions if it has not been showed yet
-            [self showSuggestions];
-            
-        }
-        // Search possible addresses with inserted text
-        
-        [self searchSuggestionsWithSearchText:searchText];
-    }
-}
--(void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-    
-    [self searchBar:searchBar textDidChange:searchBar.text];
-}
--(void) searchBarTextDidEndEditing:(UISearchBar *)searchBar{
-    [searchBar resignFirstResponder];
-}
--(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    
-    [searchBar resignFirstResponder];
-    
-}
-
 #pragma mark - MapView Delegate
 
 -(MKAnnotationView *)mapView:(FNAMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
@@ -527,10 +427,10 @@
             self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
             [self.mapView addAnnotation:self.mapView.goalAnnotation];
             [self findPath];
-            [self showAndHidesearchBar:nil];
+            
         }
         
-        [self showMap];
+      
         
     }else if([tableView isEqual:self.itineraries.itinerariesTableView]){
         

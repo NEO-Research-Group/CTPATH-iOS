@@ -29,6 +29,8 @@
 		A1B515B11C7FA2F8005EC90D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B515B01C7FA2F8005EC90D /* CoreLocation.framework */; };
 		A1C2B8E41CB4192100389C8C /* arrows.png in Resources */ = {isa = PBXBuildFile; fileRef = A1C2B8E31CB4192100389C8C /* arrows.png */; };
 		A1C2B8E61CB427C500389C8C /* localization.png in Resources */ = {isa = PBXBuildFile; fileRef = A1C2B8E51CB427C500389C8C /* localization.png */; };
+		A1C2B8EA1CB4318900389C8C /* FNASuggestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C2B8E81CB4318900389C8C /* FNASuggestionsTableViewController.m */; };
+		A1C2B8EB1CB4318900389C8C /* FNASuggestionsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1C2B8E91CB4318900389C8C /* FNASuggestionsTableViewController.xib */; };
 		A1FE8E6F1C95911B0014A004 /* FNARoute.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E6E1C95911B0014A004 /* FNARoute.m */; };
 		A1FE8E721C9594500014A004 /* FNARestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E711C9594500014A004 /* FNARestClient.m */; };
 /* End PBXBuildFile section */
@@ -66,6 +68,9 @@
 		A1B515B01C7FA2F8005EC90D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A1C2B8E31CB4192100389C8C /* arrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrows.png; sourceTree = "<group>"; };
 		A1C2B8E51CB427C500389C8C /* localization.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = localization.png; sourceTree = "<group>"; };
+		A1C2B8E71CB4318900389C8C /* FNASuggestionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNASuggestionsTableViewController.h; sourceTree = "<group>"; };
+		A1C2B8E81CB4318900389C8C /* FNASuggestionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNASuggestionsTableViewController.m; sourceTree = "<group>"; };
+		A1C2B8E91CB4318900389C8C /* FNASuggestionsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNASuggestionsTableViewController.xib; sourceTree = "<group>"; };
 		A1FE8E6D1C95911B0014A004 /* FNARoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNARoute.h; sourceTree = "<group>"; };
 		A1FE8E6E1C95911B0014A004 /* FNARoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNARoute.m; sourceTree = "<group>"; };
 		A1FE8E701C9594500014A004 /* FNARestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FNARestClient.h; path = "CTPATH-iOS/FNARestClient.h"; sourceTree = "<group>"; };
@@ -123,6 +128,9 @@
 			isa = PBXGroup;
 			children = (
 				A1B515A81C7F91E4005EC90D /* Map Controllers */,
+				A1C2B8E71CB4318900389C8C /* FNASuggestionsTableViewController.h */,
+				A1C2B8E81CB4318900389C8C /* FNASuggestionsTableViewController.m */,
+				A1C2B8E91CB4318900389C8C /* FNASuggestionsTableViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -295,6 +303,7 @@
 				A1B515AD1C7F925E005EC90D /* FNAMapViewController.xib in Resources */,
 				A1B5159E1C7F91C6005EC90D /* Assets.xcassets in Resources */,
 				A16C70401C8EE2BC001BBB16 /* FNAItineraryCell.xib in Resources */,
+				A1C2B8EB1CB4318900389C8C /* FNASuggestionsTableViewController.xib in Resources */,
 				A10654221C91D94900B11E67 /* FNAItineraryDetailView.xib in Resources */,
 				A1C2B8E61CB427C500389C8C /* localization.png in Resources */,
 				A16C703A1C8EC9BF001BBB16 /* FNAItinerariesView.xib in Resources */,
@@ -320,6 +329,7 @@
 				A106541D1C91CFC800B11E67 /* FNAColor.m in Sources */,
 				A16C703F1C8EE2BC001BBB16 /* FNAItineraryCell.m in Sources */,
 				A1B515AC1C7F925E005EC90D /* FNAMapViewController.m in Sources */,
+				A1C2B8EA1CB4318900389C8C /* FNASuggestionsTableViewController.m in Sources */,
 				A16C70381C8EC9AC001BBB16 /* FNAItinerariesView.m in Sources */,
 				A192C4161C889F0B009F956F /* FNADataSource.m in Sources */,
 			);
