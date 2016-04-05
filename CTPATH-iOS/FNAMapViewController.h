@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
-#define URL_API "http://mallba3.lcc.uma.es/otp/routers/default"
+#define URL_API @"http://mallba3.lcc.uma.es/otp/routers/default"
 
 @class FNAMapView;
 @class FNAItineraryDetailView;
@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *itinerariesButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *directionsButton;
 @property (strong,nonatomic) FNAItineraryDetailView * itinerary;
 
 -(IBAction) removeItinerariesView:(id)sender;

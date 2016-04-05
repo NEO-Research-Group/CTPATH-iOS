@@ -8,7 +8,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import "FNAMapViewController.h"
-#import "FNAAboutViewController.h"
 #import "FNAMapView.h"
 #import "FNARestClient.h"
 #import "FNADataSource.h"
@@ -50,7 +49,12 @@
     [self.mapView setDefaultRegion]; //TODO: Change in the future for user location
     [self setRightBarButtonItem:UIBarButtonSystemItemSearch];
     self.mapView.delegate = self;
-    [self removeCenterButtonItem];
+    
+    self.itinerariesButton.title = @"";
+    self.itinerariesButton.enabled = NO;
+    self.directionsButton.image = nil;
+    self.directionsButton.enabled = NO;
+    
 }
 
 - (void)viewDidLoad{
@@ -61,24 +65,25 @@
 
 #pragma mark - Utils
 
--(void) removeCenterButtonItem{
-    
-    NSMutableArray *toolbarButtons = [self.bottomToolbar.items mutableCopy];
-    [toolbarButtons removeObject:self.itinerariesButton];
-    [self.bottomToolbar setItems:toolbarButtons];
-}
+
 
 - (IBAction)removeItinerariesView:(id)sender {
 
+    self.directionsButton.image = nil;
+    self.directionsButton.enabled = NO;
+    
+    self.itinerariesButton.title = @"";
+    self.itinerariesButton.enabled = NO;
+    
     [UIView animateWithDuration:0.25 animations:^{
         
         self.itineraries.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
         self.itinerary.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
         
     } completion:^(BOOL finished) {
-        [self removeCenterButtonItem];
-        [self.itineraries removeFromSuperview];
-        [self.itinerary removeFromSuperview];
+       
+        [self removeSubviewsFromSuperview];
+        
         
     }];
 }
@@ -109,9 +114,14 @@
         [self setRightBarButtonItem:UIBarButtonSystemItemStop];
         
     }else{
-        [UIView transitionWithView:self.startSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
+        if(self.tableViewDisplayed){
+            [self showMap];
+        }else{
+            [UIView transitionWithView:self.startSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
+            
+            [UIView transitionWithView:self.goalSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
+        }
         
-        [UIView transitionWithView:self.goalSearchBar duration:0.5 options:UIViewAnimationOptionTransitionFlipFromBottom animations:nil completion:nil];
         
         self.startSearchBar.hidden = YES;
         
@@ -119,7 +129,7 @@
         
         [self setRightBarButtonItem:UIBarButtonSystemItemSearch];
         
-        [self showMap];
+        
         
         [self.startSearchBar resignFirstResponder];
         
@@ -138,6 +148,8 @@
 
 -(void) showSuggestions{
     
+    self.itinerariesButton.title = @"";
+    [self removeItinerariesView:nil];
     UIViewAnimationOptions options = UIViewAnimationOptionTransitionCrossDissolve |UIViewAnimationOptionShowHideTransitionViews;
     
     CGRect tableFrame = self.mapView.frame;
@@ -156,8 +168,7 @@
                       duration:0.25 options:options
                     completion:^(BOOL finished) {
                         self.tableViewDisplayed = YES;
-                        [self.itinerary removeFromSuperview];
-                        [self.itineraries removeFromSuperview];
+                        
                     }];
     
 }
@@ -222,9 +233,8 @@
     
     // Removing views already showed
     
-    [self.itineraries removeFromSuperview];
-    [self.itinerary removeFromSuperview];
-    [self removeCenterButtonItem];
+    [self removeSubviewsFromSuperview];
+    
     
     // Load itineraries tableView and initializing its properties
     
@@ -250,16 +260,15 @@
     
     // Add new button to close this new view
     
-    NSMutableArray *toolbarButtons = [self.bottomToolbar.items mutableCopy];
-    [toolbarButtons insertObject:self.itinerariesButton atIndex:2];
-    [self.bottomToolbar setItems:toolbarButtons];
+    self.itinerariesButton.enabled = YES;
+    self.itinerariesButton.title = @"Ocultar";
 }
 -(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint
                            goalPoint:(CLLocationCoordinate2D) goalPoint{
     
 #warning Preguntar si hay otra forma mejor de hacerlo, si cambia api modificar app
     
-    NSMutableString * finalURL = [NSMutableString stringWithFormat:@"%@/plan?",@URL_API];
+    NSMutableString * finalURL = [NSMutableString stringWithFormat:@"%@/plan?",URL_API];
     
     NSString * fromPlace = [NSString stringWithFormat:@"fromPlace=%f,%f&",startPoint.latitude,startPoint.longitude];
     
@@ -291,15 +300,13 @@
     return finalURL;
 }
 
--(IBAction) moveToInfoViewController:(id) sender{
-    // Remove views if exists
+-(void) removeSubviewsFromSuperview{
+    
     [self.itineraries removeFromSuperview];
     [self.itinerary removeFromSuperview];
     
-    // Create info controller and show it
-    FNAAboutViewController * infoVC = [FNAAboutViewController new];
-    [self.navigationController pushViewController:infoVC animated:YES];
 }
+
 
 #pragma mark - UIGestureRecognizer
 
@@ -506,14 +513,16 @@
         MKMapItem * mapItem = [self.dataSource mapItemAtIndex:indexPath.row];
         
         if(self.searchBarTag){
-            
+            [self.startSearchBar resignFirstResponder];
+            [self.mapView removeAnnotation:self.mapView.startAnnotation];
             self.mapView.startAnnotation = [MKPointAnnotation new];
             self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
             [self.mapView addAnnotation:self.mapView.startAnnotation];
             [self centerMapAtCoordinates:self.mapView.startAnnotation];
             
         }else{
-            
+            [self.goalSearchBar resignFirstResponder];
+            [self.mapView removeAnnotation:self.mapView.goalAnnotation];
             self.mapView.goalAnnotation = [MKPointAnnotation new];
             self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
             [self.mapView addAnnotation:self.mapView.goalAnnotation];
@@ -527,21 +536,23 @@
         
         // Selected cell is from FNAItinerariesView, so we create the FNAItineraryDetailView
         
-        [self.itineraries removeFromSuperview];
-        [self.itinerary removeFromSuperview];
+        [self removeSubviewsFromSuperview]; // Removing subviews already presented
+        
+        // Add directionsButton to toolbar
+        self.directionsButton.image = [UIImage imageNamed:@"arrows.png"];
+        self.directionsButton.enabled = YES;
         
         self.itinerary = [[[[NSBundle mainBundle]
-                           loadNibNamed:@"FNAItineraryDetailView" owner:nil options:nil]
-                          objectAtIndex:0] initWithRoute:self.route indexPath:indexPath];
+                            loadNibNamed:@"FNAItineraryDetailView" owner:nil options:nil]
+                           objectAtIndex:0]
+                          initWithRoute:self.route indexPath:indexPath delegate:self
+                          dataSource:self.dataSource];
         
-        self.itinerary.itinerariesView.dataSource = self.dataSource;
-        self.itinerary.itinerariesView.delegate = self;
-     
-        self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
-        
-        [self.view addSubview:self.itinerary];
+        // FNAItineraryDetailView appears at same position than FNAItinerariesView
         
         self.itinerary.frame = self.itineraries.frame;
+        
+        [self.view addSubview:self.itinerary];
         
         [UIView animateWithDuration:0.25 animations:^{
             self.itinerary.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
@@ -549,35 +560,44 @@
         
     }else{
         
-        // Selected cell is from FNAItineraryDetailView so, simply update model and subviews
+        // Selected cell is from FNAItineraryDetailView so, simply update models and update subviews
         
         self.itinerary.route = self.route; // Update model
         self.itinerary.indexPath = indexPath; // Update model
         [self.itinerary layoutSubviews]; // Update subviews
         
         [self.view addSubview:self.itinerary];
+        
+        // Keep routeColor for selected cell style
+        
+        FNAItineraryCell * cell = (FNAItineraryCell *)[tableView cellForRowAtIndexPath:indexPath];
+        
+        cell.routeColor.backgroundColor = [self.route routeColorAtIndex:indexPath.row];
     }
     
-    // Keep routeColor for selected style
-        
-    FNAItineraryCell * cell = (FNAItineraryCell *)[tableView cellForRowAtIndexPath:indexPath];
     
-    cell.routeColor.backgroundColor = [self.route routeColorAtIndex:indexPath.row];
+    
+    
     
 }
 
 // Functions to keep backgroundColor of routeColor
 
 - (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(![tableView isEqual:self.suggestionTableView]){
+        FNAItineraryCell * cell = (FNAItineraryCell *)[tableView cellForRowAtIndexPath:indexPath];
+        cell.routeColor.backgroundColor = [self.route routeColorAtIndex:indexPath.row];
+    }
     
-    FNAItineraryCell * cell = (FNAItineraryCell *)[tableView cellForRowAtIndexPath:indexPath];
-    cell.routeColor.backgroundColor = [self.route routeColorAtIndex:indexPath.row];
 }
 
 -(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    FNAItineraryCell * cell = (FNAItineraryCell *)[tableView cellForRowAtIndexPath:indexPath];
-    cell.routeColor.backgroundColor = [self.route routeColorAtIndex:indexPath.row];
+    if(![tableView isEqual:self.suggestionTableView]){
+        FNAItineraryCell * cell = (FNAItineraryCell *)[tableView cellForRowAtIndexPath:indexPath];
+        cell.routeColor.backgroundColor = [self.route routeColorAtIndex:indexPath.row];
+    }
+
 }
 
 @end

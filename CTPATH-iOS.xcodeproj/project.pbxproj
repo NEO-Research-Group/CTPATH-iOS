@@ -27,9 +27,8 @@
 		A1B515AD1C7F925E005EC90D /* FNAMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1B515AB1C7F925E005EC90D /* FNAMapViewController.xib */; };
 		A1B515AF1C7F9284005EC90D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B515AE1C7F9284005EC90D /* MapKit.framework */; };
 		A1B515B11C7FA2F8005EC90D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B515B01C7FA2F8005EC90D /* CoreLocation.framework */; };
-		A1B515B51C8074B2005EC90D /* localization.png in Resources */ = {isa = PBXBuildFile; fileRef = A1B515B41C8074B2005EC90D /* localization.png */; };
-		A1D6E4101C81E9310066E310 /* FNAAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1D6E40E1C81E9310066E310 /* FNAAboutViewController.m */; };
-		A1D6E4111C81E9310066E310 /* FNAAboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1D6E40F1C81E9310066E310 /* FNAAboutViewController.xib */; };
+		A1C2B8E41CB4192100389C8C /* arrows.png in Resources */ = {isa = PBXBuildFile; fileRef = A1C2B8E31CB4192100389C8C /* arrows.png */; };
+		A1C2B8E61CB427C500389C8C /* localization.png in Resources */ = {isa = PBXBuildFile; fileRef = A1C2B8E51CB427C500389C8C /* localization.png */; };
 		A1FE8E6F1C95911B0014A004 /* FNARoute.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E6E1C95911B0014A004 /* FNARoute.m */; };
 		A1FE8E721C9594500014A004 /* FNARestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E711C9594500014A004 /* FNARestClient.m */; };
 /* End PBXBuildFile section */
@@ -65,10 +64,8 @@
 		A1B515AB1C7F925E005EC90D /* FNAMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAMapViewController.xib; sourceTree = "<group>"; };
 		A1B515AE1C7F9284005EC90D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A1B515B01C7FA2F8005EC90D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		A1B515B41C8074B2005EC90D /* localization.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = localization.png; sourceTree = "<group>"; };
-		A1D6E40D1C81E9310066E310 /* FNAAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAAboutViewController.h; sourceTree = "<group>"; };
-		A1D6E40E1C81E9310066E310 /* FNAAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAAboutViewController.m; sourceTree = "<group>"; };
-		A1D6E40F1C81E9310066E310 /* FNAAboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAAboutViewController.xib; sourceTree = "<group>"; };
+		A1C2B8E31CB4192100389C8C /* arrows.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrows.png; sourceTree = "<group>"; };
+		A1C2B8E51CB427C500389C8C /* localization.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = localization.png; sourceTree = "<group>"; };
 		A1FE8E6D1C95911B0014A004 /* FNARoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNARoute.h; sourceTree = "<group>"; };
 		A1FE8E6E1C95911B0014A004 /* FNARoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNARoute.m; sourceTree = "<group>"; };
 		A1FE8E701C9594500014A004 /* FNARestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FNARestClient.h; path = "CTPATH-iOS/FNARestClient.h"; sourceTree = "<group>"; };
@@ -125,7 +122,6 @@
 		A192C4011C84B263009F956F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A1D6E40C1C81E90B0066E310 /* InfoControllers */,
 				A1B515A81C7F91E4005EC90D /* Map Controllers */,
 			);
 			name = Controllers;
@@ -160,10 +156,11 @@
 		A1B5158B1C7F91C6005EC90D = {
 			isa = PBXGroup;
 			children = (
-				A1B515B41C8074B2005EC90D /* localization.png */,
+				A1C2B8E51CB427C500389C8C /* localization.png */,
 				A14B82E91CAD734B009B6C41 /* clock.png */,
 				A14B82EA1CAD734B009B6C41 /* flag.png */,
 				A14B82EB1CAD734B009B6C41 /* time.png */,
+				A1C2B8E31CB4192100389C8C /* arrows.png */,
 				A1B515961C7F91C6005EC90D /* CTPATH-iOS */,
 				A1B515951C7F91C6005EC90D /* Products */,
 				A1D6E40B1C811E420066E310 /* Frameworks */,
@@ -224,16 +221,6 @@
 				A1B515AE1C7F9284005EC90D /* MapKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A1D6E40C1C81E90B0066E310 /* InfoControllers */ = {
-			isa = PBXGroup;
-			children = (
-				A1D6E40D1C81E9310066E310 /* FNAAboutViewController.h */,
-				A1D6E40E1C81E9310066E310 /* FNAAboutViewController.m */,
-				A1D6E40F1C81E9310066E310 /* FNAAboutViewController.xib */,
-			);
-			name = InfoControllers;
 			sourceTree = "<group>";
 		};
 		A1FE8E691C958CDC0014A004 /* Models */ = {
@@ -305,15 +292,15 @@
 			files = (
 				A14B82EC1CAD734B009B6C41 /* clock.png in Resources */,
 				A14B82ED1CAD734B009B6C41 /* flag.png in Resources */,
-				A1B515B51C8074B2005EC90D /* localization.png in Resources */,
-				A1D6E4111C81E9310066E310 /* FNAAboutViewController.xib in Resources */,
 				A1B515AD1C7F925E005EC90D /* FNAMapViewController.xib in Resources */,
 				A1B5159E1C7F91C6005EC90D /* Assets.xcassets in Resources */,
 				A16C70401C8EE2BC001BBB16 /* FNAItineraryCell.xib in Resources */,
 				A10654221C91D94900B11E67 /* FNAItineraryDetailView.xib in Resources */,
+				A1C2B8E61CB427C500389C8C /* localization.png in Resources */,
 				A16C703A1C8EC9BF001BBB16 /* FNAItinerariesView.xib in Resources */,
 				A14B82EE1CAD734B009B6C41 /* time.png in Resources */,
 				A1B515A11C7F91C6005EC90D /* LaunchScreen.storyboard in Resources */,
+				A1C2B8E41CB4192100389C8C /* arrows.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +317,6 @@
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,
 				A10654201C91D93600B11E67 /* FNAItineraryDetailView.m in Sources */,
 				A1FE8E6F1C95911B0014A004 /* FNARoute.m in Sources */,
-				A1D6E4101C81E9310066E310 /* FNAAboutViewController.m in Sources */,
 				A106541D1C91CFC800B11E67 /* FNAColor.m in Sources */,
 				A16C703F1C8EE2BC001BBB16 /* FNAItineraryCell.m in Sources */,
 				A1B515AC1C7F925E005EC90D /* FNAMapViewController.m in Sources */,

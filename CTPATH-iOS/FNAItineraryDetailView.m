@@ -12,11 +12,14 @@
 @implementation FNAItineraryDetailView
 
 
--(id) initWithRoute:(FNARoute *)route indexPath:(NSIndexPath *) indexPath{
+-(id) initWithRoute:(FNARoute *)route indexPath:(NSIndexPath *) indexPath delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
     
     if(self = [super init]){
         _route = route;
         _indexPath = indexPath;
+        self.itinerariesView.dataSource = dataSource;
+        self.itinerariesView.delegate = delegate;
+        
     }
     
     return self;

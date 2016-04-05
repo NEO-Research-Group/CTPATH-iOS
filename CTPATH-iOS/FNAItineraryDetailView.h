@@ -24,6 +24,6 @@
 @property (weak, nonatomic) IBOutlet UIView *pollutionView;
 @property (weak, nonatomic) IBOutlet UIView *routeColor;
 
--(id) initWithRoute:(FNARoute *) route indexPath:(NSIndexPath *) indexPath;
+-(id) initWithRoute:(FNARoute *) route indexPath:(NSIndexPath *) indexPath delegate:(id<UITableViewDelegate>) delegate dataSource:(id<UITableViewDataSource>) dataSource;
 
 @end

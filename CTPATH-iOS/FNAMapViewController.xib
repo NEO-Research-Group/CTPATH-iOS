@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="activityView" destination="cVL-hx-E4E" id="E4r-xI-xeQ"/>
                 <outlet property="bottomToolbar" destination="mXr-yO-UMB" id="S7w-Gm-E9s"/>
+                <outlet property="directionsButton" destination="J7J-G6-lDF" id="Jtg-pV-vvL"/>
                 <outlet property="goalSearchBar" destination="vYd-Wr-nbL" id="tqP-yj-uRy"/>
                 <outlet property="itinerariesButton" destination="mTy-KT-haK" id="vug-z6-DKv"/>
                 <outlet property="mapView" destination="4Oe-55-78U" id="AZ1-Ky-urV"/>
@@ -45,15 +46,11 @@
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mXr-yO-UMB">
                     <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                     <items>
-                        <barButtonItem style="plain" id="J7J-G6-lDF">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="49S-Ro-a8F">
-                                <rect key="frame" x="20" y="11" width="22" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <action selector="moveToInfoViewController:" destination="-1" eventType="touchUpInside" id="6dM-zz-jYP"/>
-                                </connections>
-                            </button>
+                        <barButtonItem image="localization.png" id="YZ8-4T-gd6">
+                            <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="centerMapAtCoordinates:" destination="-1" id="ilg-eX-cfC"/>
+                            </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ncl-vC-5NV"/>
                         <barButtonItem title="Ocultar" style="plain" id="mTy-KT-haK">
@@ -62,11 +59,8 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="HuA-jB-ZEQ"/>
-                        <barButtonItem image="localization.png" id="YZ8-4T-gd6">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="centerMapAtCoordinates:" destination="-1" id="ilg-eX-cfC"/>
-                            </connections>
+                        <barButtonItem image="arrows.png" style="plain" id="J7J-G6-lDF">
+                            <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
                     </items>
                     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -100,6 +94,7 @@
         </view>
     </objects>
     <resources>
-        <image name="localization.png" width="32" height="32"/>
+        <image name="arrows.png" width="24" height="24"/>
+        <image name="localization.png" width="24" height="24"/>
     </resources>
 </document>

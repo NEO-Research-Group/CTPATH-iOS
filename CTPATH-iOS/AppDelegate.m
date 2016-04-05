@@ -20,15 +20,13 @@
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"Helvetica" size:23.0]}];
-    [[UIToolbar appearance] setBarTintColor:orangeCTPath];
-    [[UIToolbar appearance] setTintColor:orangeCTPath];
-    [[UIToolbar appearance] setTranslucent:NO];
+
     
     UIColor *creamColor = [FNAColor creamColorWithAlpha:1.0];
     
     [[UISearchBar appearance] setBarTintColor:creamColor];
     
-    [[UIBarButtonItem appearance] setTintColor:[UIColor blackColor]];
+    
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
