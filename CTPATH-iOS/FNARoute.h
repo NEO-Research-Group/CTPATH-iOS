@@ -24,7 +24,7 @@
 -(NSString *) durationAtIndex:(NSUInteger) index;
 -(NSString *) pointsForItinerary:(NSDictionary *) itinerary;
 -(UIColor *) routeColorAtIndex:(NSUInteger) index;
-
+-(NSArray*) stepsForItinerary:(NSDictionary *) itinerary;
 
 -(NSString *)carbonMonoxideForItinerary:(NSDictionary *) itinerary;
 -(NSString *)carbonDioxideForItinerary:(NSDictionary *) itinerary;

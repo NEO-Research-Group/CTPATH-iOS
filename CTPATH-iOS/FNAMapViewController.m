@@ -54,7 +54,7 @@
     
     
     self.directionsButton.image = nil;
-    self.directionsButton.enabled = NO;
+
     
     [self setRightBarButtonItem];
     [self setLeftBarButtonItem];
@@ -97,6 +97,27 @@
 
 - (IBAction)showDirections:(id)sender {
     
+    self.itinerariesButton.title = @"";
+    
+    self.directionsTableView = [[[NSBundle mainBundle] loadNibNamed:@"FNADirectionsTableView" owner:self options:nil] objectAtIndex:0];
+    
+    self.directionsTableView.directions = [self.route stepsForItinerary:[self.route itineraryAtIndex:self.itinerary.indexPath.row]];
+    
+    
+    self.directionsTableView.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, self.itinerary.frame.size.height);
+    
+    
+    [self.view addSubview:self.directionsTableView];
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        self.directionsTableView.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
+    } completion:^(BOOL finished) {
+        self.directionsButton.image = nil;
+        self.directionsButton.title = @"Ocultar";
+        self.directionsButton.action = @selector(removeDirectionsTableView);
+        
+    }];
+    
   
     
 }
@@ -106,10 +127,26 @@
     
 }
 
+-(void) removeDirectionsTableView{
+    
+    self.directionsButton.title = @"";
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        self.directionsTableView.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.height, self.directionsTableView.frame.size.height);
+    } completion:^(BOOL finished) {
+        [self.directionsTableView removeFromSuperview];
+        self.directionsButton.image = nil;
+        self.directionsButton.action = @selector(showDirections:);
+        self.itinerariesButton.title = @"Ocultar";
+    }];
+    
+
+    
+}
+
 - (IBAction)removeItinerariesView:(id)sender {
     
-    self.directionsButton.image = nil;
-    self.directionsButton.enabled = NO;
+    
     
     self.itinerariesButton.title = @"Mostrar";
     self.itinerariesButton.action = @selector(showItinerariesTableView);
@@ -156,9 +193,7 @@
     if(self.dataSource.route){
         self.itinerariesButton.title = @"Mostrar";
         self.itinerariesButton.action = @selector(showItinerariesTableView);
-    }else{
-        self.itinerariesButton.title = @"";
-        self.itinerariesButton.action = @selector(removeItinerariesView:);
+
     }
     
 }
@@ -208,7 +243,7 @@
     
     // Add new button to close this new view
     
-    self.itinerariesButton.enabled = YES;
+    
     self.itinerariesButton.title = @"Ocultar";
     self.itinerariesButton.action = @selector(removeItinerariesView:);
 }
@@ -449,7 +484,7 @@
         
         // Add directionsButton to toolbar
         self.directionsButton.image = [UIImage imageNamed:@"arrows.png"];
-        self.directionsButton.enabled = YES;
+
         
         self.itinerary = [[[[NSBundle mainBundle]
                             loadNibNamed:@"FNAItineraryDetailView" owner:nil options:nil]

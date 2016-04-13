@@ -10,4 +10,6 @@
 
 @interface FNADirectionsCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *directionImage;
+@property (weak, nonatomic) IBOutlet UILabel *direction;
 @end

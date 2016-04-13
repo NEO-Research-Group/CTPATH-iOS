@@ -21,12 +21,14 @@
 		A1780C171CBE409D00992960 /* FNADirectionsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1780C161CBE409D00992960 /* FNADirectionsTableView.xib */; };
 		A1780C1B1CBE445400992960 /* FNADirectionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1780C191CBE445400992960 /* FNADirectionsCell.m */; };
 		A1780C1C1CBE445400992960 /* FNADirectionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1A1CBE445400992960 /* FNADirectionsCell.xib */; };
-		A1780C231CBE4D6700992960 /* arrows-3.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1D1CBE4D6700992960 /* arrows-3.png */; };
+		A1780C231CBE4D6700992960 /* ahead.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1D1CBE4D6700992960 /* ahead.png */; };
 		A1780C241CBE4D6700992960 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1E1CBE4D6700992960 /* down.png */; };
 		A1780C251CBE4D6700992960 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1F1CBE4D6700992960 /* left.png */; };
 		A1780C261CBE4D6700992960 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C201CBE4D6700992960 /* right.png */; };
 		A1780C271CBE4D6700992960 /* soft_left.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C211CBE4D6700992960 /* soft_left.png */; };
 		A1780C281CBE4D6700992960 /* soft_right.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C221CBE4D6700992960 /* soft_right.png */; };
+		A1780C2B1CBEB13F00992960 /* FNAStepParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A1780C2A1CBEB13F00992960 /* FNAStepParser.m */; };
+		A1780C2D1CBEE0C300992960 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C2C1CBEE0C300992960 /* circle.png */; };
 		A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C3FE1C84AF35009F956F /* FNAMapView.m */; };
 		A192C4161C889F0B009F956F /* FNADataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4151C889F0B009F956F /* FNADataSource.m */; };
 		A1B515991C7F91C6005EC90D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B515981C7F91C6005EC90D /* main.m */; };
@@ -66,12 +68,15 @@
 		A1780C181CBE445400992960 /* FNADirectionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNADirectionsCell.h; sourceTree = "<group>"; };
 		A1780C191CBE445400992960 /* FNADirectionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNADirectionsCell.m; sourceTree = "<group>"; };
 		A1780C1A1CBE445400992960 /* FNADirectionsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNADirectionsCell.xib; sourceTree = "<group>"; };
-		A1780C1D1CBE4D6700992960 /* arrows-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrows-3.png"; sourceTree = "<group>"; };
+		A1780C1D1CBE4D6700992960 /* ahead.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ahead.png; sourceTree = "<group>"; };
 		A1780C1E1CBE4D6700992960 /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		A1780C1F1CBE4D6700992960 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
 		A1780C201CBE4D6700992960 /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right.png; sourceTree = "<group>"; };
 		A1780C211CBE4D6700992960 /* soft_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soft_left.png; sourceTree = "<group>"; };
 		A1780C221CBE4D6700992960 /* soft_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soft_right.png; sourceTree = "<group>"; };
+		A1780C291CBEB13F00992960 /* FNAStepParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAStepParser.h; sourceTree = "<group>"; };
+		A1780C2A1CBEB13F00992960 /* FNAStepParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAStepParser.m; sourceTree = "<group>"; };
+		A1780C2C1CBEE0C300992960 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
 		A192C3FD1C84AF35009F956F /* FNAMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAMapView.h; sourceTree = "<group>"; };
 		A192C3FE1C84AF35009F956F /* FNAMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAMapView.m; sourceTree = "<group>"; };
 		A192C4141C889F0B009F956F /* FNADataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNADataSource.h; sourceTree = "<group>"; };
@@ -148,6 +153,8 @@
 				A192C3FE1C84AF35009F956F /* FNAMapView.m */,
 				A106541B1C91CFC800B11E67 /* FNAColor.h */,
 				A106541C1C91CFC800B11E67 /* FNAColor.m */,
+				A1780C291CBEB13F00992960 /* FNAStepParser.h */,
+				A1780C2A1CBEB13F00992960 /* FNAStepParser.m */,
 			);
 			name = "Other Classes";
 			sourceTree = "<group>";
@@ -197,12 +204,13 @@
 				A14B82EA1CAD734B009B6C41 /* flag.png */,
 				A14B82EB1CAD734B009B6C41 /* time.png */,
 				A1C2B8E31CB4192100389C8C /* arrows.png */,
-				A1780C1D1CBE4D6700992960 /* arrows-3.png */,
+				A1780C1D1CBE4D6700992960 /* ahead.png */,
 				A1780C1E1CBE4D6700992960 /* down.png */,
 				A1780C1F1CBE4D6700992960 /* left.png */,
 				A1780C201CBE4D6700992960 /* right.png */,
 				A1780C211CBE4D6700992960 /* soft_left.png */,
 				A1780C221CBE4D6700992960 /* soft_right.png */,
+				A1780C2C1CBEE0C300992960 /* circle.png */,
 				A1B515961C7F91C6005EC90D /* CTPATH-iOS */,
 				A1B515951C7F91C6005EC90D /* Products */,
 				A1D6E40B1C811E420066E310 /* Frameworks */,
@@ -345,11 +353,12 @@
 				A1780C271CBE4D6700992960 /* soft_left.png in Resources */,
 				A1780C281CBE4D6700992960 /* soft_right.png in Resources */,
 				A1780C1C1CBE445400992960 /* FNADirectionsCell.xib in Resources */,
+				A1780C2D1CBEE0C300992960 /* circle.png in Resources */,
 				A1780C171CBE409D00992960 /* FNADirectionsTableView.xib in Resources */,
 				A1C2B8E61CB427C500389C8C /* localization.png in Resources */,
 				A16C703A1C8EC9BF001BBB16 /* FNAItinerariesTableView.xib in Resources */,
 				A14B82EE1CAD734B009B6C41 /* time.png in Resources */,
-				A1780C231CBE4D6700992960 /* arrows-3.png in Resources */,
+				A1780C231CBE4D6700992960 /* ahead.png in Resources */,
 				A1B515A11C7F91C6005EC90D /* LaunchScreen.storyboard in Resources */,
 				A1C2B8E41CB4192100389C8C /* arrows.png in Resources */,
 			);
@@ -363,6 +372,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */,
+				A1780C2B1CBEB13F00992960 /* FNAStepParser.m in Sources */,
 				A1FE8E721C9594500014A004 /* FNARestClient.m in Sources */,
 				A1B5159C1C7F91C6005EC90D /* AppDelegate.m in Sources */,
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,

@@ -8,15 +8,21 @@
 
 #import "FNADirectionsTableView.h"
 #import "FNADirectionsCell.h"
+#import "FNAStepParser.h"
 @implementation FNADirectionsTableView
 
 -(void) awakeFromNib{
     
     [self.tableView registerNib:[UINib nibWithNibName:@"FNADirectionsCell"
                                                           bundle:nil] forCellReuseIdentifier:@"directionsCell"];
+    self.tableView.dataSource = self;
+    
+    self.parser = [FNAStepParser new];
     
     
 }
+
+#pragma mark - DataSource
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -28,8 +34,16 @@
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    FNADirectionsCell * cell = [tableView dequeueReusableCellWithIdentifier:@"directionsCell"];
     
-    return [FNADirectionsCell new];
+    
+    cell.direction.text = [self.parser directionWithStep:[self.directions objectAtIndex:indexPath.row]];
+    cell.directionImage.image = [self.parser imageWithStep:[self.directions objectAtIndex:indexPath.row]];
+    
+    return cell;
+    
+    
+    
 }
 
 @end

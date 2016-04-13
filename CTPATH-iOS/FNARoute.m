@@ -84,9 +84,16 @@
     }
     return color;
 }
+
 -(NSString *) pointsForItinerary:(NSDictionary *) itinerary{
     
     return [[[[itinerary objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"legGeometry"] objectForKey:@"points"];
+    
+    
+}
+-(NSArray *) stepsForItinerary:(NSDictionary *) itinerary{
+    
+    return [[[itinerary objectForKey:@"legs"] objectAtIndex:0] objectForKey:@"steps"];
     
     
 }

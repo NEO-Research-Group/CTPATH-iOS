@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class FNAStepParser;
 @interface FNADirectionsTableView : UIView <UITableViewDataSource>
 
 @property (strong,nonatomic) NSArray * directions;
+
+@property (strong,nonatomic) FNAStepParser * parser;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 

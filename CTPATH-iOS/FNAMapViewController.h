@@ -17,7 +17,7 @@
 @class FNAItineraryDetailView;
 @class FNARoute;
 @class FNARestClient;
-
+@class FNADirectionsTableView;
 
 @interface FNAMapViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate,UITableViewDelegate,UISearchBarDelegate,FNASuggestionsTableViewDelegate>
 
@@ -34,6 +34,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *itinerariesButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *directionsButton;
 @property (strong,nonatomic) FNAItineraryDetailView * itinerary;
+@property (strong,nonatomic) FNADirectionsTableView * directionsTableView;
 
 -(IBAction) removeItinerariesView:(id)sender;
 -(IBAction) centerMapAtCoordinates:(id) sender;
