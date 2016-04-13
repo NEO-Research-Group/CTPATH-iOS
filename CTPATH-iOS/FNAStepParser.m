@@ -10,7 +10,7 @@
 
 @interface FNAStepParser ()
 
-- (NSString *) parseRelativeDirection:(NSString *) relativeDirection;
+- (NSString *) parseRelativeDirectionWithStep:(NSDictionary *) step;
 
 -(NSString *) parseStreetName:(NSString *) streetName;
 
@@ -20,7 +20,7 @@
 
 -(NSString *) directionWithStep:(NSDictionary *)step{
     
-    return [NSString stringWithFormat:@"%@ %@",[self parseRelativeDirection:[step objectForKey:@"relativeDirection"]],[self parseStreetName:[step objectForKey:@"streetName"]]];
+    return [NSString stringWithFormat:@"%@ %@",[self parseRelativeDirectionWithStep:step],[self parseStreetName:[step objectForKey:@"streetName"]]];
     
 }
 
@@ -31,23 +31,24 @@
 }
 
 
--(NSString *) parseRelativeDirection:(NSString *)relativeDirection{
+-(NSString *) parseRelativeDirectionWithStep:(NSDictionary *) step{
     
     NSString * parsedRelativeDirection;
+    NSString * relativeDirection = [step objectForKey:@"relativeDirection"];
     
     if([relativeDirection isEqualToString:DEPART]){
         parsedRelativeDirection = @"Sal en dirección";
     }else if([relativeDirection isEqualToString:CONTINUE]){
         parsedRelativeDirection = @"Continúa en dirección";
     }else if([relativeDirection isEqualToString:CIRCLE_COUNTERCLOCKWISE]){
-        parsedRelativeDirection = @"Gira en la glorieta en dirección";
+        parsedRelativeDirection = [NSString stringWithFormat:@"Tome la rotonda y salga por la %@ salida en dirección",[self ordinalForExit:[step objectForKey:@"exit"]]];
     }else if([relativeDirection isEqualToString:SLIGHTLY_LEFT]){
         parsedRelativeDirection = @"Gira levemente a la izquierda por";
     }else if([relativeDirection isEqualToString:SLIGHTLY_RIGHT]){
         parsedRelativeDirection = @"Gira levemente a la derecha por";
     }else if([relativeDirection isEqualToString:LEFT]){
         parsedRelativeDirection = @"Gira a la izquierda por";
-    }else if([relativeDirection isEqualToString:RIGHT]){
+    }else if([relativeDirection isEqualToString:RIGHT] || [relativeDirection isEqualToString:HARD_RIGHT]){
         parsedRelativeDirection = @"Gira a la derecha por";
     }else{
         parsedRelativeDirection = @"";
@@ -86,7 +87,30 @@
     return imageForRelativeDirection;
 }
 
-
+-(NSString *) ordinalForExit:(NSString *) exit{
+    NSString * ordinal;
+    
+    if ([exit isEqualToString:@"1"]) {
+        ordinal = @"primera";
+    }else if([exit isEqualToString:@"2"]){
+        ordinal = @"segunda";
+    }else if([exit isEqualToString:@"3"]){
+        ordinal = @"tercera";
+    }else if([exit isEqualToString:@"4"]){
+        ordinal = @"cuarta";
+    }else if([exit isEqualToString:@"5"]){
+        ordinal = @"quinta";
+    }else if([exit isEqualToString:@"6"]){
+        ordinal = @"sexta";
+    }else if([exit isEqualToString:@"7"]){
+        ordinal = @"septima";
+    }else if([exit isEqualToString:@"8"]){
+        ordinal = @"octava";
+    }
+    
+    return ordinal;
+    
+}
 
 
 @end

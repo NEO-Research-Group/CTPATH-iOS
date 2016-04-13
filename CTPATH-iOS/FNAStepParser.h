@@ -15,8 +15,9 @@
 #define SLIGHTLY_LEFT @"SLIGHTLY_LEFT"
 #define SLIGHTLY_RIGHT @"SLIGHTLY_RIGHT"
 #define LEFT @"LEFT"
+#define HARD_LEFT @"HARD_LEFT"
 #define RIGHT @"RIGHT"
-
+#define HARD_RIGHT @"HARD_RIGHT"
 @interface FNAStepParser : NSObject
 
 -(NSString *) directionWithStep:(NSDictionary *) step;
