@@ -11,6 +11,8 @@
 #import "FNASuggestionsTableViewController.h"
 #define URL_API @"http://mallba3.lcc.uma.es/otp/routers/default"
 
+#define SUGGESTIONS_APPEAR_NOTIFICATION_NAME  @"SUGGESTIONS_APPEAR_NOTIFICATION"
+
 @class FNAMapView;
 @class FNAItineraryDetailView;
 @class FNARoute;
@@ -35,4 +37,6 @@
 
 -(IBAction) removeItinerariesView:(id)sender;
 -(IBAction) centerMapAtCoordinates:(id) sender;
+- (IBAction)showDirections:(id)sender;
+
 @end

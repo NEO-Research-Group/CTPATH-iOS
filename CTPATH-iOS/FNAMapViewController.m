@@ -11,18 +11,19 @@
 #import "FNAMapView.h"
 #import "FNARestClient.h"
 #import "FNADataSource.h"
-#import "FNAItinerariesView.h"
+#import "FNAItinerariesTableView.h"
 #import "FNAItineraryCell.h"
 #import "FNAColor.h"
 #import "FNAItineraryDetailView.h"
 #import "FNARoute.h"
+#import "FNADirectionsTableView.h"
 
 
 @interface FNAMapViewController ()
 
 @property (strong,nonatomic) FNADataSource * dataSource;
 @property (nonatomic) BOOL tableViewDisplayed; // Must be implemented by a protocol or notification
-@property (strong,nonatomic) FNAItinerariesView * itineraries;
+@property (strong,nonatomic) FNAItinerariesTableView * itineraries;
 
 /*!@brief YES for editing start point, NO for editing goal point */
 @property (nonatomic) BOOL searchBarTag;
@@ -40,6 +41,7 @@
     
     return self;
 }
+# pragma mark - Lifecycle
 
 -(void)viewWillAppear:(BOOL)animated{
     
@@ -50,32 +52,67 @@
     [self.mapView setDefaultRegion]; //TODO: Change in the future for user location
     self.mapView.delegate = self;
     
-    self.itinerariesButton.title = @"";
-    self.itinerariesButton.enabled = NO;
+    
     self.directionsButton.image = nil;
     self.directionsButton.enabled = NO;
     
     [self setRightBarButtonItem];
+    [self setLeftBarButtonItem];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(suggestionsViewWillAppear:) name:SUGGESTIONS_APPEAR_NOTIFICATION_NAME object:nil];
+    
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad{
+    [super viewDidLoad];
     
     [self declareGestureRecognizers];
     [self startGettingUserLocation];
 }
 
-#pragma mark - Utils
+#pragma mark - Selectors
 
+-(void) showSuggestions{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SUGGESTIONS_APPEAR_NOTIFICATION_NAME object:nil];
+    
+    
+    [self removeSubviewsFromSuperview];
+    
+    FNASuggestionsTableViewController * suggestionsTVC =[[FNASuggestionsTableViewController alloc] init];
+    
+    suggestionsTVC.delegate = self;
+    
+    [self presentViewController:[[UINavigationController alloc]initWithRootViewController:suggestionsTVC] animated:YES completion:nil];
+    
+}
 
+- (IBAction)showDirections:(id)sender {
+    
+  
+    
+}
+
+-(void) openOptions{
+    
+    
+}
 
 - (IBAction)removeItinerariesView:(id)sender {
-
+    
     self.directionsButton.image = nil;
     self.directionsButton.enabled = NO;
     
-    self.itinerariesButton.title = @"";
-    self.itinerariesButton.enabled = NO;
+    self.itinerariesButton.title = @"Mostrar";
+    self.itinerariesButton.action = @selector(showItinerariesTableView);
     
     [UIView animateWithDuration:0.25 animations:^{
         
@@ -83,12 +120,15 @@
         self.itinerary.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
         
     } completion:^(BOOL finished) {
-       
+        
         [self removeSubviewsFromSuperview];
         
         
     }];
 }
+
+#pragma mark - Utils
+
 
 -(void) setRightBarButtonItem{
     
@@ -100,60 +140,30 @@
     
 }
 
-
--(void) showSuggestions{
+-(void) setLeftBarButtonItem{
     
-    FNASuggestionsTableViewController * suggestionsTVC =[[FNASuggestionsTableViewController alloc] init];
-    
-    suggestionsTVC.delegate = self;
-    
-    [self presentViewController:[[UINavigationController alloc]initWithRootViewController:suggestionsTVC] animated:YES completion:nil];
+    UIBarButtonItem *optionsButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(openOptions)];
+    self.navigationItem.leftBarButtonItem = optionsButton;
     
 }
 
--(void) findPath{
+
+
+// SUGGESTIONS_APPEAR_NOTIFICATION
+-(void) suggestionsViewWillAppear:(NSNotification *) notification{
     
-    if(self.mapView.goalAnnotation){ // Modify with notification
-        
-        [self.activityView startAnimating];
-        
-        dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        dispatch_async(findPathQueue, ^{
-        
-            NSString * url = [self getURLForRoutingService:self.mapView.startAnnotation.coordinate
-                                             goalPoint:self.mapView.goalAnnotation.coordinate];
-        
-            self.route = [[FNARoute alloc] initWithRoute:[self.restclient getJSONFromURL:url]];
-            if(!self.route){
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    [self.activityView stopAnimating];
-                    
-                    [self presentAlertViewControllerWithTitle:@"Error inesperado" message:@"Comprueba tu conexión a internet"];
-                });
-                
-            }else if(self.route.error){
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    [self.activityView stopAnimating];
-                    
-                    [self presentAlertViewControllerWithTitle:@"¡Lo sentimos!" message:@"No se han encontrado rutas entre estos dos puntos"];
-                });
-                
-            }else{
-                // Changes in views must be done at main thread
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    [self.mapView drawPath:self.route];
-                    [self.activityView stopAnimating];
-                    [self showItinerariesTableView];
-                });
-            }
-            
-        });
+    if(self.dataSource.route){
+        self.itinerariesButton.title = @"Mostrar";
+        self.itinerariesButton.action = @selector(showItinerariesTableView);
+    }else{
+        self.itinerariesButton.title = @"";
+        self.itinerariesButton.action = @selector(removeItinerariesView:);
     }
+    
 }
+
+
 -(void)presentAlertViewControllerWithTitle:(NSString *) title message:(NSString *) message{
     
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -176,7 +186,7 @@
     
     // Load itineraries tableView and initializing its properties
     
-    self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesView" owner:nil options:nil] objectAtIndex:0];
+    self.itineraries = [[[NSBundle mainBundle] loadNibNamed:@"FNAItinerariesTableView" owner:nil options:nil] objectAtIndex:0];
     
     self.itineraries.itinerariesTableView.dataSource = self.dataSource;
     self.itineraries.itinerariesTableView.delegate = self;
@@ -200,6 +210,7 @@
     
     self.itinerariesButton.enabled = YES;
     self.itinerariesButton.title = @"Ocultar";
+    self.itinerariesButton.action = @selector(removeItinerariesView:);
 }
 -(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint
                            goalPoint:(CLLocationCoordinate2D) goalPoint{
@@ -284,6 +295,8 @@
     }
 }
 
+
+
 -(void) startGettingUserLocation{
     
     // CLLocationManager is in charge of getting user's location
@@ -294,30 +307,50 @@
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [self.locationManager startUpdatingLocation];  
 }
--(void) searchSuggestionsWithSearchText:(NSString *) searchText{
-    
-    MKLocalSearchRequest *request = [MKLocalSearchRequest new];
-    
-    request.naturalLanguageQuery = searchText; // Inserted text for searching
-    request.region = self.mapView.region;
-    MKLocalSearch * searcher = [[MKLocalSearch alloc] initWithRequest:request];
-    
-    [searcher startWithCompletionHandler:^(MKLocalSearchResponse * response, NSError * error) {
-        
-        if (response.mapItems.count > 0) { // Almost 1 result found
-            
-            // Update model and tableview
-            
-            self.dataSource.suggestions = response.mapItems;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.suggestionTableView reloadData];
-            });
-        }
-        
-    }];
 
+-(void) findPath{
     
+    if(self.mapView.goalAnnotation){ // Modify with notification
+        
+        [self.activityView startAnimating];
+        
+        dispatch_queue_t findPathQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(findPathQueue, ^{
+            
+            NSString * url = [self getURLForRoutingService:self.mapView.startAnnotation.coordinate
+                                                 goalPoint:self.mapView.goalAnnotation.coordinate];
+            
+            self.route = [[FNARoute alloc] initWithRoute:[self.restclient getJSONFromURL:url]];
+            if(self.route.error){
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self.activityView stopAnimating];
+                    
+                    [self presentAlertViewControllerWithTitle:@"¡Lo sentimos!" message:@"No se han encontrado rutas entre estos dos puntos"];
+                });
+                
+            }else if(!self.route){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self.activityView stopAnimating];
+                    
+                    
+                    [self presentAlertViewControllerWithTitle:@"Error inesperado" message:@"Comprueba tu conexión a internet"];
+                });
+                
+            }else{
+                // Changes in views must be done at main thread
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [self.mapView drawPath:self.route];
+                    [self.activityView stopAnimating];
+                    [self showItinerariesTableView];
+                });
+            }
+            
+        });
+    }
 }
 
 #pragma mark - MapView Delegate

@@ -6,9 +6,9 @@
 //  Copyright © 2016 fran. All rights reserved.
 //
 
-#import "FNAItinerariesView.h"
+#import "FNAItinerariesTableView.h"
 
-@implementation FNAItinerariesView
+@implementation FNAItinerariesTableView
 
 
 

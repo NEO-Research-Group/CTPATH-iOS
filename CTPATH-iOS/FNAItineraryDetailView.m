@@ -7,7 +7,7 @@
 //
 
 #import "FNAItineraryDetailView.h"
-#import "FNAItinerariesView.h"
+#import "FNAItinerariesTableView.h"
 #import "FNAColor.h"
 @implementation FNAItineraryDetailView
 

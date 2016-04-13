@@ -13,10 +13,20 @@
 		A14B82EC1CAD734B009B6C41 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = A14B82E91CAD734B009B6C41 /* clock.png */; };
 		A14B82ED1CAD734B009B6C41 /* flag.png in Resources */ = {isa = PBXBuildFile; fileRef = A14B82EA1CAD734B009B6C41 /* flag.png */; };
 		A14B82EE1CAD734B009B6C41 /* time.png in Resources */ = {isa = PBXBuildFile; fileRef = A14B82EB1CAD734B009B6C41 /* time.png */; };
-		A16C70381C8EC9AC001BBB16 /* FNAItinerariesView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */; };
-		A16C703A1C8EC9BF001BBB16 /* FNAItinerariesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */; };
+		A16C70381C8EC9AC001BBB16 /* FNAItinerariesTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C70371C8EC9AC001BBB16 /* FNAItinerariesTableView.m */; };
+		A16C703A1C8EC9BF001BBB16 /* FNAItinerariesTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A16C70391C8EC9BF001BBB16 /* FNAItinerariesTableView.xib */; };
 		A16C703F1C8EE2BC001BBB16 /* FNAItineraryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A16C703D1C8EE2BC001BBB16 /* FNAItineraryCell.m */; };
 		A16C70401C8EE2BC001BBB16 /* FNAItineraryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A16C703E1C8EE2BC001BBB16 /* FNAItineraryCell.xib */; };
+		A1780C151CBE3C5200992960 /* FNADirectionsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1780C141CBE3C5200992960 /* FNADirectionsTableView.m */; };
+		A1780C171CBE409D00992960 /* FNADirectionsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1780C161CBE409D00992960 /* FNADirectionsTableView.xib */; };
+		A1780C1B1CBE445400992960 /* FNADirectionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1780C191CBE445400992960 /* FNADirectionsCell.m */; };
+		A1780C1C1CBE445400992960 /* FNADirectionsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1A1CBE445400992960 /* FNADirectionsCell.xib */; };
+		A1780C231CBE4D6700992960 /* arrows-3.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1D1CBE4D6700992960 /* arrows-3.png */; };
+		A1780C241CBE4D6700992960 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1E1CBE4D6700992960 /* down.png */; };
+		A1780C251CBE4D6700992960 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C1F1CBE4D6700992960 /* left.png */; };
+		A1780C261CBE4D6700992960 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C201CBE4D6700992960 /* right.png */; };
+		A1780C271CBE4D6700992960 /* soft_left.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C211CBE4D6700992960 /* soft_left.png */; };
+		A1780C281CBE4D6700992960 /* soft_right.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C221CBE4D6700992960 /* soft_right.png */; };
 		A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C3FE1C84AF35009F956F /* FNAMapView.m */; };
 		A192C4161C889F0B009F956F /* FNADataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4151C889F0B009F956F /* FNADataSource.m */; };
 		A1B515991C7F91C6005EC90D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B515981C7F91C6005EC90D /* main.m */; };
@@ -44,12 +54,24 @@
 		A14B82E91CAD734B009B6C41 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		A14B82EA1CAD734B009B6C41 /* flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flag.png; sourceTree = "<group>"; };
 		A14B82EB1CAD734B009B6C41 /* time.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = time.png; sourceTree = "<group>"; };
-		A16C70361C8EC9AC001BBB16 /* FNAItinerariesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAItinerariesView.h; sourceTree = "<group>"; };
-		A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAItinerariesView.m; sourceTree = "<group>"; };
-		A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAItinerariesView.xib; sourceTree = "<group>"; };
+		A16C70361C8EC9AC001BBB16 /* FNAItinerariesTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAItinerariesTableView.h; sourceTree = "<group>"; };
+		A16C70371C8EC9AC001BBB16 /* FNAItinerariesTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAItinerariesTableView.m; sourceTree = "<group>"; };
+		A16C70391C8EC9BF001BBB16 /* FNAItinerariesTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAItinerariesTableView.xib; sourceTree = "<group>"; };
 		A16C703C1C8EE2BC001BBB16 /* FNAItineraryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAItineraryCell.h; sourceTree = "<group>"; };
 		A16C703D1C8EE2BC001BBB16 /* FNAItineraryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAItineraryCell.m; sourceTree = "<group>"; };
 		A16C703E1C8EE2BC001BBB16 /* FNAItineraryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNAItineraryCell.xib; sourceTree = "<group>"; };
+		A1780C131CBE3C5200992960 /* FNADirectionsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNADirectionsTableView.h; sourceTree = "<group>"; };
+		A1780C141CBE3C5200992960 /* FNADirectionsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNADirectionsTableView.m; sourceTree = "<group>"; };
+		A1780C161CBE409D00992960 /* FNADirectionsTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNADirectionsTableView.xib; sourceTree = "<group>"; };
+		A1780C181CBE445400992960 /* FNADirectionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNADirectionsCell.h; sourceTree = "<group>"; };
+		A1780C191CBE445400992960 /* FNADirectionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNADirectionsCell.m; sourceTree = "<group>"; };
+		A1780C1A1CBE445400992960 /* FNADirectionsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNADirectionsCell.xib; sourceTree = "<group>"; };
+		A1780C1D1CBE4D6700992960 /* arrows-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrows-3.png"; sourceTree = "<group>"; };
+		A1780C1E1CBE4D6700992960 /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
+		A1780C1F1CBE4D6700992960 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
+		A1780C201CBE4D6700992960 /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right.png; sourceTree = "<group>"; };
+		A1780C211CBE4D6700992960 /* soft_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soft_left.png; sourceTree = "<group>"; };
+		A1780C221CBE4D6700992960 /* soft_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = soft_right.png; sourceTree = "<group>"; };
 		A192C3FD1C84AF35009F956F /* FNAMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAMapView.h; sourceTree = "<group>"; };
 		A192C3FE1C84AF35009F956F /* FNAMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAMapView.m; sourceTree = "<group>"; };
 		A192C4141C889F0B009F956F /* FNADataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNADataSource.h; sourceTree = "<group>"; };
@@ -96,6 +118,9 @@
 				A16C703C1C8EE2BC001BBB16 /* FNAItineraryCell.h */,
 				A16C703D1C8EE2BC001BBB16 /* FNAItineraryCell.m */,
 				A16C703E1C8EE2BC001BBB16 /* FNAItineraryCell.xib */,
+				A1780C181CBE445400992960 /* FNADirectionsCell.h */,
+				A1780C191CBE445400992960 /* FNADirectionsCell.m */,
+				A1780C1A1CBE445400992960 /* FNADirectionsCell.xib */,
 			);
 			name = "Custom Cells";
 			sourceTree = "<group>";
@@ -103,12 +128,15 @@
 		A16C70411C8EF931001BBB16 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A16C70361C8EC9AC001BBB16 /* FNAItinerariesView.h */,
-				A16C70371C8EC9AC001BBB16 /* FNAItinerariesView.m */,
-				A16C70391C8EC9BF001BBB16 /* FNAItinerariesView.xib */,
+				A16C70361C8EC9AC001BBB16 /* FNAItinerariesTableView.h */,
+				A16C70371C8EC9AC001BBB16 /* FNAItinerariesTableView.m */,
+				A16C70391C8EC9BF001BBB16 /* FNAItinerariesTableView.xib */,
 				A106541E1C91D93600B11E67 /* FNAItineraryDetailView.h */,
 				A106541F1C91D93600B11E67 /* FNAItineraryDetailView.m */,
 				A10654211C91D94900B11E67 /* FNAItineraryDetailView.xib */,
+				A1780C131CBE3C5200992960 /* FNADirectionsTableView.h */,
+				A1780C141CBE3C5200992960 /* FNADirectionsTableView.m */,
+				A1780C161CBE409D00992960 /* FNADirectionsTableView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -169,6 +197,12 @@
 				A14B82EA1CAD734B009B6C41 /* flag.png */,
 				A14B82EB1CAD734B009B6C41 /* time.png */,
 				A1C2B8E31CB4192100389C8C /* arrows.png */,
+				A1780C1D1CBE4D6700992960 /* arrows-3.png */,
+				A1780C1E1CBE4D6700992960 /* down.png */,
+				A1780C1F1CBE4D6700992960 /* left.png */,
+				A1780C201CBE4D6700992960 /* right.png */,
+				A1780C211CBE4D6700992960 /* soft_left.png */,
+				A1780C221CBE4D6700992960 /* soft_right.png */,
 				A1B515961C7F91C6005EC90D /* CTPATH-iOS */,
 				A1B515951C7F91C6005EC90D /* Products */,
 				A1D6E40B1C811E420066E310 /* Frameworks */,
@@ -299,15 +333,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				A14B82EC1CAD734B009B6C41 /* clock.png in Resources */,
+				A1780C241CBE4D6700992960 /* down.png in Resources */,
+				A1780C251CBE4D6700992960 /* left.png in Resources */,
 				A14B82ED1CAD734B009B6C41 /* flag.png in Resources */,
 				A1B515AD1C7F925E005EC90D /* FNAMapViewController.xib in Resources */,
 				A1B5159E1C7F91C6005EC90D /* Assets.xcassets in Resources */,
 				A16C70401C8EE2BC001BBB16 /* FNAItineraryCell.xib in Resources */,
 				A1C2B8EB1CB4318900389C8C /* FNASuggestionsTableViewController.xib in Resources */,
 				A10654221C91D94900B11E67 /* FNAItineraryDetailView.xib in Resources */,
+				A1780C261CBE4D6700992960 /* right.png in Resources */,
+				A1780C271CBE4D6700992960 /* soft_left.png in Resources */,
+				A1780C281CBE4D6700992960 /* soft_right.png in Resources */,
+				A1780C1C1CBE445400992960 /* FNADirectionsCell.xib in Resources */,
+				A1780C171CBE409D00992960 /* FNADirectionsTableView.xib in Resources */,
 				A1C2B8E61CB427C500389C8C /* localization.png in Resources */,
-				A16C703A1C8EC9BF001BBB16 /* FNAItinerariesView.xib in Resources */,
+				A16C703A1C8EC9BF001BBB16 /* FNAItinerariesTableView.xib in Resources */,
 				A14B82EE1CAD734B009B6C41 /* time.png in Resources */,
+				A1780C231CBE4D6700992960 /* arrows-3.png in Resources */,
 				A1B515A11C7F91C6005EC90D /* LaunchScreen.storyboard in Resources */,
 				A1C2B8E41CB4192100389C8C /* arrows.png in Resources */,
 			);
@@ -325,13 +367,15 @@
 				A1B5159C1C7F91C6005EC90D /* AppDelegate.m in Sources */,
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,
 				A10654201C91D93600B11E67 /* FNAItineraryDetailView.m in Sources */,
+				A1780C151CBE3C5200992960 /* FNADirectionsTableView.m in Sources */,
 				A1FE8E6F1C95911B0014A004 /* FNARoute.m in Sources */,
 				A106541D1C91CFC800B11E67 /* FNAColor.m in Sources */,
 				A16C703F1C8EE2BC001BBB16 /* FNAItineraryCell.m in Sources */,
 				A1B515AC1C7F925E005EC90D /* FNAMapViewController.m in Sources */,
 				A1C2B8EA1CB4318900389C8C /* FNASuggestionsTableViewController.m in Sources */,
-				A16C70381C8EC9AC001BBB16 /* FNAItinerariesView.m in Sources */,
+				A16C70381C8EC9AC001BBB16 /* FNAItinerariesTableView.m in Sources */,
 				A192C4161C889F0B009F956F /* FNADataSource.m in Sources */,
+				A1780C1B1CBE445400992960 /* FNADirectionsCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

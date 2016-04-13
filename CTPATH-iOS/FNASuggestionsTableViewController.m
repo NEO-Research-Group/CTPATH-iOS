@@ -31,6 +31,9 @@
 -(void) viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
+    
+    
+    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     self.title = @"Ruta";
@@ -152,6 +155,8 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
     
     [self dismissViewControllerAnimated:YES completion:^{
         [self.delegate suggestionsTableViewController:self didSelectMapItem:[self.mapItems objectAtIndex:indexPath.row] withSearchBar:self.active_searchBar];

@@ -11,6 +11,7 @@
 #define START_SEARCH_BAR @"START"
 #define GOAL_SEARCH_BAR @"GOAL"
 
+
 @class FNASuggestionsTableViewController;
 @protocol FNASuggestionsTableViewDelegate <NSObject>
 
