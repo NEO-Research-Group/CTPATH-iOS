@@ -17,7 +17,7 @@
 #import "FNAItineraryDetailView.h"
 #import "FNARoute.h"
 #import "FNADirectionsTableView.h"
-
+#import "FNALoginViewController.h"
 
 @interface FNAMapViewController ()
 
@@ -124,18 +124,22 @@
 
 -(void) openOptions{
     
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:[FNALoginViewController new]] animated:YES completion:nil];
+    
     
 }
 
 -(void) removeDirectionsTableView{
     
     self.directionsButton.title = @"";
+    self.directionsButton.image = [UIImage imageNamed:@"arrows.png"];
+    self.directionsButton.action = @selector(showDirections:);
     
     [UIView animateWithDuration:0.25 animations:^{
         self.directionsTableView.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.height, self.directionsTableView.frame.size.height);
     } completion:^(BOOL finished) {
         [self.directionsTableView removeFromSuperview];
-        self.directionsButton.image = nil;
+        
         self.directionsButton.action = @selector(showDirections:);
         self.itinerariesButton.title = @"Ocultar";
     }];
@@ -150,7 +154,8 @@
     
     self.itinerariesButton.title = @"Mostrar";
     self.itinerariesButton.action = @selector(showItinerariesTableView);
-    
+    self.directionsButton.image = nil;
+    self.directionsButton.enabled = NO;
     [UIView animateWithDuration:0.25 animations:^{
         
         self.itineraries.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
@@ -484,7 +489,7 @@
         
         // Add directionsButton to toolbar
         self.directionsButton.image = [UIImage imageNamed:@"arrows.png"];
-
+        self.directionsButton.enabled = YES;
         
         self.itinerary = [[[[NSBundle mainBundle]
                             loadNibNamed:@"FNAItineraryDetailView" owner:nil options:nil]

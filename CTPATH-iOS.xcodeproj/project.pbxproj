@@ -29,6 +29,8 @@
 		A1780C281CBE4D6700992960 /* soft_right.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C221CBE4D6700992960 /* soft_right.png */; };
 		A1780C2B1CBEB13F00992960 /* FNAStepParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A1780C2A1CBEB13F00992960 /* FNAStepParser.m */; };
 		A1780C2D1CBEE0C300992960 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A1780C2C1CBEE0C300992960 /* circle.png */; };
+		A1780C331CC1334B00992960 /* FNALoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1780C311CC1334B00992960 /* FNALoginViewController.m */; };
+		A1780C341CC1334B00992960 /* FNALoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1780C321CC1334B00992960 /* FNALoginViewController.xib */; };
 		A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C3FE1C84AF35009F956F /* FNAMapView.m */; };
 		A192C4161C889F0B009F956F /* FNADataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A192C4151C889F0B009F956F /* FNADataSource.m */; };
 		A1B515991C7F91C6005EC90D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A1B515981C7F91C6005EC90D /* main.m */; };
@@ -77,6 +79,9 @@
 		A1780C291CBEB13F00992960 /* FNAStepParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAStepParser.h; sourceTree = "<group>"; };
 		A1780C2A1CBEB13F00992960 /* FNAStepParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAStepParser.m; sourceTree = "<group>"; };
 		A1780C2C1CBEE0C300992960 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
+		A1780C301CC1334B00992960 /* FNALoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNALoginViewController.h; sourceTree = "<group>"; };
+		A1780C311CC1334B00992960 /* FNALoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNALoginViewController.m; sourceTree = "<group>"; };
+		A1780C321CC1334B00992960 /* FNALoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNALoginViewController.xib; sourceTree = "<group>"; };
 		A192C3FD1C84AF35009F956F /* FNAMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAMapView.h; sourceTree = "<group>"; };
 		A192C3FE1C84AF35009F956F /* FNAMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAMapView.m; sourceTree = "<group>"; };
 		A192C4141C889F0B009F956F /* FNADataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNADataSource.h; sourceTree = "<group>"; };
@@ -146,6 +151,26 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		A1780C2E1CC1324900992960 /* Suggestions Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A1C2B8E71CB4318900389C8C /* FNASuggestionsTableViewController.h */,
+				A1C2B8E81CB4318900389C8C /* FNASuggestionsTableViewController.m */,
+				A1C2B8E91CB4318900389C8C /* FNASuggestionsTableViewController.xib */,
+			);
+			name = "Suggestions Controller";
+			sourceTree = "<group>";
+		};
+		A1780C2F1CC1325800992960 /* Login Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A1780C301CC1334B00992960 /* FNALoginViewController.h */,
+				A1780C311CC1334B00992960 /* FNALoginViewController.m */,
+				A1780C321CC1334B00992960 /* FNALoginViewController.xib */,
+			);
+			name = "Login Controller";
+			sourceTree = "<group>";
+		};
 		A192C4001C84B228009F956F /* Other Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,10 +187,9 @@
 		A192C4011C84B263009F956F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A1B515A81C7F91E4005EC90D /* Map Controllers */,
-				A1C2B8E71CB4318900389C8C /* FNASuggestionsTableViewController.h */,
-				A1C2B8E81CB4318900389C8C /* FNASuggestionsTableViewController.m */,
-				A1C2B8E91CB4318900389C8C /* FNASuggestionsTableViewController.xib */,
+				A1780C2F1CC1325800992960 /* Login Controller */,
+				A1B515A81C7F91E4005EC90D /* Map Controller */,
+				A1780C2E1CC1324900992960 /* Suggestions Controller */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -254,14 +278,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A1B515A81C7F91E4005EC90D /* Map Controllers */ = {
+		A1B515A81C7F91E4005EC90D /* Map Controller */ = {
 			isa = PBXGroup;
 			children = (
 				A1B515A91C7F925E005EC90D /* FNAMapViewController.h */,
 				A1B515AA1C7F925E005EC90D /* FNAMapViewController.m */,
 				A1B515AB1C7F925E005EC90D /* FNAMapViewController.xib */,
 			);
-			name = "Map Controllers";
+			name = "Map Controller";
 			sourceTree = "<group>";
 		};
 		A1D6E40B1C811E420066E310 /* Frameworks */ = {
@@ -354,6 +378,7 @@
 				A1780C281CBE4D6700992960 /* soft_right.png in Resources */,
 				A1780C1C1CBE445400992960 /* FNADirectionsCell.xib in Resources */,
 				A1780C2D1CBEE0C300992960 /* circle.png in Resources */,
+				A1780C341CC1334B00992960 /* FNALoginViewController.xib in Resources */,
 				A1780C171CBE409D00992960 /* FNADirectionsTableView.xib in Resources */,
 				A1C2B8E61CB427C500389C8C /* localization.png in Resources */,
 				A16C703A1C8EC9BF001BBB16 /* FNAItinerariesTableView.xib in Resources */,
@@ -371,6 +396,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1780C331CC1334B00992960 /* FNALoginViewController.m in Sources */,
 				A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */,
 				A1780C2B1CBEB13F00992960 /* FNAStepParser.m in Sources */,
 				A1FE8E721C9594500014A004 /* FNARestClient.m in Sources */,

@@ -37,19 +37,19 @@
     NSString * relativeDirection = [step objectForKey:@"relativeDirection"];
     
     if([relativeDirection isEqualToString:DEPART]){
-        parsedRelativeDirection = @"Sal en dirección";
+        parsedRelativeDirection = @"Sal en dirección:";
     }else if([relativeDirection isEqualToString:CONTINUE]){
-        parsedRelativeDirection = @"Continúa en dirección";
+        parsedRelativeDirection = @"Continúa en dirección:";
     }else if([relativeDirection isEqualToString:CIRCLE_COUNTERCLOCKWISE]){
-        parsedRelativeDirection = [NSString stringWithFormat:@"Tome la rotonda y salga por la %@ salida en dirección",[self ordinalForExit:[step objectForKey:@"exit"]]];
+        parsedRelativeDirection = [NSString stringWithFormat:@"Tome la rotonda y salga por la %@ salida:",[self ordinalForExit:[step objectForKey:@"exit"]]];
     }else if([relativeDirection isEqualToString:SLIGHTLY_LEFT]){
-        parsedRelativeDirection = @"Gira levemente a la izquierda por";
+        parsedRelativeDirection = @"Gira levemente a la izquierda:";
     }else if([relativeDirection isEqualToString:SLIGHTLY_RIGHT]){
-        parsedRelativeDirection = @"Gira levemente a la derecha por";
+        parsedRelativeDirection = @"Gira levemente a la derecha:";
     }else if([relativeDirection isEqualToString:LEFT]){
-        parsedRelativeDirection = @"Gira a la izquierda por";
+        parsedRelativeDirection = @"Gira a la izquierda:";
     }else if([relativeDirection isEqualToString:RIGHT] || [relativeDirection isEqualToString:HARD_RIGHT]){
-        parsedRelativeDirection = @"Gira a la derecha por";
+        parsedRelativeDirection = @"Gira a la derecha:";
     }else{
         parsedRelativeDirection = @"";
     }
@@ -81,7 +81,7 @@
     }else if([relativeDirection isEqualToString:RIGHT]){
         imageForRelativeDirection = @"right.png";
     }else{
-        imageForRelativeDirection = @"";
+        imageForRelativeDirection = @"ahead.png";
     }
     
     return imageForRelativeDirection;
