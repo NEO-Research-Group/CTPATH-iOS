@@ -8,6 +8,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FNALoginViewController">
             <connections>
+                <outlet property="email" destination="9vW-za-WVL" id="dKB-gt-lv1"/>
+                <outlet property="headerLabel" destination="4Yy-aD-H4J" id="m76-bB-DiN"/>
+                <outlet property="openCTPathWeb" destination="eLO-5a-tpO" id="eBz-yu-qgL"/>
+                <outlet property="password" destination="xD5-Se-gbi" id="SaW-39-mqo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,12 +35,18 @@
                         <constraint firstAttribute="width" constant="219" id="urQ-3u-UBg"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" enablesReturnKeyAutomatically="YES"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="ref-nO-hEw"/>
+                    </connections>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contraseña" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xD5-Se-gbi">
                     <rect key="frame" x="191" y="113" width="219" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" returnKeyType="send" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="sFE-Oo-bcw"/>
+                    </connections>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="¿No tienes cuenta aún?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSg-WT-Ait">
                     <rect key="frame" x="181" y="186" width="239" height="24"/>
@@ -44,7 +54,7 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tog-Y9-Pbs">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tog-Y9-Pbs">
                     <rect key="frame" x="8" y="250" width="584" height="35"/>
                     <string key="text">El registro sólo está disponible a través de la página web, una vez completado el registro, podrás volver a la aplicación e iniciar sesión.</string>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
@@ -66,6 +76,16 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OBN-SW-4UD">
+                    <rect key="frame" x="255" y="151" width="90" height="30"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.36794013240000001" blue="0.094048048600000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="Iniciar sesión">
+                        <color key="titleColor" red="0.19533222850000001" green="0.19533222850000001" blue="0.19533222850000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="login" destination="-1" eventType="touchUpInside" id="bAm-f9-4QL"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="0.7125143335586458" blue="0.38656417995037173" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -80,9 +100,11 @@
                 <constraint firstItem="XVG-dM-dWq" firstAttribute="top" secondItem="eLO-5a-tpO" secondAttribute="bottom" constant="62" id="MJq-x6-8Eq"/>
                 <constraint firstItem="4Yy-aD-H4J" firstAttribute="leading" secondItem="aSg-WT-Ait" secondAttribute="leading" id="TaC-cr-dVz"/>
                 <constraint firstItem="Tog-Y9-Pbs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="b5T-YK-jjI"/>
+                <constraint firstItem="OBN-SW-4UD" firstAttribute="top" secondItem="xD5-Se-gbi" secondAttribute="bottom" constant="8" id="eIV-od-dpm"/>
                 <constraint firstItem="aSg-WT-Ait" firstAttribute="top" secondItem="xD5-Se-gbi" secondAttribute="bottom" constant="43" id="gXA-EA-9gR"/>
                 <constraint firstItem="4Yy-aD-H4J" firstAttribute="trailing" secondItem="aSg-WT-Ait" secondAttribute="trailing" id="h3s-F6-jBS"/>
                 <constraint firstItem="xD5-Se-gbi" firstAttribute="top" secondItem="9vW-za-WVL" secondAttribute="bottom" constant="27" id="hna-6U-jMg"/>
+                <constraint firstItem="OBN-SW-4UD" firstAttribute="centerX" secondItem="aSg-WT-Ait" secondAttribute="centerX" id="qwT-yl-J16"/>
                 <constraint firstItem="9vW-za-WVL" firstAttribute="leading" secondItem="xD5-Se-gbi" secondAttribute="leading" id="rBq-kc-3aw"/>
                 <constraint firstItem="aSg-WT-Ait" firstAttribute="centerX" secondItem="Tog-Y9-Pbs" secondAttribute="centerX" id="urW-BK-j3f"/>
                 <constraint firstItem="Tog-Y9-Pbs" firstAttribute="centerX" secondItem="eLO-5a-tpO" secondAttribute="centerX" id="ziM-Xn-F7q"/>

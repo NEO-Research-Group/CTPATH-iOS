@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FNALoginViewController : UIViewController
+#define URL_API_AUTHENTICATION @"http://mallba3.lcc.uma.es/otp/api/authenticate"
 
+@interface FNALoginViewController : UIViewController <UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UILabel *headerLabel;
+@property (weak, nonatomic) IBOutlet UITextField *email;
+@property (weak, nonatomic) IBOutlet UITextField *password;
+
+-(IBAction) login;
+
+@property (weak, nonatomic) IBOutlet UIButton *openCTPathWeb;
 @end
