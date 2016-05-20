@@ -46,7 +46,6 @@
 		A1C2B8EA1CB4318900389C8C /* FNASuggestionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1C2B8E81CB4318900389C8C /* FNASuggestionsTableViewController.m */; };
 		A1C2B8EB1CB4318900389C8C /* FNASuggestionsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1C2B8E91CB4318900389C8C /* FNASuggestionsTableViewController.xib */; };
 		A1FE8E6F1C95911B0014A004 /* FNARoute.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E6E1C95911B0014A004 /* FNARoute.m */; };
-		A1FE8E721C9594500014A004 /* FNARestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A1FE8E711C9594500014A004 /* FNARestClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,8 +104,6 @@
 		A1C2B8E91CB4318900389C8C /* FNASuggestionsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FNASuggestionsTableViewController.xib; sourceTree = "<group>"; };
 		A1FE8E6D1C95911B0014A004 /* FNARoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNARoute.h; sourceTree = "<group>"; };
 		A1FE8E6E1C95911B0014A004 /* FNARoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNARoute.m; sourceTree = "<group>"; };
-		A1FE8E701C9594500014A004 /* FNARestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FNARestClient.h; path = "CTPATH-iOS/FNARestClient.h"; sourceTree = "<group>"; };
-		A1FE8E711C9594500014A004 /* FNARestClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FNARestClient.m; path = "CTPATH-iOS/FNARestClient.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +146,25 @@
 				A1780C161CBE409D00992960 /* FNADirectionsTableView.xib */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		A175147D1CEF2F8C00590AC1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A1C2B8E51CB427C500389C8C /* localization.png */,
+				A14B82E91CAD734B009B6C41 /* clock.png */,
+				A14B82EA1CAD734B009B6C41 /* flag.png */,
+				A14B82EB1CAD734B009B6C41 /* time.png */,
+				A1C2B8E31CB4192100389C8C /* arrows.png */,
+				A1780C1D1CBE4D6700992960 /* ahead.png */,
+				A1780C1E1CBE4D6700992960 /* down.png */,
+				A1780C1F1CBE4D6700992960 /* left.png */,
+				A1780C201CBE4D6700992960 /* right.png */,
+				A1780C211CBE4D6700992960 /* soft_left.png */,
+				A1780C221CBE4D6700992960 /* soft_right.png */,
+				A1780C2C1CBEE0C300992960 /* circle.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		A1780C2E1CC1324900992960 /* Suggestions Controller */ = {
@@ -201,16 +217,6 @@
 			name = Delegates;
 			sourceTree = "<group>";
 		};
-		A192C4061C85A81F009F956F /* API Accessing */ = {
-			isa = PBXGroup;
-			children = (
-				A1FE8E701C9594500014A004 /* FNARestClient.h */,
-				A1FE8E711C9594500014A004 /* FNARestClient.m */,
-			);
-			name = "API Accessing";
-			path = ..;
-			sourceTree = "<group>";
-		};
 		A192C4171C889F10009F956F /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,18 +229,7 @@
 		A1B5158B1C7F91C6005EC90D = {
 			isa = PBXGroup;
 			children = (
-				A1C2B8E51CB427C500389C8C /* localization.png */,
-				A14B82E91CAD734B009B6C41 /* clock.png */,
-				A14B82EA1CAD734B009B6C41 /* flag.png */,
-				A14B82EB1CAD734B009B6C41 /* time.png */,
-				A1C2B8E31CB4192100389C8C /* arrows.png */,
-				A1780C1D1CBE4D6700992960 /* ahead.png */,
-				A1780C1E1CBE4D6700992960 /* down.png */,
-				A1780C1F1CBE4D6700992960 /* left.png */,
-				A1780C201CBE4D6700992960 /* right.png */,
-				A1780C211CBE4D6700992960 /* soft_left.png */,
-				A1780C221CBE4D6700992960 /* soft_right.png */,
-				A1780C2C1CBEE0C300992960 /* circle.png */,
+				A175147D1CEF2F8C00590AC1 /* Resources */,
 				A1B515961C7F91C6005EC90D /* CTPATH-iOS */,
 				A1B515951C7F91C6005EC90D /* Products */,
 				A1D6E40B1C811E420066E310 /* Frameworks */,
@@ -254,7 +249,6 @@
 			children = (
 				A1B5159A1C7F91C6005EC90D /* AppDelegate.h */,
 				A1B5159B1C7F91C6005EC90D /* AppDelegate.m */,
-				A192C4061C85A81F009F956F /* API Accessing */,
 				A192C4011C84B263009F956F /* Controllers */,
 				A16C703B1C8EE296001BBB16 /* Custom Cells */,
 				A192C4171C889F10009F956F /* DataSource */,
@@ -399,7 +393,6 @@
 				A1780C331CC1334B00992960 /* FNALoginViewController.m in Sources */,
 				A192C3FF1C84AF35009F956F /* FNAMapView.m in Sources */,
 				A1780C2B1CBEB13F00992960 /* FNAStepParser.m in Sources */,
-				A1FE8E721C9594500014A004 /* FNARestClient.m in Sources */,
 				A1B5159C1C7F91C6005EC90D /* AppDelegate.m in Sources */,
 				A1B515991C7F91C6005EC90D /* main.m in Sources */,
 				A10654201C91D93600B11E67 /* FNAItineraryDetailView.m in Sources */,

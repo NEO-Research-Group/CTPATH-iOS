@@ -8,12 +8,7 @@
 
 #import "FNALoginViewController.h"
 
-@interface FNALoginViewController ()
-
-@end
-
 @implementation FNALoginViewController
-
 
 #pragma mark - Lifecycle
 
@@ -27,7 +22,6 @@
     
     self.password.clearButtonMode = UITextFieldViewModeAlways;
     
-    
 }
 
 -(void) viewDidLoad{
@@ -39,12 +33,21 @@
     
     [self.view addGestureRecognizer:tap];
 }
-#pragma mark - Actions
+
+#pragma mark - Selectors
 
 -(void) dismissKeyboard{
     
     [self.email resignFirstResponder];
     [self.password resignFirstResponder];
+}
+
+#pragma mark - Actions
+
+- (IBAction)openCTPathWeb:(id)sender {
+    
+#warning TODO
+    
 }
 
 -(void) dismissMe{
@@ -59,9 +62,10 @@
         NSURL * authenticationURL = [NSURL URLWithString:URL_API_AUTHENTICATION];
         
         NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:authenticationURL];
+        request.HTTPMethod = @"POST";
         
-        [request setValue:self.email.text forHTTPHeaderField:@"email"];
-        [request setValue:self.password.text forHTTPHeaderField:@"email"];
+        [request setValue:[NSString stringWithFormat:@"%@:%@",self.email.text,self.password.text] forHTTPHeaderField:@"User-Credentials"];
+        [request setValue:@"ios" forHTTPHeaderField:@"AppID"];
         
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:nil];
@@ -70,6 +74,24 @@
             NSLog(@"data %@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
             NSLog(@"ERROR %@",error);
             NSLog(@"response %@",response);
+            dispatch_async(dispatch_get_main_queue(), ^{
+
+                if(error){
+                    [self presentAlertViewControllerWithTitle:@"Error" message:@"Ha ocurrido un problema, no es posible iniciar sesión en este momento"];
+                }else if(response){
+                    NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *) response;
+                    NSDictionary * headers = [httpResponse allHeaderFields];
+                    
+                    self.authenticationToken = [headers objectForKey:@"AuthenticationToken"];
+                    
+                    [self.delegate loginViewController:self didLogIn:self.authenticationToken];
+                    
+                    self.headerLabel.text = [NSString stringWithFormat:@"%@",self.email.text];
+                    self.email.text = @"";
+                    self.password.text = @"";
+                    [self presentAlertViewControllerWithTitle:@"Error" message:@"Has iniciado sesión correctamente"];
+                }
+            });
         }];
         
         [postDataTask resume];
@@ -82,6 +104,9 @@
     
     
 }
+
+#pragma mark - AlertViewController
+
 
 -(void)presentAlertViewControllerWithTitle:(NSString *) title message:(NSString *) message{
     
@@ -98,13 +123,10 @@
 
 #pragma mark - UITextField Delegate
 
-
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
     return YES;
 }
-
-
 
 @end

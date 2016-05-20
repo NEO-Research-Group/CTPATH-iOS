@@ -13,23 +13,18 @@
 @implementation AppDelegate
 
 -(void) customize{
-   
-    UIColor *orangeCTPath = [FNAColor CTPathColorWithAlpha:1.0];
     
-    [[UINavigationBar appearance] setBarTintColor:orangeCTPath];
-    [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+    [[UINavigationBar appearance] setBarTintColor:[FNAColor CTPathColorWithAlpha:1.0]];
+    [[UINavigationBar appearance] setTintColor:[FNAColor blackColor]];
     [[UINavigationBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"Helvetica" size:23.0]}];
-
     
-    UIColor *creamColor = [FNAColor creamColorWithAlpha:1.0];
-    
-    [[UISearchBar appearance] setBarTintColor:creamColor];
-    
+    [[UISearchBar appearance] setBarTintColor:[FNAColor creamColorWithAlpha:1.0]];
     
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     [self customize];
@@ -43,8 +38,10 @@
     // Set it as root of application
     [self.window setRootViewController:navVC];
     
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [FNAColor whiteColor];
+    
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 

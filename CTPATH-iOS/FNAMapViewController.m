@@ -9,7 +9,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import "FNAMapViewController.h"
 #import "FNAMapView.h"
-#import "FNARestClient.h"
 #import "FNADataSource.h"
 #import "FNAItinerariesTableView.h"
 #import "FNAItineraryCell.h"
@@ -17,7 +16,6 @@
 #import "FNAItineraryDetailView.h"
 #import "FNARoute.h"
 #import "FNADirectionsTableView.h"
-#import "FNALoginViewController.h"
 
 @interface FNAMapViewController ()
 
@@ -25,17 +23,17 @@
 @property (nonatomic) BOOL tableViewDisplayed; // Must be implemented by a protocol or notification
 @property (strong,nonatomic) FNAItinerariesTableView * itineraries;
 
-/*!@brief YES for editing start point, NO for editing goal point */
+/* !@brief YES for editing start point, NO for editing goal point*/
 @property (nonatomic) BOOL searchBarTag;
+
 @end
 
 @implementation FNAMapViewController
 
--(id) init{
+- (id) init{
     
     if(self = [super init]){
         
-        _restclient = [FNARestClient sharedRestClient];
         self.dataSource = [FNADataSource new];
     }
     
@@ -43,25 +41,25 @@
 }
 # pragma mark - Lifecycle
 
--(void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:animated];
     
     self.title = @"CTPath";
     
     [self.mapView setDefaultRegion]; //TODO: Change in the future for user location
+    
     self.mapView.delegate = self;
     
-    
     self.directionsButton.image = nil;
-
     
     [self setRightBarButtonItem];
     [self setLeftBarButtonItem];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(suggestionsViewWillAppear:) name:SUGGESTIONS_APPEAR_NOTIFICATION_NAME object:nil];
-    
-
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(suggestionsViewWillAppear:)
+                                                 name:SUGGESTIONS_APPEAR_NOTIFICATION_NAME
+                                               object:nil];
 }
 
 - (void) viewWillDisappear:(BOOL)animated{
@@ -80,10 +78,9 @@
 
 #pragma mark - Selectors
 
--(void) showSuggestions{
+- (void) showSuggestions{
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SUGGESTIONS_APPEAR_NOTIFICATION_NAME object:nil];
-    
     
     [self removeSubviewsFromSuperview];
     
@@ -103,33 +100,31 @@
     
     self.directionsTableView.directions = [self.route stepsForItinerary:[self.route itineraryAtIndex:self.itinerary.indexPath.row]];
     
-    
-    self.directionsTableView.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width, self.itinerary.frame.size.height);
-    
+    self.directionsTableView.frame = CGRectMake(0, self.mapView.frame.size.height, self.mapView.frame.size.width,self.itinerary.frame.size.height);
     
     [self.view addSubview:self.directionsTableView];
     
     [UIView animateWithDuration:0.25 animations:^{
+        
         self.directionsTableView.frame = CGRectMake(0, self.mapView.frame.size.height/3, self.mapView.frame.size.width, 2*self.mapView.frame.size.height/3);
+        
     } completion:^(BOOL finished) {
         self.directionsButton.image = nil;
         self.directionsButton.title = @"Ocultar";
         self.directionsButton.action = @selector(removeDirectionsTableView);
         
     }];
+}
+
+- (void) openLogin{
     
-  
+    FNALoginViewController * loginVC = [FNALoginViewController new];
+    loginVC.delegate = self;
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:loginVC] animated:YES completion:nil];
     
 }
 
--(void) openOptions{
-    
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:[FNALoginViewController new]] animated:YES completion:nil];
-    
-    
-}
-
--(void) removeDirectionsTableView{
+- (void) removeDirectionsTableView{
     
     self.directionsButton.title = @"";
     self.directionsButton.image = [UIImage imageNamed:@"arrows.png"];
@@ -143,19 +138,15 @@
         self.directionsButton.action = @selector(showDirections:);
         self.itinerariesButton.title = @"Ocultar";
     }];
-    
-
-    
 }
 
 - (IBAction)removeItinerariesView:(id)sender {
-    
-    
     
     self.itinerariesButton.title = @"Mostrar";
     self.itinerariesButton.action = @selector(showItinerariesTableView);
     self.directionsButton.image = nil;
     self.directionsButton.enabled = NO;
+    
     [UIView animateWithDuration:0.25 animations:^{
         
         self.itineraries.frame = CGRectMake(0, self.view.frame.size.height, self.itineraries.frame.size.width, self.itineraries.frame.size.height);
@@ -165,14 +156,12 @@
         
         [self removeSubviewsFromSuperview];
         
-        
     }];
 }
 
 #pragma mark - Utils
 
-
--(void) setRightBarButtonItem{
+- (void) setRightBarButtonItem{
     
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc]
                                      initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
@@ -182,29 +171,26 @@
     
 }
 
--(void) setLeftBarButtonItem{
+- (void) setLeftBarButtonItem{
     
     UIBarButtonItem *optionsButton = [[UIBarButtonItem alloc]
-                                      initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(openOptions)];
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(openLogin)];
     self.navigationItem.leftBarButtonItem = optionsButton;
     
 }
 
-
-
 // SUGGESTIONS_APPEAR_NOTIFICATION
--(void) suggestionsViewWillAppear:(NSNotification *) notification{
+- (void) suggestionsViewWillAppear:(NSNotification *) notification{
     
     if(self.dataSource.route){
         self.itinerariesButton.title = @"Mostrar";
         self.itinerariesButton.action = @selector(showItinerariesTableView);
 
     }
-    
 }
 
 
--(void)presentAlertViewControllerWithTitle:(NSString *) title message:(NSString *) message{
+- (void)presentAlertViewControllerWithTitle:(NSString *) title message:(NSString *) message{
     
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
@@ -213,11 +199,10 @@
     [alertController addAction:defaultAction];
     
     [self presentViewController:alertController animated:YES completion:nil];
-
     
 }
 
--(void) showItinerariesTableView{
+- (void) showItinerariesTableView{
     
     // Removing views already showed
     
@@ -252,7 +237,7 @@
     self.itinerariesButton.title = @"Ocultar";
     self.itinerariesButton.action = @selector(removeItinerariesView:);
 }
--(NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint
+- (NSString*) getURLForRoutingService:(CLLocationCoordinate2D) startPoint
                            goalPoint:(CLLocationCoordinate2D) goalPoint{
     
 #warning Preguntar si hay otra forma mejor de hacerlo, si cambia api modificar app
@@ -289,7 +274,7 @@
     return finalURL;
 }
 
--(void) removeSubviewsFromSuperview{
+- (void) removeSubviewsFromSuperview{
     
     [self.itineraries removeFromSuperview];
     [self.itinerary removeFromSuperview];
@@ -300,7 +285,7 @@
 #pragma mark - UIGestureRecognizer
 
 /*! This method instantiate needed user's gestures recognizer */
--(void) declareGestureRecognizers{
+- (void) declareGestureRecognizers{
     
     UILongPressGestureRecognizer * longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didLongPress:)];
     
@@ -308,7 +293,7 @@
 }
 
 /*! This method is called when the user longPressed the view */
--(void) didLongPress:(UILongPressGestureRecognizer *) longPress{
+- (void) didLongPress:(UILongPressGestureRecognizer *) longPress{
     
     if(longPress.state == UIGestureRecognizerStateBegan){ // Minimum elapsed time to consider longPress
 
@@ -317,13 +302,13 @@
         
         [self.mapView addAnnotationWithCoordinates:coordinates];
         
-        [self findPath];
+        [self findPathWithAuthenticationToken: self.userAuthenticationToken];
     }
 }
 
 #pragma mark - Map procedures
 
--(IBAction) centerMapAtCoordinates:(id) sender{
+- (IBAction) centerMapAtCoordinates:(id) sender{
     
     if([sender isKindOfClass:[UIBarButtonItem class]]){ // User location button pressed
         
@@ -337,7 +322,7 @@
 
 
 
--(void) startGettingUserLocation{
+- (void) startGettingUserLocation{
     
     // CLLocationManager is in charge of getting user's location
     
@@ -348,7 +333,7 @@
     [self.locationManager startUpdatingLocation];  
 }
 
--(void) findPath{
+- (void) findPathWithAuthenticationToken:(NSString *) authenticationToken{
     
     if(self.mapView.goalAnnotation){ // Modify with notification
         
@@ -360,42 +345,58 @@
             NSString * url = [self getURLForRoutingService:self.mapView.startAnnotation.coordinate
                                                  goalPoint:self.mapView.goalAnnotation.coordinate];
             
-            self.route = [[FNARoute alloc] initWithRoute:[self.restclient getJSONFromURL:url]];
-            if(self.route.error){
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    [self.activityView stopAnimating];
-                    
-                    [self presentAlertViewControllerWithTitle:@"¡Lo sentimos!" message:@"No se han encontrado rutas entre estos dos puntos"];
-                });
-                
-            }else if(!self.route){
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    [self.activityView stopAnimating];
-                    
-                    
-                    [self presentAlertViewControllerWithTitle:@"Error inesperado" message:@"Comprueba tu conexión a internet"];
-                });
-                
-            }else{
-                // Changes in views must be done at main thread
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    [self.mapView drawPath:self.route];
-                    [self.activityView stopAnimating];
-                    [self showItinerariesTableView];
-                });
-            }
             
+            NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+            request.HTTPMethod = @"GET";
+            
+            [request setValue:self.userAuthenticationToken forHTTPHeaderField:@"AuthenticationToken"];
+            [request setValue:@"ios" forHTTPHeaderField:@"AppID"];
+            
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:nil];
+            
+            NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                
+                // NSLog(@"data %@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
+                // NSLog(@"ERROR %@",error);
+                // NSLog(@"response %@",response);
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    if(error){
+                        [self presentAlertViewControllerWithTitle:@"Error" message:@"Ha ocurrido un problema, no es posible iniciar sesión en este momento"];
+                    }else if(data){
+                        
+                        NSError * error;
+                        NSDictionary * json = [NSJSONSerialization
+                                               JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+                        
+                        self.route = [[FNARoute alloc] initWithRoute:json];
+                        
+                        if(self.route.error){
+                            [self.activityView stopAnimating];
+                            [self presentAlertViewControllerWithTitle:@"¡Lo sentimos!" message:@"No se han encontrado rutas entre estos dos puntos"];
+                        }else if(!self.route){
+                            [self.activityView stopAnimating];
+                            [self presentAlertViewControllerWithTitle:@"Error inesperado" message:@"Comprueba tu conexión a internet"];
+                        }else{
+                            [self.mapView drawPath:self.route];
+                            [self.activityView stopAnimating];
+                            [self showItinerariesTableView];
+                        }
+                    }
+                });
+            }];
+            
+            [postDataTask resume];
+
         });
     }
 }
 
 #pragma mark - MapView Delegate
 
--(MKAnnotationView *)mapView:(FNAMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
+- (MKAnnotationView *)mapView:(FNAMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
     
     // We dont change user's location annotation
     if ([annotation isKindOfClass:[MKUserLocation class]]){
@@ -431,16 +432,16 @@
     return nil;
 }
 
--(void) mapView:(FNAMapView *)mapView annotationView:(MKAnnotationView *)view didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState{
+- (void) mapView:(FNAMapView *)mapView annotationView:(MKAnnotationView *)view didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState{
     
     if(newState == MKAnnotationViewDragStateEnding){ // put down annotation
             
-            [self findPath];
+            [self findPathWithAuthenticationToken: self.userAuthenticationToken];
     }
     
 }
 
--(void) mapView:(FNAMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+- (void) mapView:(FNAMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
     
     //When region changes, we saves this new region to load it next time user opens the app
     [mapView saveLastRegion];
@@ -468,7 +469,7 @@
 
 #pragma mark - TableViewDelegate
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if ([[UIScreen mainScreen] bounds].size.height >= 568){
         
@@ -479,7 +480,7 @@
     }
 }
 
--(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if([tableView isEqual:self.itineraries.itinerariesTableView]){
         
@@ -536,7 +537,7 @@
     
 }
 
--(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if(![tableView isEqual:self.suggestionTableView]){
         FNAItineraryCell * cell = (FNAItineraryCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -559,6 +560,7 @@
         self.mapView.startAnnotation.coordinate = mapItem.placemark.coordinate;
         [self.mapView addAnnotation:self.mapView.startAnnotation];
         [self centerMapAtCoordinates:self.mapView.startAnnotation];
+        [self findPathWithAuthenticationToken: self.userAuthenticationToken];
         
     }else{
         
@@ -566,10 +568,14 @@
         self.mapView.goalAnnotation = [MKPointAnnotation new];
         self.mapView.goalAnnotation.coordinate = mapItem.placemark.coordinate;
         [self.mapView addAnnotation:self.mapView.goalAnnotation];
-        [self findPath];
+        [self findPathWithAuthenticationToken: self.userAuthenticationToken];
         
     }
     
+}
+
+-(void) loginViewController:(FNALoginViewController *)loginVC didLogIn:(NSString *)authenticationToken{
+    self.userAuthenticationToken = authenticationToken;
 }
 
 @end
